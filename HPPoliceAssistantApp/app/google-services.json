@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "384017688086",
+    "firebase_url": "https://hppoliceassistant.firebaseio.com",
+    "project_id": "hppoliceassistant",
+    "storage_bucket": "hppoliceassistant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384017688086:android:4ab937ab421ae67b",
+        "android_client_info": {
+          "package_name": "pranav.apps.amazing.hppoliceassistant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384017688086-g29pknind5383kepf4pi8q074rdj79h0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pranav.apps.amazing.hppoliceassistant",
+            "certificate_hash": "29104BD12114157CD5D28E1352A07BC07CEE56AA"
+          }
+        },
+        {
+          "client_id": "384017688086-pmeo532ig59n1i8kiaoooae0hpirapmd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6vsTHbtm_ECG1qXOKoeT0Q3Zh8c-e_eM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384017688086-pmeo532ig59n1i8kiaoooae0hpirapmd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
