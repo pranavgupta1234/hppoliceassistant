@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_item_attachment"
+            android:checked="true"
+            android:icon="@drawable/ic_attachment"
+            android:title="Navigation" />
+        <item
+            android:id="@+id/navigation_item_images"
+            android:icon="@drawable/ic_image"
+            android:title="Images" />
+        <item
+            android:id="@+id/navigation_item_location"
+            android:icon="@drawable/ic_place"
+            android:title="Location" />
+    </group>
+
+    <item android:title="Get Latest Info">
+        <menu>
+            <item
+                android:icon="@drawable/ic_emoticon"
+                android:title="Needed Help" />
+            <item
+                android:icon="@drawable/ic_emoticon"
+                android:title="Emergency" />
+            <item
+                android:icon="@drawable/ic_emoticon"
+                android:title="Developers" />
+            <item
+                android:icon="@drawable/ic_emoticon"
+                android:title="LogOut" />
+        </menu>
+    </item>
+
+</menu>

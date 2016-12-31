@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">HPPoliceAssistant</string>
+    <string name="login">Login</string>
+    <string name="naka_data_entry"><b>Naka Data Entry</b></string>
+    <string name="challan"><b>Challan</b></string>
+    <string name="stolen_vehicle"><b>Stolen Vehicle</b></string>
+    <string name="offences"><b>OFFENCES</b></string>
+    <string name="district">district</string>
+    <string-array name="district">
+        <item>Select District</item>
+        <item>Kinnaur</item>
+        <item>Shimla</item>
+        <item>Mandi</item>
+    </string-array>
+    <string-array name="police_station_kinnaur">
+        <item>Select PoliceStation</item>
+        <item>PS B/Nagar</item>
+        <item>PS Pooh</item>
+        <item>PS Sangla</item>
+        <item>PS R/Peo</item>
+    </string-array>
+    <string-array name="police_station_shimla">
+        <item>Select PoliceStation</item>
+        <item>PS Sunni</item>
+        <item>PS Kupvi</item>
+        <item>PS Nerwa</item>
+        <item>PS Chopal</item>
+        <item>PS Kohtkai</item>
+        <item>PS Jubbal</item>
+        <item>PS Chirgaon</item>
+        <item>PS Rohru</item>
+        <item>PS Jhakri</item>
+        <item>PS Rampur</item>
+        <item>PS K/Sain</item>
+        <item>PS Theog</item>
+        <item>Malhila PS</item>
+        <item>PS New Shimla</item>
+        <item>PS Dhalli</item>
+        <item>PS West</item>
+        <item>PS New East</item>
+        <item>PS Sadar</item>
+    </string-array>
+    <string-array name="police_station_mandi">
+        <item>Select PoliceStation</item>
+        <item>PS Sadar</item>
+    </string-array>
+    <string-array name="option_station">
+        <item>Select PoliceStation</item>
+    </string-array>
+    <string-array name="option_station_post">
+        <item>Select PolicePost</item>
+    </string-array>
+    <string-array name="PS_Sadar_policepost">
+        <item>Select PolicePost</item>
+    </string-array>
+
+    <string-array name="PS_RPeo_policepost">
+        <item>Select PolicePost</item>
+        <item>PP Pangi</item>
+    </string-array>
+
+    <string-array name="PS_BNagar_policepost">
+        <item>Select PolicePost</item>
+        <item>PP Tapri</item>
+        <item>PP Katgaon</item>
+        <item>PP Nichar</item>
+    </string-array>
+
+    <string-array name="PS_Pooh_policepost">
+        <item>Select PolicePost</item>
+        <item>PP Yangthang</item>
+        <item>PP Moorang</item>
+    </string-array>
+    <string-array name="PS_Sangla_policepost">
+        <item>Select PolicePost</item>
+        <item>PP Karcham</item>
+    </string-array>
+    <string-array name="PS_Rpeo_policepost">
+        <item>Select PolicePost</item>
+        <item>PP Pangi</item>
+    </string-array>
+</resources>
