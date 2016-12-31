@@ -2,14 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#00BCD4"
-    android:padding="20dp">
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="20dp">
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:id="@+id/hpp"/>
     <Spinner
@@ -18,7 +20,7 @@
         android:layout_marginTop="10dp"
         android:padding="12dp"
         android:layout_below="@id/hpp"
-        android:background="@drawable/custom_edittext"
+        android:background="@drawable/custom_edittext_border"
         android:id="@+id/district"/>
     <Spinner
         android:layout_width="match_parent"
@@ -26,7 +28,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@id/district"
         android:padding="12dp"
-        android:background="@drawable/custom_edittext"
+        android:background="@drawable/custom_edittext_border"
         android:id="@+id/police_station"/>
 
     <Spinner
@@ -35,37 +37,9 @@
         android:layout_marginTop="10dp"
         android:layout_below="@id/police_station"
         android:padding="12dp"
-        android:background="@drawable/custom_edittext"
+        android:background="@drawable/custom_edittext_border"
         android:id="@+id/police_post"/>
-    <!--
-    <EditText
-        android:hint="District"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_edittext"
-        android:padding="12dp"
-        android:layout_below="@id/hpp"
-        android:id="@+id/district"/>
-    <EditText
-        android:hint="Police Station"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/district"
-        android:padding="12dp"
-        android:background="@drawable/custom_edittext"
-        android:id="@+id/police_station"/>
-    <EditText
-        android:hint="Police Post"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/police_station"
-        android:padding="12dp"
-        android:background="@drawable/custom_edittext"
-        android:id="@+id/police_post"/>
-        -->
+
     <EditText
         android:hint="Name"
         android:layout_width="match_parent"
@@ -73,14 +47,15 @@
         android:layout_marginTop="10dp"
         android:padding="12dp"
         android:layout_below="@id/police_post"
-        android:background="@drawable/custom_edittext"
+        android:background="@drawable/custom_edittext_border"
         android:id="@+id/name"/>
     <EditText
         android:hint="Password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@drawable/custom_edittext"
+        android:background="@drawable/custom_edittext_border"
+        android:inputType="textPassword"
         android:padding="12dp"
         android:layout_below="@id/name"
         android:id="@+id/password"/>
@@ -94,4 +69,5 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/btn_back"
         android:padding="12dp"/>
+
 </RelativeLayout>
