@@ -316,6 +316,8 @@ public class Challan extends Fragment {
         license_number.setText("");
         policeofficer_name.setText("");
         violator_number.setText("");
+        time.setText("fill time here");
+        date.setText("fill date here");
         helmet.setChecked(false);
         rc.setChecked(false);
         insurance.setChecked(false);

@@ -43,7 +43,7 @@ public class Entry_veh extends Fragment {
     private Firebase mRootRef;
     private EditText veh,phone,description,place,naka,officer;
     private TextView date,time;
-    private Button submit_det;
+    private Button submit_det,reset_entry;
     private ImageButton upload;
     private String path;
     private StorageReference mStorage,filepath;
@@ -77,23 +77,30 @@ public class Entry_veh extends Fragment {
         description=(EditText)view.findViewById(R.id.description);
         place=(EditText)view.findViewById(R.id.place);
         naka=(EditText)view.findViewById(R.id.naka);
-        time=(TextView)view.findViewById(R.id.time);
-        date=(TextView)view.findViewById(R.id.date);
+        time=(TextView)view.findViewById(R.id.time_entry);
+        date=(TextView)view.findViewById(R.id.date_entry);
         officer=(EditText)view.findViewById(R.id.police_officer_name);
+        reset_entry=(Button)view.findViewById(R.id.reset_entry);
 
 
         upload=(ImageButton)view.findViewById(R.id.upload);
         submit_det=(Button)view.findViewById(R.id.make_entry);
         time.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                showTimePickerDialog(view);
+            public void onClick(View view1) {
+                showTimePickerDialog(view1);
             }
         });
         date.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View view1) {
+                showDatePickerDialog(view1);
+            }
+        });
+        reset_entry.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
-                showDatePickerDialog(view);
+                reset_all_entry();
             }
         });
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -151,6 +158,17 @@ public class Entry_veh extends Fragment {
             }
         });
         return  view;
+    }
+
+    private void reset_all_entry() {
+        veh.setText("");
+        phone.setText("");
+        description.setText("");
+        place.setText("");
+        naka.setText("");
+        time.setText("fill time here");
+        date.setText("fill date here");
+        officer.setText("");
     }
 
     private void startPosting() {
