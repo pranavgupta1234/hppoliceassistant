@@ -2,28 +2,25 @@ package pranav.apps.amazing.hppoliceassistant;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EdgeEffect;
 import android.widget.TextView;
 
-import java.util.Map;
-
 /**
- * Created by Pranav Gupta on 12/30/2016.
+ * Created by Pranav Gupta on 12/31/2016.
  */
 
-public class CustomDialog extends Dialog implements android.view.View.OnClickListener {
+
+public class DialogChallanOffline extends Dialog implements android.view.View.OnClickListener {
 
     private TextView violator,owner,address,violator_number,vehicle_number,offence_sec,lic_num,challan_am,name_of_place,off_name,offences;
-    private Button edit,submit,offline;
+    private Button send;
     private ChallanDetails challanDetails;
     private Activity activity;
 
-    public CustomDialog(Activity activity, ChallanDetails challanDeatils) {
+    public DialogChallanOffline(Activity activity, ChallanDetails challanDeatils) {
         super(activity);
         this.challanDetails=challanDeatils;
         this.activity= activity;
@@ -33,11 +30,9 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.challan_dialog);
+        setContentView(R.layout.dialog_challan_offline);
         setAllTextViews();
         setButtons();
-        edit.setOnClickListener(this);
-        submit.setOnClickListener(this);
         setAllValues();
 
     }
@@ -57,9 +52,7 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
     }
 
     private void setButtons() {
-        edit=(Button)findViewById(R.id.edit_challan);
-        submit=(Button)findViewById(R.id.submit_challan);
-        offline=(Button)findViewById(R.id.offline);
+        send=(Button)findViewById(R.id.send);
     }
 
     private void setAllTextViews() {
@@ -79,12 +72,10 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.edit_challan:
-                dismiss();
-                break;
-            case R.id.submit_challan:
+            case R.id.send:
                 break;
         }
 
     }
 }
+

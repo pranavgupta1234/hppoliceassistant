@@ -240,27 +240,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:text="EDIT"
+            android:text="SEND DATA TO SERVER"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_back"
             android:layout_weight="0.45"
-            android:id="@+id/edit_challan" />
-        <Button
-            android:text="ONLINE"
-            android:background="@drawable/btn_back"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="0.45"
-            android:id="@+id/submit_challan" />
-        <Button
-            android:text="OFFLINE"
-            android:background="@drawable/btn_back"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="0.45"
-            android:id="@+id/offline" />
+            android:id="@+id/send" />
     </LinearLayout>
 </LinearLayout>

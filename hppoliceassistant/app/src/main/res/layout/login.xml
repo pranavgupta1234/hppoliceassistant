@@ -20,7 +20,7 @@
         android:layout_marginTop="10dp"
         android:padding="12dp"
         android:layout_below="@id/hpp"
-        android:background="@drawable/custom_edittext_border"
+        android:background="@drawable/custom_edittext"
         android:id="@+id/district"/>
     <Spinner
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@id/district"
         android:padding="12dp"
-        android:background="@drawable/custom_edittext_border"
+        android:background="@drawable/custom_edittext"
         android:id="@+id/police_station"/>
 
     <Spinner
@@ -37,7 +37,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@id/police_station"
         android:padding="12dp"
-        android:background="@drawable/custom_edittext_border"
+        android:background="@drawable/custom_edittext"
         android:id="@+id/police_post"/>
 
     <EditText
@@ -47,14 +47,14 @@
         android:layout_marginTop="10dp"
         android:padding="12dp"
         android:layout_below="@id/police_post"
-        android:background="@drawable/custom_edittext_border"
+        android:background="@drawable/custom_edittext"
         android:id="@+id/name"/>
     <EditText
         android:hint="Password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@drawable/custom_edittext_border"
+        android:background="@drawable/custom_edittext"
         android:inputType="textPassword"
         android:padding="12dp"
         android:layout_below="@id/name"

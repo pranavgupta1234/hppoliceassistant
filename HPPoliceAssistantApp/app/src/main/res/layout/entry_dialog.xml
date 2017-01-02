@@ -9,90 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:text="Violator Name"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:textSize="18sp"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text=""
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:id="@+id/violator_name"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-        <TextView
-            android:text="Vehicle Owner Name"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:textSize="18sp"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text=""
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:id="@+id/owner_name"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-        <TextView
-            android:text="Violator Address"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:textSize="18sp"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text=""
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:id="@+id/violator_address"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-        <TextView
-            android:text="Violator Number"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:textSize="18sp"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text=""
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:id="@+id/violator_number"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-        <TextView
             android:text="Vehicle Number"
             android:layout_width="0dp"
             android:layout_weight="0.5"
@@ -106,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:id="@+id/vehicle_number"/>
+            android:id="@+id/vehicle_num"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,7 +30,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="8dp">
         <TextView
-            android:text="Offences Section"
+            android:text="Phone Number"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:textSize="18sp"
@@ -127,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:id="@+id/offence_section"/>
+            android:id="@+id/phone_no"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -135,7 +51,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="8dp">
         <TextView
-            android:text="License Number"
+            android:text="Date"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:textSize="18sp"
@@ -148,7 +64,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:id="@+id/license_number"/>
+            android:id="@+id/date"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -156,7 +72,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="8dp">
         <TextView
-            android:text="Challan Amount"
+            android:text="Time"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:textSize="18sp"
@@ -169,7 +85,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:id="@+id/challan_amount"/>
+            android:id="@+id/time"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -177,7 +93,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="8dp">
         <TextView
-            android:text="Name of Place"
+            android:text="Place Name"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:textSize="18sp"
@@ -190,7 +106,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:id="@+id/name_of_place"/>
+            android:id="@+id/place_name"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -198,7 +114,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="8dp">
         <TextView
-            android:text="Police Officer Name"
+            android:text="Officer Name"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:textSize="18sp"
@@ -211,7 +127,28 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:id="@+id/police_officer_name"/>
+            android:id="@+id/officer_name"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+        <TextView
+            android:text="Naka Name"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:textSize="18sp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text=""
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:id="@+id/naka_name"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -219,7 +156,7 @@
         android:orientation="vertical"
         android:layout_marginTop="8dp">
         <TextView
-            android:text="Offences Committed"
+            android:text="Description"
             android:layout_width="match_parent"
             android:gravity="center_horizontal"
             android:textColor="#000000"
@@ -233,7 +170,7 @@
             android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/offences"/>
+            android:id="@+id/description"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

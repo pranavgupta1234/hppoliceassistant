@@ -14,8 +14,12 @@ public class VehicleEntry {
     private String date;
     private String time;
     private String officer_name;
+    private String Image;
+    public VehicleEntry(){
 
-    public VehicleEntry(String vehicle_number, String phone_number, String description, String name_of_place, String naka_name, String date, String time, String officer_name) {
+    }
+    public VehicleEntry(String vehicle_number, String phone_number, String description, String name_of_place,
+                        String naka_name, String date, String time, String officer_name,String Image) {
         this.vehicle_number = vehicle_number;
         this.phone_number = phone_number;
         this.description = description;
@@ -24,6 +28,7 @@ public class VehicleEntry {
         this.date = date;
         this.time = time;
         this.officer_name = officer_name;
+        this.Image=Image;
     }
 
     public String getVehicle_number() {
@@ -32,6 +37,14 @@ public class VehicleEntry {
 
     public void setVehicle_number(String vehicle_number) {
         this.vehicle_number = vehicle_number;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
     }
 
     public String getPhone_number() {

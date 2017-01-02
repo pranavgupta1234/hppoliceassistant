@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
@@ -45,14 +46,22 @@ public class Stolen extends Fragment {
     //private ArrayList<String> veh_entry = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerAdapter adapter;
-    private ArrayList<Friend> veh_entry = new ArrayList<>();
-    private boolean gender;
+    //private ArrayList<Friend> veh_entry = new ArrayList<>();
+    private TextView loading;
+
+    private List<VehicleEntry> vehicleEntries = new ArrayList<>();
+
+    private VehicleEntry newEntry;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
        // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         //mRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");        //this can be used but its deprecated now
        // DatabaseReference databaseReference = FirebaseDatabase.getInstance();//.getReferenceFromUrl("https://hppoliceassistant.firebaseio.com/vehicle");
+
+
         FirebaseDatabase database =FirebaseDatabase.getInstance();              //it return root url
         DatabaseReference myRef = database.getReference("vehicle_entry");              //migrate from tree in other branches
         mDatabase =FirebaseDatabase.getInstance().getReference("vehicle_entry");
@@ -60,58 +69,31 @@ public class Stolen extends Fragment {
         recyclerView = (RecyclerView)view.findViewById(R.id.recyle_view);
         recyclerView.setHasFixedSize(true);
 
+        loading=(TextView)view.findViewById(R.id.loading);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        //setRecyclerViewData(); //adding data to array list
-        adapter = new RecyclerAdapter(getActivity(),veh_entry);
+        adapter = new RecyclerAdapter(getActivity(),vehicleEntries);
         recyclerView.setAdapter(adapter);
-        //lv =(ListView)view.findViewById(R.id.list_view);
-        //final ArrayAdapter<String> arrayAdapter =new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,veh_entry);
-        //lv.setAdapter(arrayAdapter);
 
 
         myRef.addChildEventListener(new com.google.firebase.database.ChildEventListener() {
             @Override
             public void onChildAdded(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-                 Map<String,String> entry = (Map)dataSnapshot.getValue();
-                String v = entry.get("VehicleNumber");
-                String p = entry.get("PhoneNumber");
-                String pl = entry.get("Place");
-                String nk = entry.get("Naka");
-                String d = entry.get("Description");
-                String i = entry.get("Image");
-                veh_entry.add(new Friend(v,p,pl,nk,d,i));
+                newEntry  = dataSnapshot.getValue(VehicleEntry.class);
+                vehicleEntries.add(newEntry);
                 adapter.notifyDataSetChanged();
+                loading.setText("");
             }
             @Override
             public void onChildChanged(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-                /*
-                Map<String,String> entry = (Map)dataSnapshot.getValue();
-                String v = entry.get("VehicleNumber");
-                String p = entry.get("PhoneNumber");
-                String pl = entry.get("Place");
-                String nk = entry.get("Naka");
-                String d = entry.get("Description");
-                String i = entry.get("Image");
-                veh_entry.add(new Friend(v,p,pl,nk,d,i));
-                adapter.notifyDataSetChanged();
-                */
+
             }
 
             @Override
             public void onChildRemoved(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                /*
-                Map<String,String> entry = (Map)dataSnapshot.getValue();
-                String v = entry.get("VehicleNumber");
-                String p = entry.get("PhoneNumber");
-                String pl = entry.get("Place");
-                String nk = entry.get("Naka");
-                String d = entry.get("Description");
-                String i = entry.get("Image");
-                veh_entry.add(new Friend(v,p,pl,nk,d,i));
-                adapter.notifyDataSetChanged();
-                */
+
             }
 
             @Override
@@ -124,38 +106,7 @@ public class Stolen extends Fragment {
 
             }
         });
-
-        /*Deprecated Now*/
-        /*
-        mRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                veh_entry.add(new Friend(entry,entry,entry,entry,entry));
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-         */
-        veh_entry.clear();
+        vehicleEntries.clear();
         return  view;
     }
 }

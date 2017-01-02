@@ -17,7 +17,7 @@ public class Splash extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
         final ImageView iv= (ImageView)findViewById(R.id.iv);
-        final Animation an = AnimationUtils.loadAnimation(getBaseContext(),R.anim.fade_in);
+        final Animation an = AnimationUtils.loadAnimation(getBaseContext(),R.anim.abc_fade_in);
         //final Animation an1 = AnimationUtils.loadAnimation(getBaseContext(),R.anim.translate);
         final Animation an2 = AnimationUtils.loadAnimation(getBaseContext(),R.anim.abc_fade_out);
         iv.startAnimation(an);

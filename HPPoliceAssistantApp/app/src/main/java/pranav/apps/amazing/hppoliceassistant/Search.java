@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,69 +33,60 @@ import java.util.Map;
  * Created by Pranav Gupta on 12/10/2016.
  */
 public class Search extends Fragment implements SearchView.OnQueryTextListener {
-
     private RecyclerView recyclerview;
-    private List<CountryModel> mCountryModel;
+    private List<ChallanDetails> challanDetails;
     private RVAdapter adapter;
+    private  ChallanDetails challan;
+    private TextView search;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FirebaseDatabase database =FirebaseDatabase.getInstance();              //it return root url
-        DatabaseReference myRef = database.getReference("vehicle_entry");              //migrate from tree in other branches
+        DatabaseReference myRef = database.getReference("challan");              //migrate from tree in other branches
         View view = getActivity().getLayoutInflater().inflate(R.layout.search, container, false);
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
+        search=(TextView)view.findViewById(R.id.loading);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerview.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerview.getContext(),
+                layoutManager.getOrientation());
+        recyclerview.addItemDecoration(dividerItemDecoration);
+
         myRef.addChildEventListener(new com.google.firebase.database.ChildEventListener() {
             @Override
             public void onChildAdded(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-                Map<String,String> entry = (Map)dataSnapshot.getValue();
-                String v = entry.get("VehicleNumber");
-                String p = entry.get("PhoneNumber");
-                String pl = entry.get("Place");
-                String nk = entry.get("Naka");
-                String d = entry.get("Description");
-                mCountryModel.add(new CountryModel(v,p,pl,nk,d));
+                challan =  dataSnapshot.getValue(ChallanDetails.class);
+                challanDetails.add(challan);
                 adapter.notifyDataSetChanged();
+                search.setText("");
             }
             @Override
             public void onChildChanged(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-                /*
-                Map<String,String> entry = (Map)dataSnapshot.getValue();
-                String v = entry.get("VehicleNumber");
-                String p = entry.get("PhoneNumber");
-                String pl = entry.get("Place");
-                String nk = entry.get("Naka");
-                String d = entry.get("Description");
-                String i = entry.get("Image");
-                veh_entry.add(new Friend(v,p,pl,nk,d,i));
+                challan =  dataSnapshot.getValue(ChallanDetails.class);
+                challanDetails.add(challan);
                 adapter.notifyDataSetChanged();
-                */
+                search.setText("");
             }
 
             @Override
             public void onChildRemoved(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                /*
-                Map<String,String> entry = (Map)dataSnapshot.getValue();
-                String v = entry.get("VehicleNumber");
-                String p = entry.get("PhoneNumber");
-                String pl = entry.get("Place");
-                String nk = entry.get("Naka");
-                String d = entry.get("Description");
-                String i = entry.get("Image");
-                veh_entry.add(new Friend(v,p,pl,nk,d,i));
+                challan =  dataSnapshot.getValue(ChallanDetails.class);
+                challanDetails.add(challan);
                 adapter.notifyDataSetChanged();
-                */
+                search.setText("");
             }
 
             @Override
             public void onChildMoved(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-
+                challan =  dataSnapshot.getValue(ChallanDetails.class);
+                challanDetails.add(challan);
+                adapter.notifyDataSetChanged();
+                search.setText("");
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(getActivity(),"Something Went Wrong",Toast.LENGTH_SHORT).show();
             }
         });
         return view;
@@ -104,16 +97,11 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
         super.onViewCreated(view, savedInstanceState);
 
         setHasOptionsMenu(true);
-        //String[] locales = Locale.getISOCountries();
-        mCountryModel = new ArrayList<>();
-/*
-        for (String countryCode : locales) {
-            Locale obj = new Locale("", countryCode);
-            mCountryModel.add(new CountryModel(obj.getDisplayCountry(), obj.getISO3Country()));
-        }
-*/
-        adapter = new RVAdapter(mCountryModel);
+
+        challanDetails = new ArrayList<>();
+        adapter = new RVAdapter(getActivity(),challanDetails);
         recyclerview.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -130,7 +118,7 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
                         // Do something when collapsed
-                        adapter.setFilter(mCountryModel);
+                        adapter.setFilter(challanDetails);
                         return true; // Return true to collapse action view
                     }
 
@@ -144,8 +132,8 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        final List<CountryModel> filteredModelList = filter(mCountryModel, newText);
-        adapter.setFilter(filteredModelList);
+        final List<ChallanDetails> filteredChallan = filter(challanDetails, newText);
+        adapter.setFilter(filteredChallan);
         return true;
     }
 
@@ -155,16 +143,21 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
     }
 
 
-    private List<CountryModel> filter(List<CountryModel> models, String query) {
+    private List<ChallanDetails> filter(List<ChallanDetails> models, String query) {
+        if(query.contentEquals("")){
+            final List<ChallanDetails> filteredChallan = new ArrayList<>();
+            filteredChallan.addAll(models);
+            return filteredChallan;
+        }
         query = query.toLowerCase();
 
-        final List<CountryModel> filteredModelList = new ArrayList<>();
-        for (CountryModel model : models) {
-            final String text1 = model.getName().toLowerCase();
-            final String text2 = model.getisoCode().toLowerCase();
-            final String text3 = model.getPlace().toLowerCase();
-            final String text4 = model.getNaka().toLowerCase();
-            final String text5 = model.getD().toLowerCase();
+        final List<ChallanDetails> filteredModelList = new ArrayList<>();
+        for (ChallanDetails model : models) {
+            final String text1 = model.getVehicle_number().toLowerCase();
+            final String text2 = model.getViolator_name().toLowerCase();
+            final String text3 = model.getLicense_number().toLowerCase();
+            final String text4 = model.getViolator_number().toLowerCase();
+            final String text5 = model.getPolice_officer_name().toLowerCase();
             if (text1.contains(query)|| text2.contains(query)|| text3.contains(query)|| text4.contains(query)||text5.contains(query)) {
                 filteredModelList.add(model);
             }

@@ -18,7 +18,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"
@@ -36,20 +36,35 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Home">
+        <activity android:name=".OfflineChallan">
+            <intent-filter>
+                <action android:name="pranav.apps.amazing.hppoliceassistant.OFFLINECHALLAN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".OfflineEntry">
+            <intent-filter>
+                <action android:name="pranav.apps.amazing.hppoliceassistant.OFFLINEENTRY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!--<activity android:name=".Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!--<activity android:name=".Home">
+        </activity>-->
+        <activity android:name=".Home">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.HOME" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-         </activity>
-            </intent-filter>-->
+            <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
 
     </application>
 

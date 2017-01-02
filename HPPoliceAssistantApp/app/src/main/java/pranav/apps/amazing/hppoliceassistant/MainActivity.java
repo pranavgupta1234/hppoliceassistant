@@ -141,8 +141,17 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
-//            case R.id.action_settings:
-//                return true;
+            case R.id.offline_challan:
+                Intent i = new Intent(MainActivity.this,OfflineChallan.class);
+                startActivity(i);
+                return true;
+            case R.id.offline_entry:
+                Intent intent = new Intent(MainActivity.this,OfflineEntry.class);
+                startActivity(intent);
+                return true;
+            case R.id.logout:
+                Intent intent1= new Intent(MainActivity.this,Login.class);
+                startActivity(intent1);
         }
 
         return super.onOptionsItemSelected(item);

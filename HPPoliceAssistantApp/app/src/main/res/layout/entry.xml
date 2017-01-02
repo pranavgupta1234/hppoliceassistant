@@ -72,14 +72,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"/>
-    <EditText
-        android:hint="fill date here"
+    <TextView
+        android:text="fill date here"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="19dp"
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
         android:layout_marginTop="3dp"
-        android:id="@+id/date"/>
+        android:id="@+id/date1"/>
     <TextView
         android:text="Time"
         android:textColor="#000000"
@@ -88,14 +89,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"/>
-    <EditText
-        android:hint="fill time here"
+    <TextView
+        android:text="fill time here"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="19dp"
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
         android:layout_marginTop="3dp"
-        android:id="@+id/time"/>
+        android:id="@+id/time1"/>
     <TextView
         android:text="Name of Place"
         android:textColor="#000000"
@@ -121,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"/>
     <EditText
-        android:hint="fill vehicle number here"
+        android:hint="fill officer name here"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_edittext"
@@ -161,5 +163,13 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/btn_back"
         android:id="@+id/make_entry"/>
+    <Button
+        android:text="RESET ALL FIELDS"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_back"
+        android:id="@+id/reset"/>
 </LinearLayout>
     </ScrollView>

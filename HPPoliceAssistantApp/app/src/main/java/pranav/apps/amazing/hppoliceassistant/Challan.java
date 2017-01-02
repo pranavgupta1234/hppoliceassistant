@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ public class Challan extends Fragment {
             idle_parking,restricted_park;
     private EditText other,offence_section,veh_number,place_name,challan_amount,naka_name,owner_name,violator_name
             ,violator_address,license_number,policeofficer_name,violator_number;
+    private TextView date,time;
     private Button submit,reset;
     private ImageButton upload_photo;
     private String details,section,no_veh,place_n,naka_n;
@@ -62,6 +64,7 @@ public class Challan extends Fragment {
     private ProgressDialog progressDialog;
     private ProgressDialog progressDialog1;
     private static final int CAMERA_REQUEST = 1888;
+
 
 
     private CustomDialog customDialog;
@@ -114,7 +117,8 @@ public class Challan extends Fragment {
         license_number=(EditText)view.findViewById(R.id.license_number);
         challan_amount=(EditText)view.findViewById(R.id.challan_amount);
         violator_number=(EditText)view.findViewById(R.id.violator_number);
-
+        date=(TextView)view.findViewById(R.id.date);
+        time=(TextView)view.findViewById(R.id.time);
 
         upload_photo=(ImageButton) view.findViewById(R.id.upload_photo);
         reset=(Button)view.findViewById(R.id.reset);
@@ -123,6 +127,20 @@ public class Challan extends Fragment {
         nak=(TextView)view.findViewById(R.id.nak_name);
         mStorage = FirebaseStorage.getInstance().getReference();
         submit=(Button)view.findViewById(R.id.submit);
+
+
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog(view);
+            }
+        });
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog(view);
+            }
+        });
 
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,14 +194,26 @@ public class Challan extends Fragment {
                         veh_number.getText().toString(),place_name.getText().toString(),
                         offence_section.getText().toString(),challan_amount.getText().toString(),
                         license_number.getText().toString(),policeofficer_name.getText().toString(),
-                        "disrict","policeStation",other.getText().toString(),"null",violator_number.getText().toString());
+                        "disrict","policeStation",other.getText().toString(),"null",
+                        violator_number.getText().toString(),date.getText().toString(),time.getText().toString());
 
                 //instantiate dialog box
                 customDialog = new CustomDialog(getActivity(),challanDetailswithoutImage);
                 //customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 customDialog.setTitle("Challan Details");
-                customDialog.setCancelable(false);
+                customDialog.setCancelable(true);
                 customDialog.show();
+                customDialog.findViewById(R.id.offline).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //local DB
+                        final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
+                        if(dbManagerChallan.addChallan(challanDetailswithoutImage)){
+                            Toast.makeText(getActivity(),"Challan Added Offline!",Toast.LENGTH_SHORT).show();
+                            customDialog.dismiss();
+                        }
+                    }
+                });
                 customDialog.findViewById(R.id.submit_challan).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -191,6 +221,8 @@ public class Challan extends Fragment {
                         customDialog.dismiss();
                     }
                 });
+
+
                 //nak.setText("Done");
                 /*
                 UUID idOne = UUID.randomUUID();
@@ -241,8 +273,14 @@ public class Challan extends Fragment {
                     veh_number.getText().toString(),place_name.getText().toString(),
                     offence_section.getText().toString(),challan_amount.getText().toString(),
                     license_number.getText().toString(),policeofficer_name.getText().toString(),
-                    "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString());
-            idChild.setValue(challanDetails);
+                    "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString());
+                    //local DB
+                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
+                    if(dbManagerChallan.addChallan(challanDetails)){
+                    Toast.makeText(getActivity(),"Challan Added !",Toast.LENGTH_SHORT).show();
+                    }
+                    idChild.setValue(challanDetails);
+
             Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
         }
         if(uri!=null) {
@@ -262,7 +300,12 @@ public class Challan extends Fragment {
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
                             license_number.getText().toString(),policeofficer_name.getText().toString(),
-                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString());
+                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString());
+                    //local DB
+                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
+                    if(dbManagerChallan.addChallan(challanDetails)){
+                        Toast.makeText(getActivity(),"Challan Added Offline !",Toast.LENGTH_SHORT).show();
+                    }
                     idChild.setValue(challanDetails);
                     progressDialog1.dismiss();
                 }
@@ -271,6 +314,18 @@ public class Challan extends Fragment {
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(getActivity(), "Upload Failed !", Toast.LENGTH_LONG).show();
                     progressDialog1.dismiss();
+                    download_url_string="null";
+                    challanDetails = new ChallanDetails(violator_name.getText().toString(),
+                            crime,owner_name.getText().toString(),violator_address.getText().toString(),
+                            veh_number.getText().toString(),place_name.getText().toString(),
+                            offence_section.getText().toString(),challan_amount.getText().toString(),
+                            license_number.getText().toString(),policeofficer_name.getText().toString(),
+                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString());
+                    //local DB
+                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
+                    if(dbManagerChallan.addChallan(challanDetails)){
+                        Toast.makeText(getActivity(),"Challan Added Offline!",Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -299,6 +354,8 @@ public class Challan extends Fragment {
         license_number.setText("");
         policeofficer_name.setText("");
         violator_number.setText("");
+        time.setText("fill time here");
+        date.setText("fill date here");
         helmet.setChecked(false);
         rc.setChecked(false);
         insurance.setChecked(false);
@@ -312,6 +369,14 @@ public class Challan extends Fragment {
         idle_parking.setChecked(false);
         restricted_park.setChecked(false);
 
+    }
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(),"datePicker");
+    }
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getFragmentManager(), "timePicker");
     }
 
 }

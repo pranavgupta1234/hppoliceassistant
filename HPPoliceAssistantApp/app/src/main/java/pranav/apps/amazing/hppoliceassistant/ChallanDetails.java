@@ -22,6 +22,25 @@ public class ChallanDetails {
     private String district;
     private String police_station;
     private String Image;
+    private String date;
+    private String time;
+    private int status;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public String getViolator_number() {
         return violator_number;
@@ -142,8 +161,27 @@ public class ChallanDetails {
     public void setPolice_station(String police_station) {
         this.police_station = police_station;
     }
+    public ChallanDetails(){
 
-    public ChallanDetails(String violator_name, String offences, String owner_name, String violator_address, String vehicle_number, String name_of_place, String offences_section, String challan_amount, String license_number, String police_officer_name, String district, String police_station, String other_remarks,String Image,String violator_number) {
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+
+    //class holding multiple contructors
+
+    //constructor for adding challan details in Challan Fragment
+    public ChallanDetails(String violator_name, String offences, String owner_name,
+                          String violator_address, String vehicle_number, String name_of_place,
+                          String offences_section, String challan_amount, String license_number,
+                          String police_officer_name, String district, String police_station,
+                          String other_remarks, String Image, String violator_number, String date, String time) {
 
         this.violator_name = violator_name;
         this.offences = offences;
@@ -160,5 +198,36 @@ public class ChallanDetails {
         this.other_remarks = other_remarks;
         this.Image=Image;
         this.violator_number=violator_number;
+        this.date=date;
+        this.time=time;
+        this.status=0;
     }
+
+    //constructor to show offline status
+    public ChallanDetails(String violator_name, String offences, String owner_name,
+                          String violator_address, String vehicle_number, String name_of_place,
+                          String offences_section, String challan_amount, String license_number,
+                          String police_officer_name, String district, String police_station,
+                          String other_remarks, String Image, String violator_number, String date, String time,int status) {
+
+        this.violator_name = violator_name;
+        this.offences = offences;
+        this.owner_name = owner_name;
+        this.violator_address = violator_address;
+        this.vehicle_number = vehicle_number;
+        this.name_of_place = name_of_place;
+        this.offences_section = offences_section;
+        this.challan_amount = challan_amount;
+        this.license_number = license_number;
+        this.police_officer_name = police_officer_name;
+        this.district = district;
+        this.police_station = police_station;
+        this.other_remarks = other_remarks;
+        this.Image=Image;
+        this.violator_number=violator_number;
+        this.date=date;
+        this.time=time;
+        this.status=status;
+    }
+
 }

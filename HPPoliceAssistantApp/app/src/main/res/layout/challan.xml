@@ -573,7 +573,7 @@
             android:layout_marginTop="3dp"
             android:id="@+id/license_number"/>
         <TextView
-            android:text="Challan_amount"
+            android:text="Challan Amount"
             android:textColor="#000000"
             android:textStyle="bold"
             android:textSize="16dp"
@@ -623,6 +623,40 @@
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
         android:id="@+id/vehicle_number"/>
+        <TextView
+            android:text="Date"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"/>
+        <TextView
+            android:text="fill date here"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="19dp"
+            android:background="@drawable/custom_edittext"
+            android:padding="12dp"
+            android:layout_marginTop="3dp"
+            android:id="@+id/date"/>
+        <TextView
+            android:text="Time"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"/>
+        <TextView
+            android:text="fill time here"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="19dp"
+            android:background="@drawable/custom_edittext"
+            android:padding="12dp"
+            android:layout_marginTop="3dp"
+            android:id="@+id/time"/>
     <TextView
         android:text="Name of Place"
         android:textColor="#000000"

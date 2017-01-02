@@ -14,13 +14,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+//Public class for Stolen Items
+
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-    private List<Friend> friends;
+    private List<VehicleEntry> vehicleEntry;
     private Activity activity;
 
-    public RecyclerAdapter(Activity activity, List<Friend> friends) {
-        this.friends = friends;
+    public RecyclerAdapter(Activity activity, List<VehicleEntry> vehicleEntry) {
+        this.vehicleEntry = vehicleEntry;
         this.activity = activity;
     }
 
@@ -39,30 +42,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int position) {
 
         //setting data to view holder elements
-        viewHolder.vehicle_no.setText(friends.get(position).getVehicle_num());
-        viewHolder.phone_no.setText(friends.get(position).getPhone_num());
-        viewHolder.place.setText(friends.get(position).getPlace_num());
-        viewHolder.naka_name.setText(friends.get(position).getNaka_name());
-        viewHolder.desc.setText(friends.get(position).getDescrip());
-        viewHolder.setImage(viewHolder.imageView.getContext(),friends.get(position).getImage());
+        viewHolder.vehicle_no.setText(vehicleEntry.get(position).getVehicle_number());
+        viewHolder.phone_no.setText(vehicleEntry.get(position).getPhone_number());
+        viewHolder.place.setText(vehicleEntry.get(position).getName_of_place());
+        viewHolder.naka_name.setText(vehicleEntry.get(position).getNaka_name());
+        viewHolder.desc.setText(vehicleEntry.get(position).getDescription());
+        viewHolder.setImage(viewHolder.imageView.getContext(),vehicleEntry.get(position).getImage());
 
         //set on click listener for each element
         viewHolder.container.setOnClickListener(onClickListener(position));
     }
 
     private void setDataToView(TextView a, TextView b,TextView c,TextView d,TextView e, ImageView genderIcon, int position) {
-        a.setText(friends.get(position).getVehicle_num());
-        b.setText(friends.get(position).getPhone_num());
-        c.setText(friends.get(position).getPlace_num());
-        d.setText(friends.get(position).getNaka_name());
-        e.setText(friends.get(position).getDescrip());
+        a.setText(vehicleEntry.get(position).getVehicle_number());
+        b.setText(vehicleEntry.get(position).getPhone_number());
+        c.setText(vehicleEntry.get(position).getName_of_place());
+        d.setText(vehicleEntry.get(position).getNaka_name());
+        e.setText(vehicleEntry.get(position).getDescription());
         genderIcon.setImageResource(R.drawable.ic_launcher);
 
     }
 
     @Override
     public int getItemCount() {
-        return (null != friends ? friends.size() : 0);
+        return (null != vehicleEntry ? vehicleEntry.size() : 0);
     }
 
     private View.OnClickListener onClickListener(final int position) {
