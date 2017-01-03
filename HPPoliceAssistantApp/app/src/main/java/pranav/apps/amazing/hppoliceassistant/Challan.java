@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -282,25 +283,9 @@ public class Challan extends Fragment {
                     if(dbManagerChallan.addChallan(challanDetails)){
                     Toast.makeText(getActivity(),"Challan Added !",Toast.LENGTH_SHORT).show();
                     }
-            mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    ChallanDetails ch= dataSnapshot.getValue(ChallanDetails.class);
-                    if(ch.equals(challanDetails)){
-                        Toast.makeText(getActivity(),"Challan Already Present On Server",Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        idChild.setValue(challanDetails);
+            idChild.setValue(challanDetails);
 
-                        Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            });
+            Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
 
         }
         if(uri!=null) {
