@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class DialogChallanOffline extends Dialog implements android.view.View.OnClickListener {
 
     private TextView violator,owner,address,violator_number,vehicle_number,offence_sec,lic_num,challan_am,name_of_place,off_name,offences;
-    private Button send;
+    private Button send,delete;
     private ChallanDetails challanDetails;
     private Activity activity;
 
@@ -53,6 +53,7 @@ public class DialogChallanOffline extends Dialog implements android.view.View.On
 
     private void setButtons() {
         send=(Button)findViewById(R.id.send);
+        delete=(Button)findViewById(R.id.delete);
     }
 
     private void setAllTextViews() {

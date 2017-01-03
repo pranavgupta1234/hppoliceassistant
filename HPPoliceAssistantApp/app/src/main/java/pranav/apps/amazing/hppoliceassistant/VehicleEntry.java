@@ -15,6 +15,7 @@ public class VehicleEntry {
     private String time;
     private String officer_name;
     private String Image;
+    private int status;
     public VehicleEntry(){
 
     }
@@ -29,10 +30,32 @@ public class VehicleEntry {
         this.time = time;
         this.officer_name = officer_name;
         this.Image=Image;
+        this.status=0;
+    }
+    public VehicleEntry(String vehicle_number, String phone_number, String description, String name_of_place,
+                        String naka_name, String date, String time, String officer_name,String Image,int status) {
+        this.vehicle_number = vehicle_number;
+        this.phone_number = phone_number;
+        this.description = description;
+        this.name_of_place = name_of_place;
+        this.naka_name = naka_name;
+        this.date = date;
+        this.time = time;
+        this.officer_name = officer_name;
+        this.Image=Image;
+        this.status=status;
     }
 
     public String getVehicle_number() {
         return vehicle_number;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public void setVehicle_number(String vehicle_number) {

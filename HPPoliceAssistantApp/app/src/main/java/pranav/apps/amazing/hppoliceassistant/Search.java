@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class Search extends Fragment implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerview;
-    private List<ChallanDetails> challanDetails;
+    private List<ChallanDetails> challanDetails = new ArrayList<>();
     private RVAdapter adapter;
     private  ChallanDetails challan;
     private TextView search;
@@ -89,6 +89,7 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
                 Toast.makeText(getActivity(),"Something Went Wrong",Toast.LENGTH_SHORT).show();
             }
         });
+        challanDetails.clear();
         return view;
     }
 

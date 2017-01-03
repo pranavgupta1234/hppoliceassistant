@@ -41,9 +41,17 @@ public class OfflineChallan extends AppCompatActivity {
         //setting toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        //actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        //actionBar.setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
         toolbar.inflateMenu(R.menu.popup_menu);
 
@@ -62,6 +70,7 @@ public class OfflineChallan extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         search.setText("");
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,4 +142,8 @@ public class OfflineChallan extends AppCompatActivity {
         return filteredModelList;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

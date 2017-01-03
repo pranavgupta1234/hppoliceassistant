@@ -162,9 +162,13 @@ public class Entry_veh extends Fragment {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-               // intent.setType("image/*");
-                startActivityForResult(intent,ACTION_IMAGE_CAPTURE_ACTIVITY);
+                /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
+                startActivityForResult(takePictureIntent, GALLERY_INTENT);*/
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image*//*");
+                startActivityForResult(intent,GALLERY_INTENT);
             }
         });
         return  view;
@@ -231,7 +235,8 @@ public class Entry_veh extends Fragment {
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode==ACTION_IMAGE_CAPTURE_ACTIVITY && resultCode==RESULT_OK){
+
+        /*if(requestCode==ACTION_IMAGE_CAPTURE_ACTIVITY && resultCode==RESULT_OK){
             Bitmap bmp = (Bitmap) data.getExtras().get("data");
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
@@ -244,16 +249,21 @@ public class Entry_veh extends Fragment {
                     byteArray.length);
 
             upload.setImageBitmap(bitmap);
-            /*
+            *//*
             uri = getImageUri(getActivity(),bitmap);
             upload.setImageURI(uri);
-            */
-            /*
+            *//*
+            *//*
            uri =data.getData();
             upload.setBackgroundColor(0);
             upload.setImageURI(uri);
-            */
+            *//*
 
+        }*/
+        if(requestCode==GALLERY_INTENT && resultCode==RESULT_OK){
+            uri =data.getData();
+            upload.setBackgroundColor(0);
+            upload.setImageURI(uri);
         }
     }
 

@@ -24,7 +24,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
@@ -279,9 +282,26 @@ public class Challan extends Fragment {
                     if(dbManagerChallan.addChallan(challanDetails)){
                     Toast.makeText(getActivity(),"Challan Added !",Toast.LENGTH_SHORT).show();
                     }
-                    idChild.setValue(challanDetails);
+            mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ChallanDetails ch= dataSnapshot.getValue(ChallanDetails.class);
+                    if(ch.equals(challanDetails)){
+                        Toast.makeText(getActivity(),"Challan Already Present On Server",Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        idChild.setValue(challanDetails);
 
-            Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
         }
         if(uri!=null) {
             progressDialog1.setMessage("Uploading Image and Data....");

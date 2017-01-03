@@ -26,7 +26,7 @@ import java.util.List;
 public class OfflineEntry extends AppCompatActivity{
     private RecyclerView recyclerview;
     private List<VehicleEntry> vehicleEntries;
-    private RecyclerAdapter adapter;
+    private RecyclerAdapterEntryOffline adapter;
     private  ChallanDetails challan;
     private TextView search;
     @Override
@@ -39,9 +39,15 @@ public class OfflineEntry extends AppCompatActivity{
         //setting toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
         toolbar.inflateMenu(R.menu.popup_menu);
         LinearLayoutManager layoutManager = new LinearLayoutManager(OfflineEntry.this);
@@ -52,7 +58,7 @@ public class OfflineEntry extends AppCompatActivity{
         vehicleEntries = new ArrayList<>();
         DBManagerEntry dbManagerChallan = new DBManagerEntry(OfflineEntry.this,null,null,1);
         vehicleEntries = dbManagerChallan.showEntries();
-        adapter = new RecyclerAdapter(OfflineEntry.this,vehicleEntries);
+        adapter = new RecyclerAdapterEntryOffline(OfflineEntry.this,vehicleEntries);
         recyclerview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         search.setText("");

@@ -44,8 +44,10 @@ public class DBManagerChallan extends SQLiteOpenHelper {
         Cursor c =  db.rawQuery("SELECT * FROM challan WHERE time = \""+details.getTime()+"\";", null);
         c.moveToFirst();
         int count = c.getCount();
-        if (count>0)
+        if (count>0) {
+            Toast.makeText(context,"Already Present",Toast.LENGTH_SHORT).show();
             return false;
+        }
         ContentValues contentValues = new ContentValues();
         contentValues.put("offences",details.getOffences());
         contentValues.put("violator_name",details.getViolator_name());
@@ -106,7 +108,7 @@ public class DBManagerChallan extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         Cursor c =  db.rawQuery( "SELECT * FROM challan WHERE time = \""+details.getTime()+"\";", null);
         c.moveToFirst();
-        int id = c.getInt(c.getColumnIndex("id"));
+        //int id = c.getInt(c.getColumnIndex("id"));
         db.execSQL("DELETE FROM challan WHERE time = \""+details.getTime()+"\";");
         //db.execSQL("DROP TABLE IF EXISTS  todo_lists_"+id+";");
     }

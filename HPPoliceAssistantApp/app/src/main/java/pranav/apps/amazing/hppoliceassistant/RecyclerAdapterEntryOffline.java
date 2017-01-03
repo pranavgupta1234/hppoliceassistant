@@ -20,17 +20,17 @@ import java.util.List;
  * Created by Pranav Gupta on 1/2/2017.
  */
 
-public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<RecyclerAdapterChallanOffline.ViewHolder> {
+public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAdapterEntryOffline.ViewHolder> {
 
-    private List<ChallanDetails> challan;
-    private List<ChallanDetails> challanDetails;
+    private List<VehicleEntry> vehicleEntries;
+    private List<VehicleEntry> vehicle_entry;
     private Activity activity;
     private Context context;
 
-    public RecyclerAdapterChallanOffline(Activity activity,List<ChallanDetails> challanEntry) {
+    public RecyclerAdapterEntryOffline(Activity activity,List<VehicleEntry> entry) {
         this.activity=activity;
-        this.challan=challanEntry;
-        this.challanDetails=challanEntry;
+        this.vehicle_entry=entry;
+        this.vehicleEntries=entry;
         this.context=activity.getBaseContext();
     }
 
@@ -45,51 +45,56 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.vehicle_number.setText(challan.get(position).getVehicle_number());
-        holder.violator_name.setText(challan.get(position).getViolator_name());
-        holder.license_number.setText(challan.get(position).getLicense_number());
-        holder.phone_number.setText(challan.get(position).getViolator_number());
-        holder.time.setText(challan.get(position).getTime());
-        holder.date.setText(challan.get(position).getDate());
-        holder.challan_officer.setText(challan.get(position).getPolice_officer_name());
-        if(challan.get(position).getStatus()==0){
+        holder.vehicle_number.setText(vehicleEntries.get(position).getVehicle_number());
+        holder.violator_name.setText(vehicleEntries.get(position).getName_of_place());
+        holder.license_number.setText(vehicleEntries.get(position).getDescription());
+        holder.phone_number.setText(vehicleEntries.get(position).getPhone_number());
+        holder.time.setText(vehicleEntries.get(position).getTime());
+        holder.date.setText(vehicleEntries.get(position).getDate());
+        holder.challan_officer.setText(vehicleEntries.get(position).getOfficer_name());
+        if(vehicleEntries.get(position).getStatus()==0){
             holder.details.setBackgroundResource(R.drawable.btn_back);
         }
-        if(challan.get(position).getStatus()==1){
+        if(vehicleEntries.get(position).getStatus()==1){
             holder.details.setBackgroundResource(R.drawable.btn_back_done);
         }
         holder.details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final DialogChallanOffline dialogChallanOffline = new DialogChallanOffline(activity,challan.get(position));
-                dialogChallanOffline.setTitle("Challan Details");
-                dialogChallanOffline.setCancelable(true);
-                dialogChallanOffline.show();
-                final Button b =(Button)dialogChallanOffline.findViewById(R.id.send);
-                if(challan.get(position).getStatus()==1){
+                final DialogEntryOffline dialogEntryOffline = new DialogEntryOffline(activity,vehicleEntries.get(position));
+                dialogEntryOffline.setTitle("Challan Details");
+                dialogEntryOffline.setCancelable(true);
+                dialogEntryOffline.show();
+                final Button b =(Button)dialogEntryOffline.findViewById(R.id.send);
+                if(vehicleEntries.get(position).getStatus()==1){
                     b.setEnabled(false);
                     b.setText("SENT");
                     b.setBackgroundResource(R.drawable.btn_back_done);
                 }
-                dialogChallanOffline.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+
+
+                //to delete the entry from the SQLite Database
+                dialogEntryOffline.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DBManagerChallan dbManagerChallan = new DBManagerChallan(activity,null,null,1);
-                        dbManagerChallan.deleteChallan(challan.get(position));
+                        DBManagerEntry dbManagerEntry = new DBManagerEntry(activity,null,null,1);
+                        dbManagerEntry.deleteEntry(vehicleEntries.get(position));
                         notifyDataSetChanged();
-                        dialogChallanOffline.dismiss();
+                        dialogEntryOffline.dismiss();
                     }
                 });
-                dialogChallanOffline.findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
+
+                //to send the data present in local database to server
+                dialogEntryOffline.findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DBManagerChallan dbManagerChallan = new DBManagerChallan(activity,null,null,1);
-                        dbManagerChallan.setStatus(challan.get(position),1);
+                        DBManagerEntry dbManagerEntry = new DBManagerEntry(activity,null,null,1);
+                        dbManagerEntry.setStatus(vehicleEntries.get(position),1);
                         Firebase mRootRef;
-                        mRootRef = new Firebase("https://hppoliceassistant.firebaseio.com/challan");
+                        mRootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
                         Firebase idChild = mRootRef.push();
                         try {
-                            idChild.setValue(challan.get(position));
+                            idChild.setValue(vehicleEntries.get(position));
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(activity,"Upload Failed !",Toast.LENGTH_SHORT).show();
@@ -107,12 +112,12 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-        return challan.size();
+        return vehicleEntries.size();
     }
 
-    public void setFilter(List<ChallanDetails> ch){
-        challan = new ArrayList<>();
-        challan.addAll(ch);
+    public void setFilter(List<VehicleEntry> vh){
+        vehicleEntries = new ArrayList<>();
+        vehicleEntries.addAll(vh);
         notifyDataSetChanged();
     }
 

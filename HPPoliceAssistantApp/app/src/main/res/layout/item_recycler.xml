@@ -1,27 +1,23 @@
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:layout_marginBottom="6dp"
-    android:padding="6dp">
+    android:padding="6dp"
+    cardview:cardCornerRadius="0dp"
+    cardview:cardUseCompatPadding="false">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="4dp">
-
+        android:orientation="horizontal">
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="120dp"
-                android:layout_height="100dp"
+                android:layout_height="match_parent"
                 android:padding="5dp"
-                android:src="@mipmap/ic_launcher" />
+                android:scaleType="fitXY" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -32,6 +28,7 @@
                     android:textSize="@dimen/text_carditem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
                     android:id="@+id/vehno_text"/>
                 <TextView
                     android:id="@+id/vehno"
@@ -47,6 +44,7 @@
                     android:textStyle="bold"
                     android:textColor="#000000"
                     android:textSize="@dimen/text_carditem"
+                    android:layout_marginLeft="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/vehno_text"
@@ -66,6 +64,7 @@
                     android:textStyle="bold"
                     android:textSize="@dimen/text_carditem"
                     android:textColor="#000000"
+                    android:layout_marginLeft="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/phno_text"
@@ -85,6 +84,7 @@
                     android:textStyle="bold"
                     android:textSize="@dimen/text_carditem"
                     android:textColor="#000000"
+                    android:layout_marginLeft="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/plname_text"
@@ -103,22 +103,44 @@
                     android:text="Description(below) : "
                     android:textStyle="bold"
                     android:textSize="@dimen/text_carditem"
+                    android:layout_marginLeft="4dp"
                     android:textColor="#000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/naka_nm"
                     android:id="@+id/des"
                     android:gravity="center"/>
+                <TextView
+                    android:text=""
+                    android:textSize="@dimen/text_carditem"
+                    android:id="@+id/desc"
+                    android:textColor="#000000"
+                    android:layout_below="@id/des"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="3dp"/>
+                <TextView
+                    android:text="Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/date"
+                    android:textStyle="italic"
+                    android:textColor="#000000"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"/>
+                <TextView
+                    android:text="time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/time"
+                    android:textStyle="italic"
+                    android:textColor="#000000"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"/>
             </RelativeLayout>
         </LinearLayout>
-
-        <TextView
-            android:text=""
-            android:textSize="@dimen/text_carditem"
-            android:id="@+id/desc"
-            android:textColor="#000000"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="3dp"/>
-    </LinearLayout>
 </android.support.v7.widget.CardView>

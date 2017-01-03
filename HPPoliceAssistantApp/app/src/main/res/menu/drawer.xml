@@ -20,15 +20,19 @@
     <item android:title="Get Latest Info">
         <menu>
             <item
+                android:id="@+id/help"
                 android:icon="@drawable/ic_emoticon"
-                android:title="Needed Help" />
+                android:title="Help" />
             <item
+                android:id="@+id/emergency"
                 android:icon="@drawable/ic_emoticon"
                 android:title="Emergency" />
             <item
+                android:id="@+id/developers"
                 android:icon="@drawable/ic_emoticon"
                 android:title="Developers" />
             <item
+                android:id="@+id/logout"
                 android:icon="@drawable/ic_emoticon"
                 android:title="LogOut" />
         </menu>

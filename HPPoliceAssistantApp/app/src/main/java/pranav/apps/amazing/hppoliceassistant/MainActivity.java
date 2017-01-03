@@ -74,9 +74,38 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                menuItem.setChecked(true);
-                mDrawerLayout.closeDrawers();
-                Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                switch (menuItem.getItemId()){
+                    case R.id.navigation_item_attachment:
+                        mDrawerLayout.closeDrawers();
+                        Toast.makeText(MainActivity.this,"Navigation features will soon be added", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.navigation_item_images:
+                        mDrawerLayout.closeDrawers();
+                        Toast.makeText(MainActivity.this,"Images Gallery Coming Soon !", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.navigation_item_location:
+                        mDrawerLayout.closeDrawers();
+                        Toast.makeText(MainActivity.this,"Item Location", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.logout:
+                        mDrawerLayout.closeDrawers();
+                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(MainActivity.this,Login.class);
+                        startActivity(i);
+                        break;
+                    case R.id.help:
+                        mDrawerLayout.closeDrawers();
+                        Toast.makeText(MainActivity.this,"HP Police Always At Your Service", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.emergency:
+                        mDrawerLayout.closeDrawers();
+                        Toast.makeText(MainActivity.this,"Emergency Section", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.developers:
+                        mDrawerLayout.closeDrawers();
+                        Toast.makeText(MainActivity.this,"Developers", Toast.LENGTH_LONG).show();
+                        break;
+                }
                 return true;
             }
         });

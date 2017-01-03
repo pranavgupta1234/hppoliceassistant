@@ -7,20 +7,22 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class DBManagerEntry extends SQLiteOpenHelper {
-
+    private Context context;
 
     public DBManagerEntry(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, "hp_police_vehicle_entry.db", factory, 6);
+        this.context=context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS entry (id INTEGER PRIMARY KEY AUTOINCREMENT, vehicle_number TEXT,phone_number TEXT," +
-                "description TEXT,date TEXT,time TEXT,name_of_place TEXT,officer_name TEXT,naka_name TEXT,image TEXT,priority INTEGER);");
+                "description TEXT,date TEXT,time TEXT,name_of_place TEXT,officer_name TEXT,naka_name TEXT,image TEXT,status INTEGER);");
     }
 
     @Override
@@ -35,8 +37,10 @@ public class DBManagerEntry extends SQLiteOpenHelper {
         Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE time = \""+newEntry.getTime()+"\";", null);
         c.moveToFirst();
         int count = c.getCount();
-        if (count>0)
+        if (count>0) {
+            Toast.makeText(context,"Already Present",Toast.LENGTH_SHORT).show();
             return false;
+        }
         ContentValues contentValues = new ContentValues();
         contentValues.put("vehicle_number",newEntry.getVehicle_number());
         contentValues.put("phone_number",newEntry.getPhone_number());
@@ -47,7 +51,7 @@ public class DBManagerEntry extends SQLiteOpenHelper {
         contentValues.put("officer_name",newEntry.getOfficer_name());
         contentValues.put("naka_name",newEntry.getNaka_name());
         contentValues.put("image",newEntry.getImage());
-        contentValues.put("priority", 2);
+        contentValues.put("status", 0);
         db.insert("entry", null, contentValues);
         //c =  db.rawQuery( "SELECT * FROM todo_lists WHERE list = \""+list+"\";", null);
         //c.moveToFirst();
@@ -64,14 +68,14 @@ public class DBManagerEntry extends SQLiteOpenHelper {
         Cursor cursor =  db.rawQuery( "SELECT * FROM entry;", null);
         cursor.moveToFirst();
         ArrayList<VehicleEntry> entries = new ArrayList<>();
-        String[] strings = new String[cursor.getCount()];
+        //String[] strings = new String[cursor.getCount()];
         while(!cursor.isAfterLast()){
             //strings[i] = cursor.getString(cursor.getColumnIndex("list"));
             entries.add(new VehicleEntry(cursor.getString(cursor.getColumnIndex("vehicle_number")),cursor.getString(cursor.getColumnIndex("phone_number")),
                     cursor.getString(cursor.getColumnIndex("description")),cursor.getString(cursor.getColumnIndex("name_of_place")),
                     cursor.getString(cursor.getColumnIndex("naka_name")),cursor.getString(cursor.getColumnIndex("date")),
                     cursor.getString(cursor.getColumnIndex("time")),cursor.getString(cursor.getColumnIndex("officer_name")),
-                    cursor.getString(cursor.getColumnIndex("image"))));
+                    cursor.getString(cursor.getColumnIndex("image")),cursor.getInt(cursor.getColumnIndex("status"))));
 
             cursor.moveToNext();
         }
@@ -79,36 +83,36 @@ public class DBManagerEntry extends SQLiteOpenHelper {
         return entries;
     }
 
-    public void deleteList(String list){
-        DatabaseUtils.sqlEscapeString(list);
+    public void deleteEntry(VehicleEntry entry){
+        //DatabaseUtils.sqlEscapeString(list);
         SQLiteDatabase db = getWritableDatabase();
-        Cursor c =  db.rawQuery( "SELECT * FROM todo_lists WHERE list = \""+list+"\";", null);
+        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE time = \""+entry.getTime()+"\";", null);
         c.moveToFirst();
-        int id = c.getInt(c.getColumnIndex("id"));
-        db.execSQL("DELETE FROM todo_lists WHERE list = \""+list+"\";");
-        db.execSQL("DROP TABLE IF EXISTS  todo_lists_"+id+";");
+        //int id = c.getInt(c.getColumnIndex("id"));
+        db.execSQL("DELETE FROM entry WHERE time = \""+entry.getTime()+"\";");
+        //db.execSQL("DROP TABLE IF EXISTS  todo_lists_"+id+";");
     }
 
-    public int getPriority(String list){
+    public int getStatus(VehicleEntry vehicleEntry){
         int value;
-        DatabaseUtils.sqlEscapeString(list);
+        //DatabaseUtils.sqlEscapeString(list);
         SQLiteDatabase db = getWritableDatabase();
-        Cursor c =  db.rawQuery( "SELECT * FROM todo_lists WHERE list = \""+list+"\";", null);
+        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE time = \""+vehicleEntry.getTime()+"\";", null);
         c.moveToFirst();
-        value = c.getInt(c.getColumnIndex("priority"));
+        value = c.getInt(c.getColumnIndex("status"));
         c.close();
         return value;
     }
 
-    public boolean setPriority(String list, int p){
-        DatabaseUtils.sqlEscapeString(list);
+    public boolean setStatus(VehicleEntry list, int p){
+        //DatabaseUtils.sqlEscapeString(list);
         SQLiteDatabase db = getWritableDatabase();
-        Cursor c =  db.rawQuery( "SELECT * FROM todo_lists WHERE list = \""+list+"\";", null);
+        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE time = \""+list.getTime()+"\";", null);
         c.moveToFirst();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("list", list);
-        contentValues.put("priority", p);
-        db.update("todo_lists",contentValues,"list = \"" + list + "\"",null);
+        //contentValues.put("list", list);
+        contentValues.put("status", p);
+        db.update("entry",contentValues,"time = \"" + list.getTime() + "\"",null);
         c.close();
         return true;
     }
