@@ -154,6 +154,7 @@
         android:layout_height="200dp"
         android:background="@drawable/upload"
         android:id="@+id/upload"
+        android:scaleType="fitXY"
         android:layout_gravity="center_horizontal"/>
     <Button
         android:text="SUBMIT"

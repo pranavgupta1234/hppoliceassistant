@@ -3,11 +3,16 @@ package pranav.apps.amazing.hppoliceassistant;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ValueCallback;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -36,8 +42,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -68,6 +77,9 @@ public class Challan extends Fragment {
     private ProgressDialog progressDialog;
     private ProgressDialog progressDialog1;
     private static final int CAMERA_REQUEST = 1888;
+    private Uri imageUri;
+    private ValueCallback<Uri> mUploadMessage;
+    int FILECHOOSER_RESULTCODE = 1888;
 
 
 
@@ -212,6 +224,7 @@ public class Challan extends Fragment {
                     public void onClick(View view) {
                         //local DB
                         final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
+                        challanDetailswithoutImage.setStatus(0);
                         if(dbManagerChallan.addChallan(challanDetailswithoutImage)){
                             Toast.makeText(getActivity(),"Challan Added Offline!",Toast.LENGTH_SHORT).show();
                             customDialog.dismiss();
@@ -254,8 +267,9 @@ public class Challan extends Fragment {
         upload_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //showAttachmentDialog(mUploadMessage);
                 Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
+                intent.setType("image*//*");
                 startActivityForResult(intent,GALLERY_INTENT);
                 /*
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -281,6 +295,7 @@ public class Challan extends Fragment {
                     //local DB
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     if(dbManagerChallan.addChallan(challanDetails)){
+                        challanDetails.setStatus(1);
                     Toast.makeText(getActivity(),"Challan Added !",Toast.LENGTH_SHORT).show();
                     }
             idChild.setValue(challanDetails);
@@ -309,6 +324,7 @@ public class Challan extends Fragment {
                     //local DB
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     if(dbManagerChallan.addChallan(challanDetails)){
+                        challanDetails.setStatus(1);
                         Toast.makeText(getActivity(),"Challan Added Offline !",Toast.LENGTH_SHORT).show();
                     }
                     idChild.setValue(challanDetails);
@@ -382,6 +398,42 @@ public class Challan extends Fragment {
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
+    }
+    private void showAttachmentDialog(ValueCallback<Uri> uploadMsg) {
+        this.mUploadMessage = uploadMsg;
+
+        File imageStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyApp");
+        // Create the storage directory if it does not exist
+        if (! imageStorageDir.exists()){
+            imageStorageDir.mkdirs();
+        }
+        File file = new File(imageStorageDir + File.separator + "IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
+
+
+        this.imageUri= Uri.fromFile(file);
+
+
+        final List<Intent> cameraIntents = new ArrayList<Intent>();
+        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        final PackageManager packageManager = getActivity().getPackageManager();
+        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for(ResolveInfo res : listCam) {
+            final String packageName = res.activityInfo.packageName;
+            final Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(packageName);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            cameraIntents.add(intent);
+        }
+
+
+        // mUploadMessage = uploadMsg;
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        Intent chooserIntent = Intent.createChooser(intent,"Image Chooser");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
+        this.startActivityForResult(chooserIntent,  FILECHOOSER_RESULTCODE);
     }
 
 }

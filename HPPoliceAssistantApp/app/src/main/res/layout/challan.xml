@@ -733,6 +733,7 @@
         android:layout_height="200dp"
         android:background="@drawable/upload"
         android:id="@+id/upload_photo"
+        android:scaleType="fitXY"
         android:layout_gravity="center"/>
     <Button
         android:text="SUBMIT"
