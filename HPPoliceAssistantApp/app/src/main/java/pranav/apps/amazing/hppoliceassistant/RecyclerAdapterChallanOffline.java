@@ -2,7 +2,6 @@ package pranav.apps.amazing.hppoliceassistant;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +52,7 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
         holder.date.setText(challan.get(position).getDate());
         holder.challan_officer.setText(challan.get(position).getPolice_officer_name());
         if(challan.get(position).getStatus()==0){
+            //Toast.makeText(activity,challan.get(position).getViolator_name()+" status "+String.valueOf(challan.get(position).getStatus()),Toast.LENGTH_SHORT).show();
             holder.details.setBackgroundResource(R.drawable.btn_back);
         }
         if(challan.get(position).getStatus()==1){
@@ -92,11 +92,11 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
                         Firebase idChild = mRootRef.push();
                         try {
                             idChild.setValue(challan.get(position));
+                            Toast.makeText(activity,"Upload Done !",Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(activity,"Upload Failed !",Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(activity,"Upload Done !",Toast.LENGTH_SHORT).show();
                         holder.details.setBackgroundResource(R.drawable.btn_back_done);
                         b.setText("SENT");
                         b.setEnabled(false);
@@ -127,7 +127,7 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
             violator_name=(TextView)itemView.findViewById(R.id.name_of_person);
             license_number=(TextView)itemView.findViewById(R.id.license_number);
             phone_number=(TextView)itemView.findViewById(R.id.phone_number);
-            date=(TextView)itemView.findViewById(R.id.date);
+            date=(TextView)itemView.findViewById(R.id.date_picker);
             time=(TextView)itemView.findViewById(R.id.time);
             challan_officer=(TextView)itemView.findViewById(R.id.officer_name);
             details=(Button)itemView.findViewById(R.id.details);

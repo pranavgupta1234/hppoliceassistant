@@ -38,6 +38,7 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
         setButtons();
         edit.setOnClickListener(this);
         submit.setOnClickListener(this);
+        offline.setOnClickListener(this);
         setAllValues();
 
     }
@@ -83,6 +84,8 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
                 dismiss();
                 break;
             case R.id.submit_challan:
+                break;
+            case R.id.offline:
                 break;
         }
 

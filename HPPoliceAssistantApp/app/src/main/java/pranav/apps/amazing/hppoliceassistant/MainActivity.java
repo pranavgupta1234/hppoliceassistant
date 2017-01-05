@@ -102,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.help:
                         mDrawerLayout.closeDrawers();
-                        Toast.makeText(MainActivity.this,"HP Police Always At Your Service", Toast.LENGTH_LONG).show();
+                        Intent serv =new Intent(MainActivity.this, ChatHeadService.class);
+                        //startService(serv);
+                        //Toast.makeText(MainActivity.this,"HP Police Always At Your Service", Toast.LENGTH_LONG).show();
                         break;
                     case R.id.emergency:
                         mDrawerLayout.closeDrawers();

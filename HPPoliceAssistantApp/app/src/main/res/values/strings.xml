@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HPPoliceAssistant</string>
+    <string name="app_name">HP Police Assistant</string>
     <string name="login">Login</string>
     <string name="naka_data_entry"><b>Naka Data Entry</b></string>
     <string name="challan"><b>Challan</b></string>

@@ -75,7 +75,7 @@ public class DBManagerChallan extends SQLiteOpenHelper {
         contentValues.put("other_remarks",details.getOther_remarks());
         contentValues.put("place",details.getDistrict());
         contentValues.put("image","image");
-        contentValues.put("status", 0);
+        contentValues.put("status", details.getStatus());
         db.insert("challan", null, contentValues);
        // c =  db.rawQuery( "SELECT * FROM todo_lists WHERE list = \""+list+"\";", null);
         //c.moveToFirst();

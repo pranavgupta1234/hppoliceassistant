@@ -102,7 +102,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 TextView pla = (TextView) dialog.findViewById(R.id.name_of_place);
                 TextView nka = (TextView) dialog.findViewById(R.id.name_of_naka);
                 TextView descrip = (TextView) dialog.findViewById(R.id.desc);
-                TextView date=(TextView)dialog.findViewById(R.id.date);
+                TextView date=(TextView)dialog.findViewById(R.id.date_picker);
                 TextView time =(TextView)dialog.findViewById(R.id.time);
                 ImageView icon = (ImageView) dialog.findViewById(R.id.image);
                 setDataToView(vh,phn,pla,nka,descrip,icon,date,time,position);
@@ -134,7 +134,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             naka_name = (TextView) view.findViewById(R.id.name_of_naka);
             desc = (TextView) view.findViewById(R.id.desc);
             container = view.findViewById(R.id.card_view);
-            date=(TextView)view.findViewById(R.id.date);
+            date=(TextView)view.findViewById(R.id.date_picker);
             time=(TextView)view.findViewById(R.id.time);
         }
         public void setImage(Context ctx,String image){

@@ -2,14 +2,11 @@ package pranav.apps.amazing.hppoliceassistant;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by Pranav Gupta on 12/31/2016.
@@ -53,7 +50,7 @@ public class DialogEntryOffline extends Dialog implements android.view.View.OnCl
     private void setAllViews() {
         vehicle_number=(TextView)findViewById(R.id.vehicle_num);
         phone_number=(TextView)findViewById(R.id.phone_no);
-        date=(TextView)findViewById(R.id.date);
+        date=(TextView)findViewById(R.id.date_picker);
         time=(TextView)findViewById(R.id.time);
         place_name=(TextView)findViewById(R.id.place_name);
         officer_name=(TextView)findViewById(R.id.officer_name);

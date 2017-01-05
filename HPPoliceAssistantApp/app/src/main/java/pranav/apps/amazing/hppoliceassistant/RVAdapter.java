@@ -73,7 +73,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
             violator_name=(TextView)itemView.findViewById(R.id.name_of_person);
             license_number=(TextView)itemView.findViewById(R.id.license_number);
             phone_number=(TextView)itemView.findViewById(R.id.phone_number);
-            date=(TextView)itemView.findViewById(R.id.date);
+            date=(TextView)itemView.findViewById(R.id.date_picker);
             time=(TextView)itemView.findViewById(R.id.time);
             challan_officer=(TextView)itemView.findViewById(R.id.officer_name);
             details=(Button)itemView.findViewById(R.id.details);

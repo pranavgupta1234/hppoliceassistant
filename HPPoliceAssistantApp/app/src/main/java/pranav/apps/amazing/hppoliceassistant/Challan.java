@@ -1,14 +1,10 @@
 package pranav.apps.amazing.hppoliceassistant;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,29 +22,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -133,8 +119,8 @@ public class Challan extends Fragment {
         license_number=(EditText)view.findViewById(R.id.license_number);
         challan_amount=(EditText)view.findViewById(R.id.challan_amount);
         violator_number=(EditText)view.findViewById(R.id.violator_number);
-        date=(TextView)view.findViewById(R.id.date);
-        time=(TextView)view.findViewById(R.id.time);
+        date=(TextView)view.findViewById(R.id.date_picker);
+        time=(TextView)view.findViewById(R.id.time_picker);
 
         upload_photo=(ImageButton) view.findViewById(R.id.upload_photo);
         reset=(Button)view.findViewById(R.id.reset);
@@ -227,7 +213,7 @@ public class Challan extends Fragment {
                         final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                         challanDetailswithoutImage.setStatus(0);
                         if(dbManagerChallan.addChallan(challanDetailswithoutImage)){
-                            Toast.makeText(getActivity(),"Challan Added Offline!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(),"Challan Added Offline! Make sure to add it online!",Toast.LENGTH_SHORT).show();
                             customDialog.dismiss();
                         }
                     }
@@ -300,7 +286,6 @@ public class Challan extends Fragment {
                     Toast.makeText(getActivity(),"Challan Added !",Toast.LENGTH_SHORT).show();
                     }
             idChild.setValue(challanDetails);
-
             Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
 
         }
@@ -321,7 +306,7 @@ public class Challan extends Fragment {
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
                             license_number.getText().toString(),policeofficer_name.getText().toString(),
-                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString());
+                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString(),1);
                     //local DB
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     challanDetails.setStatus(1);
@@ -342,7 +327,7 @@ public class Challan extends Fragment {
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
                             license_number.getText().toString(),policeofficer_name.getText().toString(),
-                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString());
+                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString(),0);
                     //local DB
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     if(dbManagerChallan.addChallan(challanDetails)){

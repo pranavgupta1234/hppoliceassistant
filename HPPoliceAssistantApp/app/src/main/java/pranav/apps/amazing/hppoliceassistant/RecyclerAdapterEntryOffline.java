@@ -2,7 +2,6 @@ package pranav.apps.amazing.hppoliceassistant;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,7 +129,7 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
             violator_name=(TextView)itemView.findViewById(R.id.name_of_person);
             license_number=(TextView)itemView.findViewById(R.id.license_number);
             phone_number=(TextView)itemView.findViewById(R.id.phone_number);
-            date=(TextView)itemView.findViewById(R.id.date);
+            date=(TextView)itemView.findViewById(R.id.date_picker);
             time=(TextView)itemView.findViewById(R.id.time);
             challan_officer=(TextView)itemView.findViewById(R.id.officer_name);
             details=(Button)itemView.findViewById(R.id.details);

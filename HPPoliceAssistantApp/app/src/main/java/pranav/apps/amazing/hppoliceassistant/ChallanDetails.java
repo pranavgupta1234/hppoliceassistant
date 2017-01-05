@@ -200,7 +200,7 @@ public class ChallanDetails {
         this.violator_number=violator_number;
         this.date=date;
         this.time=time;
-        this.status=0;
+        this.status=1;
     }
 
     //constructor to show offline status
