@@ -124,6 +124,7 @@ public class Entry_veh extends Fragment {
                 vehicleEntryDialog.findViewById(R.id.offline).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        newEntrywithoutImage.setStatus(0);
                         DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(),null,null,1);
                         if(dbManagerEntry.addEntry(newEntrywithoutImage)){
                             Toast.makeText(getActivity(),"Entry Added Offline!",Toast.LENGTH_SHORT).show();
@@ -193,6 +194,7 @@ public class Entry_veh extends Fragment {
                     naka.getText().toString(),date.getText().toString(),time.getText().toString(),
                     officer.getText().toString(),download_url_string);
             DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(),null,null,1);
+            newEntry.setStatus(1);
             if(dbManagerEntry.addEntry(newEntry)){
                 Toast.makeText(getActivity(),"Entry Added Offline!",Toast.LENGTH_SHORT).show();
             }
@@ -217,6 +219,7 @@ public class Entry_veh extends Fragment {
                             naka.getText().toString(),date.getText().toString(),time.getText().toString(),
                             officer.getText().toString(),download_url_string);
                     DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(),null,null,1);
+                    newEntry.setStatus(1);
                     if(dbManagerEntry.addEntry(newEntry)){
                         Toast.makeText(getActivity(),"Entry Added Offline!",Toast.LENGTH_SHORT).show();
                     }
@@ -229,6 +232,7 @@ public class Entry_veh extends Fragment {
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(getActivity(), "Upload Failed !", Toast.LENGTH_LONG).show();
                     progressDialog1.dismiss();
+                    newEntry.setStatus(0);
                     DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(),null,null,1);
                     if(dbManagerEntry.addEntry(newEntry)){
                         Toast.makeText(getActivity(),"Entry Added Offline!",Toast.LENGTH_SHORT).show();

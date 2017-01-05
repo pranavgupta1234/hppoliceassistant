@@ -27,6 +27,7 @@
     <EditText
         android:hint="fill vehicle number here"
         android:layout_width="match_parent"
+        android:maxLength="12"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
@@ -45,6 +46,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
+        android:maxLength="10"
+        android:inputType="number"
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
         android:id="@+id/phone_num"/>
@@ -111,6 +114,7 @@
         android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLength="16"
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
         android:id="@+id/place"/>
@@ -126,6 +130,7 @@
         android:hint="fill officer name here"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLength="16"
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
         android:layout_marginTop="3dp"
@@ -142,6 +147,7 @@
         android:hint="fill naka name here"
         android:layout_marginTop="3dp"
         android:layout_width="match_parent"
+        android:maxLength="16"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
