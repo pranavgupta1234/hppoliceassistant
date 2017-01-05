@@ -730,7 +730,7 @@
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
         android:id="@+id/naka_name"/>
-    <ImageButton
+    <ImageView
         android:text="UPLOAD PHOTO"
         android:textStyle="bold"
         android:layout_marginTop="5dp"

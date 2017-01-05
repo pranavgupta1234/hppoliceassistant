@@ -51,7 +51,7 @@ public class DBManagerEntry extends SQLiteOpenHelper {
         contentValues.put("officer_name",newEntry.getOfficer_name());
         contentValues.put("naka_name",newEntry.getNaka_name());
         contentValues.put("image",newEntry.getImage());
-        contentValues.put("status", 0);
+        contentValues.put("status", newEntry.getStatus());
         db.insert("entry", null, contentValues);
         //c =  db.rawQuery( "SELECT * FROM todo_lists WHERE list = \""+list+"\";", null);
         //c.moveToFirst();

@@ -5,6 +5,8 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,6 +24,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +36,17 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import id.zelory.compressor.Compressor;
+import id.zelory.compressor.FileUtil;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -52,8 +64,7 @@ public class Challan extends Fragment {
             ,violator_address,license_number,policeofficer_name,violator_number;
     private TextView date,time;
     private Button submit,reset;
-    private ImageButton upload_photo;
-    private String details,section,no_veh,place_n,naka_n;
+    private ImageView upload_photo;
     private TextView nak;
     private Uri uri=null,downloadUrl=null;
     private String download_url_string="";
@@ -66,7 +77,9 @@ public class Challan extends Fragment {
     private Uri imageUri;
     private ValueCallback<Uri> mUploadMessage;
     int FILECHOOSER_RESULTCODE = 1888;
-
+    private File actualImage;
+    private Uri fileuri;
+    private int PICK_IMAGE_REQUEST=1;
 
 
     private CustomDialog customDialog;
@@ -82,6 +95,7 @@ public class Challan extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
@@ -122,7 +136,7 @@ public class Challan extends Fragment {
         date=(TextView)view.findViewById(R.id.date_picker);
         time=(TextView)view.findViewById(R.id.time_picker);
 
-        upload_photo=(ImageButton) view.findViewById(R.id.upload_photo);
+        upload_photo=(ImageView) view.findViewById(R.id.upload_photo);
         reset=(Button)view.findViewById(R.id.reset);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog1 = new ProgressDialog(getActivity());
@@ -254,14 +268,15 @@ public class Challan extends Fragment {
         upload_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //showAttachmentDialog(mUploadMessage);
+/*
                 Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image*//*");
+                startActivityForResult(intent,GALLERY_INTENT);*/
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
-                startActivityForResult(intent,GALLERY_INTENT);
-                /*
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                */
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+
             }
         });
         return  view;
@@ -292,7 +307,7 @@ public class Challan extends Fragment {
         if(uri!=null) {
             progressDialog1.setMessage("Uploading Image and Data....");
             progressDialog1.show();
-            filepath = mStorage.child("PhotosChallan").child(uri.getLastPathSegment());
+            filepath = mStorage.child("PhotosChallan").child(idChild.getKey());
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -341,11 +356,80 @@ public class Challan extends Fragment {
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode==GALLERY_INTENT && resultCode==RESULT_OK){
+        /*if(requestCode==GALLERY_INTENT && resultCode==RESULT_OK){
             uri =data.getData();
             upload_photo.setBackgroundColor(0);
             upload_photo.setImageURI(uri);
+        }*/
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            if (data == null) {
+                showError("Failed to open picture!");
+                return;
+            }
+            try {
+                actualImage = FileUtil.from(getActivity(), data.getData());
+                upload_photo.setImageBitmap(BitmapFactory.decodeFile(actualImage.getAbsolutePath()));
+                //actualSizeTextView.setText(String.format("Size : %s", getReadableFileSize(actualImage.length())));
+                //clearImage();
+                if (actualImage == null) {
+                    showError("Please choose an image!");
+                } else {
+
+                    // Compress image in main thread
+                    actualImage = Compressor.getDefault(getActivity()).compressToFile(actualImage);
+                    //setCompressedImage();
+
+                    // Compress image to bitmap in main thread
+            /*compressedImageView.setImageBitmap(Compressor.getDefault(this).compressToBitmap(actualImage));*/
+
+                    // Compress image using RxJava in background thread
+                    /*Compressor.getDefault(getActivity())
+                            .compressToFileAsObservable(actualImage)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Action1<File>() {
+                                @Override
+                                public void call(File file) {
+                                    actualImage = file;
+                                   // setCompressedImage();
+                                }
+                            }, new Action1<Throwable>() {
+                                @Override
+                                public void call(Throwable throwable) {
+                                    showError(throwable.getMessage());
+                                }
+                            });*/
+                    uri = Uri.fromFile(actualImage);
+                    //uri=Uri.parse(actualImage.getAbsolutePath());
+                    upload_photo.setImageURI(uri);
+                }
+            } catch (IOException e) {
+                showError("Failed to read picture data!");
+                e.printStackTrace();
+            }
         }
+    }
+    public void showError(String errorMessage) {
+        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private int getRandomColor() {
+        Random rand = new Random();
+        return Color.argb(100, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+    }
+    /*private void clearImage() {
+        actualImageView.setBackgroundColor(getRandomColor());
+        compressedImageView.setImageDrawable(null);
+        compressedImageView.setBackgroundColor(getRandomColor());
+        compressedSizeTextView.setText("Size : -");
+    }*/
+    public String getReadableFileSize(long size) {
+        if (size <= 0) {
+            return "0";
+        }
+        final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
+        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
     private void resetAll()
     {

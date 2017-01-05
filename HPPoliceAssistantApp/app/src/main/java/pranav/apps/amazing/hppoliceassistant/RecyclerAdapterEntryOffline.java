@@ -61,7 +61,7 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
             @Override
             public void onClick(View view) {
                 final DialogEntryOffline dialogEntryOffline = new DialogEntryOffline(activity,vehicleEntries.get(position));
-                dialogEntryOffline.setTitle("Challan Details");
+                dialogEntryOffline.setTitle("Entry Details");
                 dialogEntryOffline.setCancelable(true);
                 dialogEntryOffline.show();
                 final Button b =(Button)dialogEntryOffline.findViewById(R.id.send);
@@ -78,6 +78,8 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
                     public void onClick(View view) {
                         DBManagerEntry dbManagerEntry = new DBManagerEntry(activity,null,null,1);
                         dbManagerEntry.deleteEntry(vehicleEntries.get(position));
+                        vehicleEntries.remove(vehicleEntries.get(position));
+                        Toast.makeText(activity,"Deleted",Toast.LENGTH_SHORT).show();
                         notifyDataSetChanged();
                         dialogEntryOffline.dismiss();
                     }

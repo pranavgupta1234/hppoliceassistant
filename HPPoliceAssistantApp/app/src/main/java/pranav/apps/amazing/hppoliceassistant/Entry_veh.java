@@ -31,8 +31,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.UUID;
+
+import id.zelory.compressor.Compressor;
+import id.zelory.compressor.FileUtil;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -54,6 +59,8 @@ public class Entry_veh extends Fragment {
     private int ACTION_IMAGE_CAPTURE_ACTIVITY =1888;
     private VehicleEntry newEntry,newEntrywithoutImage;
     private VehicleEntryDialog vehicleEntryDialog;
+    private File actualImage;
+    private int PICK_IMAGE_REQUEST=1;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -162,13 +169,13 @@ public class Entry_veh extends Fragment {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-
-                startActivityForResult(takePictureIntent, GALLERY_INTENT);*/
+/*
                 Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image*//*");
-                startActivityForResult(intent,GALLERY_INTENT);
+                intent.setType("image*//**//*");
+                startActivityForResult(intent,GALLERY_INTENT);*/
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
         });
         return  view;
@@ -236,34 +243,57 @@ public class Entry_veh extends Fragment {
     public void onActivityResult(int requestCode,int resultCode,Intent data){
         super.onActivityResult(requestCode,resultCode,data);
 
-        /*if(requestCode==ACTION_IMAGE_CAPTURE_ACTIVITY && resultCode==RESULT_OK){
-            Bitmap bmp = (Bitmap) data.getExtras().get("data");
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
-
-            // convert byte array to Bitmap
-
-            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
-                    byteArray.length);
-
-            upload.setImageBitmap(bitmap);
-            *//*
-            uri = getImageUri(getActivity(),bitmap);
-            upload.setImageURI(uri);
-            *//*
-            *//*
-           uri =data.getData();
-            upload.setBackgroundColor(0);
-            upload.setImageURI(uri);
-            *//*
-
-        }*/
-        if(requestCode==GALLERY_INTENT && resultCode==RESULT_OK){
+        /*if(requestCode==GALLERY_INTENT && resultCode==RESULT_OK){
             uri =data.getData();
             upload.setBackgroundColor(0);
             upload.setImageURI(uri);
+        }*/
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            if (data == null) {
+                Toast.makeText(getActivity(),"Error Loading File ",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                actualImage = FileUtil.from(getActivity(), data.getData());
+                upload.setImageBitmap(BitmapFactory.decodeFile(actualImage.getAbsolutePath()));
+                //actualSizeTextView.setText(String.format("Size : %s", getReadableFileSize(actualImage.length())));
+                //clearImage();
+                if (actualImage == null) {
+                    Toast.makeText(getActivity(),"Please Choose an image",Toast.LENGTH_SHORT).show();
+                } else {
+
+                    // Compress image in main thread
+                    actualImage = Compressor.getDefault(getActivity()).compressToFile(actualImage);
+                    //setCompressedImage();
+
+                    // Compress image to bitmap in main thread
+            /*compressedImageView.setImageBitmap(Compressor.getDefault(this).compressToBitmap(actualImage));*/
+
+                    // Compress image using RxJava in background thread
+                    /*Compressor.getDefault(getActivity())
+                            .compressToFileAsObservable(actualImage)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Action1<File>() {
+                                @Override
+                                public void call(File file) {
+                                    actualImage = file;
+                                   // setCompressedImage();
+                                }
+                            }, new Action1<Throwable>() {
+                                @Override
+                                public void call(Throwable throwable) {
+                                    showError(throwable.getMessage());
+                                }
+                            });*/
+                    uri = Uri.fromFile(actualImage);
+                    //uri=Uri.parse(actualImage.getAbsolutePath());
+                    upload.setImageURI(uri);
+                }
+            } catch (IOException e) {
+                Toast.makeText(getActivity(),"Failed to read picture data",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
         }
     }
 

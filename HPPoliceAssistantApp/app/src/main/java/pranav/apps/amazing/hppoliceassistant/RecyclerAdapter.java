@@ -61,6 +61,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
         //set on click listener for each element
         viewHolder.container.setOnClickListener(onClickListener(position));
+        viewHolder.imageView.setOnClickListener(onClickListenerImage(position));
     }
     public void setFilter(List<VehicleEntry> vh){
         vehicleEntry = new ArrayList<>();
@@ -111,6 +112,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
         };
     }
+    private View.OnClickListener onClickListenerImage(final int position) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecyclerAdapter.ViewHolder viewHolder = new RecyclerAdapter.ViewHolder(v);
+                final Dialog dialog = new Dialog(activity);
+                dialog.setContentView(R.layout.stolen_entry_image);
+                dialog.setTitle("Entry No " + (position + 1));
+                dialog.setCancelable(true); // dismiss when touching outside Dialog
+
+                // set the custom dialog components - texts and image
+                ImageView icon = (ImageView) dialog.findViewById(R.id.stolen_image);
+                viewHolder.setImageDialogAlone(dialog.getContext(), vehicleEntry.get(position).getImage(), icon,position);
+                dialog.show();
+            }
+        };
+    }
     /**
      * View holder to display each RecylerView item
      */
@@ -142,6 +160,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
         public void setImageDialog(Context ctx,String image,ImageView icon){
             Picasso.with(ctx).load(image).fit().centerCrop().into(icon);
+        }
+
+        public void setImageDialogAlone(Context context, String image, ImageView icon,int position) {
+            if(vehicleEntry.get(position).getImage().contentEquals("Photo not available")||vehicleEntry.get(position).getImage().contentEquals("null")){
+                icon.setBackgroundResource(R.drawable.notavailable);
+            }else{
+                icon.setBackgroundResource(R.drawable.loading);
+                Picasso.with(context).load(image).fit().centerCrop().into(icon);
+            }
         }
     }
 }
