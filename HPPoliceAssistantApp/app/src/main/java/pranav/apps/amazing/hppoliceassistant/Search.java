@@ -1,6 +1,9 @@
 package pranav.apps.amazing.hppoliceassistant;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -47,6 +50,7 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
         FirebaseDatabase database =FirebaseDatabase.getInstance();              //it return root url
         DatabaseReference myRef = database.getReference("challan");              //migrate from tree in other branches
         View view = getActivity().getLayoutInflater().inflate(R.layout.search, container, false);
+
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
         search=(TextView)view.findViewById(R.id.loading);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

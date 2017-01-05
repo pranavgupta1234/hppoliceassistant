@@ -1,5 +1,9 @@
 package pranav.apps.amazing.hppoliceassistant;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +36,8 @@ public class OfflineEntry extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.offline_entry);
         recyclerview = (RecyclerView)findViewById(R.id.recyclerview);
         search=(TextView)findViewById(R.id.loading);

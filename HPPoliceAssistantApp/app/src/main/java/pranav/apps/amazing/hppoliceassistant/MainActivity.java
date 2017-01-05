@@ -1,7 +1,9 @@
 package pranav.apps.amazing.hppoliceassistant;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
+
        // search = (SearchView)findViewById(R.id.search_view);
         //ActionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,10 +92,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.logout:
                         mDrawerLayout.closeDrawers();
-                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(MainActivity.this,Login.class);
-                        startActivity(i);
-
+                        Intent intent = new Intent(MainActivity.this,Login.class);
+                        intent.putExtra("finish", true); // if you are checking for this in your other Activities
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
                         break;
                     case R.id.help:
                         mDrawerLayout.closeDrawers();
@@ -180,8 +186,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.logout:
-                Intent intent1= new Intent(MainActivity.this,Login.class);
+                Intent intent1 = new Intent(MainActivity.this,Login.class);
+                intent1.putExtra("finish", true); // if you are checking for this in your other Activities
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent1);
+                finish();
         }
 
         return super.onOptionsItemSelected(item);
