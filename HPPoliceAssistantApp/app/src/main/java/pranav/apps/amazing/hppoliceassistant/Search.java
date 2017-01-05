@@ -138,7 +138,7 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
                         // Do something when collapsed
-                        adapter.setFilter(offlineList);
+                        adapterOffline.setFilter(offlineList);
                         return true; // Return true to collapse action view
                     }
 
@@ -153,7 +153,7 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
     @Override
     public boolean onQueryTextChange(String newText) {
         final List<ChallanDetails> filteredChallan = filter(offlineList, newText);
-        adapter.setFilter(filteredChallan);
+        adapterOffline.setFilter(filteredChallan);
         return true;
     }
 
