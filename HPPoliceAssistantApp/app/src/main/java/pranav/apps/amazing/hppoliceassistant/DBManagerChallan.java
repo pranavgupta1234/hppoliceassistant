@@ -34,6 +34,16 @@ public class DBManagerChallan extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS challan");
         onCreate(db);
     }
+    public boolean checkIfPresent(ChallanDetails details){
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM challan WHERE offences = \""+details.getOffences()+"\", violator_name = \""+details.getViolator_name()+
+                "\", vehicle_number=\""+details.getVehicle_number()+"\";",null);
+        if(cursor.getCount()==0){
+            return false;
+        }
+        return true;
+    }
 
     public boolean addChallan(ChallanDetails details){
         //DatabaseUtils.sqlEscapeString(list);

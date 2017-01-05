@@ -96,6 +96,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 dialog.setCancelable(true); // dismiss when touching outside Dialog
 
                 // set the custom dialog components - texts and image
+
                 TextView vh = (TextView) dialog.findViewById(R.id.vehno);
                 TextView phn = (TextView) dialog.findViewById(R.id.phno);
                 TextView pla = (TextView) dialog.findViewById(R.id.name_of_place);

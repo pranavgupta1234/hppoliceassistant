@@ -76,6 +76,8 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
                     public void onClick(View view) {
                         DBManagerChallan dbManagerChallan = new DBManagerChallan(activity,null,null,1);
                         dbManagerChallan.deleteChallan(challan.get(position));
+                        challan.remove(challan.get(position));
+                        Toast.makeText(activity,"Deleted",Toast.LENGTH_SHORT).show();
                         notifyDataSetChanged();
                         dialogChallanOffline.dismiss();
                     }

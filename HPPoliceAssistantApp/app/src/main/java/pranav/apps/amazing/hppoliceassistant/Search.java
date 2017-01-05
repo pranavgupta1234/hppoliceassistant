@@ -35,9 +35,12 @@ import java.util.Map;
 public class Search extends Fragment implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerview;
     private List<ChallanDetails> challanDetails = new ArrayList<>();
+    private List<ChallanDetails> offlineList = new ArrayList<>();
     private RVAdapter adapter;
     private  ChallanDetails challan;
     private TextView search;
+    private RVAdapter adapterOffline;
+    DBManagerChallanOnline dbManagerChallanOnline;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,13 +54,19 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerview.getContext(),
                 layoutManager.getOrientation());
         recyclerview.addItemDecoration(dividerItemDecoration);
-
+        dbManagerChallanOnline = new DBManagerChallanOnline(getActivity(),null,null,1);
+        offlineList = dbManagerChallanOnline.showChallan();
         myRef.addChildEventListener(new com.google.firebase.database.ChildEventListener() {
             @Override
             public void onChildAdded(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
                 challanDetails.add(challan);
-                adapter.notifyDataSetChanged();
+                if(!dbManagerChallanOnline.checkIfPresent(challan)){
+                    dbManagerChallanOnline.addChallan(challan);
+                    offlineList.add(challan);
+                    adapterOffline.notifyDataSetChanged();
+                }
+
                 search.setText("");
             }
             @Override
@@ -89,9 +98,14 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
                 Toast.makeText(getActivity(),"Something Went Wrong",Toast.LENGTH_SHORT).show();
             }
         });
-        challanDetails.clear();
+        //challanDetails.clear();
         return view;
     }
+
+    /*private void invalidate() {
+        challanDetails=dbManagerChallanOnline.showChallan();
+        adapter.notifyDataSetChanged();
+    }*/
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -101,8 +115,10 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
 
         challanDetails = new ArrayList<>();
         adapter = new RVAdapter(getActivity(),challanDetails);
-        recyclerview.setAdapter(adapter);
+        adapterOffline = new RVAdapter(getActivity(),offlineList);
+        recyclerview.setAdapter(adapterOffline);
         adapter.notifyDataSetChanged();
+        //Toast.makeText(getActivity(),String.valueOf(offlineList.size()),Toast.LENGTH_SHORT).show();
     }
 
 

@@ -17,8 +17,6 @@ import java.util.Calendar;
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
-    String t;
-    String m;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -34,20 +32,8 @@ public class TimePickerFragment extends DialogFragment
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
-        TextView tv1=(TextView)getActivity().findViewById(R.id.time);
-        if(view.getCurrentHour()>=12){
-             t = "PM";
-        }
-        else{
-             t ="AM";
-        }
-        if(view.getCurrentMinute()<9){
-            m="0"+view.getCurrentMinute();
-        }
-        else {
-            m= String.valueOf(view.getCurrentMinute());
-        }
-        tv1.setText(view.getCurrentHour()+" : "+ m +" "+ t );
+        TextView tv1=(TextView) getActivity().findViewById(R.id.time);
+        tv1.setText(view.getCurrentHour()+":"+view.getCurrentMinute());
 
     }
 }

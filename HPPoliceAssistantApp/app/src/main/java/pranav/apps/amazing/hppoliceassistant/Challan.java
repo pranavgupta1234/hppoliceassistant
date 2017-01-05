@@ -168,6 +168,7 @@ public class Challan extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                crime="";
                 if(helmet.isChecked()){
                     crime  =  crime + "w/o Helmet," ;
                 }
@@ -269,7 +270,7 @@ public class Challan extends Fragment {
             public void onClick(View view) {
                 //showAttachmentDialog(mUploadMessage);
                 Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image*//*");
+                intent.setType("image/*");
                 startActivityForResult(intent,GALLERY_INTENT);
                 /*
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -293,9 +294,9 @@ public class Challan extends Fragment {
                     license_number.getText().toString(),policeofficer_name.getText().toString(),
                     "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString());
                     //local DB
+            challanDetails.setStatus(1);
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     if(dbManagerChallan.addChallan(challanDetails)){
-                        challanDetails.setStatus(1);
                     Toast.makeText(getActivity(),"Challan Added !",Toast.LENGTH_SHORT).show();
                     }
             idChild.setValue(challanDetails);
@@ -323,8 +324,8 @@ public class Challan extends Fragment {
                             "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString());
                     //local DB
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
+                    challanDetails.setStatus(1);
                     if(dbManagerChallan.addChallan(challanDetails)){
-                        challanDetails.setStatus(1);
                         Toast.makeText(getActivity(),"Challan Added Offline !",Toast.LENGTH_SHORT).show();
                     }
                     idChild.setValue(challanDetails);
@@ -363,6 +364,7 @@ public class Challan extends Fragment {
     }
     private void resetAll()
     {
+        crime="";
         other.setText("");
         offence_section.setText("");
         veh_number.setText("");
@@ -425,7 +427,6 @@ public class Challan extends Fragment {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             cameraIntents.add(intent);
         }
-
 
         // mUploadMessage = uploadMsg;
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         Intent i = new Intent(MainActivity.this,Login.class);
                         startActivity(i);
+
                         break;
                     case R.id.help:
                         mDrawerLayout.closeDrawers();
