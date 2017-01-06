@@ -43,7 +43,7 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder,int position) {
         holder.vehicle_number.setText(vehicleEntries.get(position).getVehicle_number());
         holder.violator_name.setText(vehicleEntries.get(position).getName_of_place());
         holder.license_number.setText(vehicleEntries.get(position).getDescription());
@@ -60,12 +60,12 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
         holder.details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final DialogEntryOffline dialogEntryOffline = new DialogEntryOffline(activity,vehicleEntries.get(position));
+                final DialogEntryOffline dialogEntryOffline = new DialogEntryOffline(activity,vehicleEntries.get(holder.getAdapterPosition()));
                 dialogEntryOffline.setTitle("Entry Details");
                 dialogEntryOffline.setCancelable(true);
                 dialogEntryOffline.show();
                 final Button b =(Button)dialogEntryOffline.findViewById(R.id.send);
-                if(vehicleEntries.get(position).getStatus()==1){
+                if(vehicleEntries.get(holder.getAdapterPosition()).getStatus()==1){
                     b.setEnabled(false);
                     b.setText("SENT");
                     b.setBackgroundResource(R.drawable.btn_back_done);
@@ -77,8 +77,8 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
                     @Override
                     public void onClick(View view) {
                         DBManagerEntry dbManagerEntry = new DBManagerEntry(activity,null,null,1);
-                        dbManagerEntry.deleteEntry(vehicleEntries.get(position));
-                        vehicleEntries.remove(vehicleEntries.get(position));
+                        dbManagerEntry.deleteEntry(vehicleEntries.get(holder.getAdapterPosition()));
+                        vehicleEntries.remove(vehicleEntries.get(holder.getAdapterPosition()));
                         Toast.makeText(activity,"Deleted",Toast.LENGTH_SHORT).show();
                         notifyDataSetChanged();
                         dialogEntryOffline.dismiss();
@@ -90,12 +90,12 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
                     @Override
                     public void onClick(View view) {
                         DBManagerEntry dbManagerEntry = new DBManagerEntry(activity,null,null,1);
-                        dbManagerEntry.setStatus(vehicleEntries.get(position),1);
+                        dbManagerEntry.setStatus(vehicleEntries.get(holder.getAdapterPosition()),1);
                         Firebase mRootRef;
                         mRootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
                         Firebase idChild = mRootRef.push();
                         try {
-                            idChild.setValue(vehicleEntries.get(position));
+                            idChild.setValue(vehicleEntries.get(holder.getAdapterPosition()));
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(activity,"Upload Failed !",Toast.LENGTH_SHORT).show();

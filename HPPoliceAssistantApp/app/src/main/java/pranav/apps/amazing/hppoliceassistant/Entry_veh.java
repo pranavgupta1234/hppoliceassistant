@@ -265,6 +265,8 @@ public class Entry_veh extends Fragment {
                 if (actualImage == null) {
                     Toast.makeText(getActivity(),"Please Choose an image",Toast.LENGTH_SHORT).show();
                 } else {
+                    progressDialog.setMessage("Compressing Image");
+                    progressDialog.show();
 
                     // Compress image in main thread
                     actualImage = Compressor.getDefault(getActivity()).compressToFile(actualImage);
@@ -293,6 +295,7 @@ public class Entry_veh extends Fragment {
                     uri = Uri.fromFile(actualImage);
                     //uri=Uri.parse(actualImage.getAbsolutePath());
                     upload.setImageURI(uri);
+                    progressDialog.dismiss();
                 }
             } catch (IOException e) {
                 Toast.makeText(getActivity(),"Failed to read picture data",Toast.LENGTH_SHORT).show();

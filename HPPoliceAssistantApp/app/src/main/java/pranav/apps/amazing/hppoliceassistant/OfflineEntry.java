@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +29,18 @@ import java.util.List;
  */
 
 public class OfflineEntry extends AppCompatActivity{
-    private RecyclerView recyclerview;
     private List<VehicleEntry> vehicleEntries;
     private RecyclerAdapterEntryOffline adapter;
     private  ChallanDetails challan;
-    private TextView search;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         setContentView(R.layout.offline_entry);
-        recyclerview = (RecyclerView)findViewById(R.id.recyclerview);
-        search=(TextView)findViewById(R.id.loading);
+        RecyclerView recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
+        TextView search = (TextView) findViewById(R.id.loading);
 
         //setting toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -95,7 +95,8 @@ public class OfflineEntry extends AppCompatActivity{
             @Override
             public boolean onQueryTextChange(String searchQuery) {
                 final List<VehicleEntry> filteredEntry = filter(vehicleEntries, searchQuery );
-               // adapter.setFilter(filteredChallan);
+                adapter.setFilter(filteredEntry);
+                adapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -104,7 +105,8 @@ public class OfflineEntry extends AppCompatActivity{
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 // Do something when collapsed
-                //adapter.setFilter(challanDetails);
+                adapter.setFilter(vehicleEntries);
+                adapter.notifyDataSetChanged();
                 return true; // Return true to collapse action view
             }
 
@@ -142,5 +144,4 @@ public class OfflineEntry extends AppCompatActivity{
     public void doNothing(){
 
     }
-
 }

@@ -93,7 +93,6 @@ public class Stolen extends Fragment implements SearchView.OnQueryTextListener{
             }
             @Override
             public void onChildChanged(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-                vehicleEntries.clear();
                 newEntry  = dataSnapshot.getValue(VehicleEntry.class);
                 vehicleEntries.add(newEntry);
                 adapter.notifyDataSetChanged();
@@ -102,9 +101,8 @@ public class Stolen extends Fragment implements SearchView.OnQueryTextListener{
 
             @Override
             public void onChildRemoved(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                vehicleEntries.clear();
                 newEntry  = dataSnapshot.getValue(VehicleEntry.class);
-                vehicleEntries.add(newEntry);
+                vehicleEntries.remove(newEntry);
                 adapter.notifyDataSetChanged();
                 loading.setText("");
             }
