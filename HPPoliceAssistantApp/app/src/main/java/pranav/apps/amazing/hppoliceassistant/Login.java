@@ -3,7 +3,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,7 +12,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,18 +20,20 @@ import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by Pranav Gupta on 12/10/2016.
+ * This Class is for Logging in into app
+ * On Successfully logging in it launches ??? Activity
+ * This Activity is launched by ???? Activity
  */
 
 public class Login extends Activity{
     private FirebaseDatabase database;
     private Button login;
-    private DatabaseReference rootRef,dRef,nRef;
-    Spinner district,police_station,police_post;
-    String selected_district = "none",selected_police_station = "none",selected_police_post = "none";
+    private DatabaseReference rootRef, dRef, nRef;
+    Spinner district, police_station, police_post;
+    String selected_district = "none", selected_police_station = "none", selected_police_post = "none";
     EditText login_name, login_password;
-    String name,password;
+    String name, password;
     ProgressDialog progressDialog;
-    Firebase mRootRef;                                                   //deprecated now
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +44,8 @@ public class Login extends Activity{
         police_post = (Spinner) findViewById(R.id.police_post);
         login_name = (EditText)findViewById(R.id.name);
         login_password = (EditText)findViewById(R.id.password);
-        //mRootRef = new Firebase("https://hppoliceassistant.firebaseio.com/Shimla");   //deprecated now
-         database = FirebaseDatabase.getInstance();
+
+        database = FirebaseDatabase.getInstance();
         rootRef = database.getReference("login");
         nRef = database.getReference("authenticated_users");
         progressDialog = new ProgressDialog(Login.this);

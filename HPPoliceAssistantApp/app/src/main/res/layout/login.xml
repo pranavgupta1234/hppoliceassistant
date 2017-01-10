@@ -1,97 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00BCD4"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:padding="20dp">
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher"
         android:layout_marginTop="25dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/hpp"/>
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="12dp"
-        android:layout_below="@id/hpp"
-        android:background="@drawable/custom_edittext"
-        android:id="@+id/district"/>
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/district"
-        android:padding="12dp"
-        android:background="@drawable/custom_edittext"
-        android:id="@+id/police_station"/>
+        android:src="@drawable/ic_launcher" />
 
     <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/police_station"
-        android:padding="12dp"
-        android:background="@drawable/custom_edittext"
-        android:id="@+id/police_post"/>
-    <!--
-    <EditText
-        android:hint="District"
+        android:id="@+id/district"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/custom_edittext"
-        android:padding="12dp"
-        android:layout_below="@id/hpp"
-        android:id="@+id/district"/>
-    <EditText
-        android:hint="Police Station"
+        android:padding="12dp" />
+
+    <Spinner
+        android:id="@+id/police_station"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/district"
-        android:padding="12dp"
         android:background="@drawable/custom_edittext"
-        android:id="@+id/police_station"/>
-    <EditText
-        android:hint="Police Post"
+        android:padding="12dp" />
+
+    <Spinner
+        android:id="@+id/police_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/police_station"
-        android:padding="12dp"
         android:background="@drawable/custom_edittext"
-        android:id="@+id/police_post"/>
-        -->
+        android:padding="12dp" />
+
     <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_edittext"
         android:hint="Name"
+        android:padding="12dp" />
+
+    <EditText
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:padding="12dp"
-        android:layout_below="@id/police_post"
         android:background="@drawable/custom_edittext"
-        android:id="@+id/name"/>
-    <EditText
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_edittext"
-        android:padding="12dp"
-        android:layout_below="@id/name"
-        android:id="@+id/password"/>
+        android:padding="12dp" />
+
     <Button
-        android:text="Login"
+        android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_below="@+id/password"
-        android:id="@+id/login"
         android:layout_marginTop="10dp"
         android:background="@drawable/btn_back"
-        android:padding="12dp"/>
-</RelativeLayout>
+        android:padding="12dp"
+        android:text="Login"
+        android:textStyle="bold" />
+</LinearLayout>
