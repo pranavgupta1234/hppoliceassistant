@@ -268,8 +268,13 @@ public class Login extends Activity{
         return sharedPref.getBoolean(getString(R.string.is_logged_in), false); //Default "false" because if this string does not exist yet then it means user did not sign in even for once.
     }
 
+    /**
+     * This method takes user to home screen and finishes this activity
+     */
     private void goToHomeScreen() {
-        Intent i = new Intent("pranav.apps.amazing.hppoliceassistant.HOME");
+        Intent i = new Intent(this, Home.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
+        finish(); //Finish this activity so that user cannot come back to this activity
     }
 }
