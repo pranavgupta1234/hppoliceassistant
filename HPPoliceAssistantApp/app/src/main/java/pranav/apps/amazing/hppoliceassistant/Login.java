@@ -41,10 +41,22 @@ public class Login extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*
+        If user did not logout from last session then directly take him to login screen instead of
+        prompting for login details again.
+         */
         if(isLoggedIn()) {
             goToHomeScreen();
         }
         setContentView(R.layout.login);
+
+        /*
+        Break down following code into three parts:
+        TODO: setDistrictSpinner()
+        TODO: setPoliceStationSpinner()
+        TODO: setPolicePostSpinner()
+        TODO: logIn()
+         */
         login = (Button)findViewById(R.id.login);
         district = (Spinner) findViewById(R.id.district);
         police_station = (Spinner) findViewById(R.id.police_station);
