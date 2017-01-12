@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
  * Created by Pranav Gupta on 12/10/2016.
  * This Class is for Logging in into app
  * On Successfully logging in it launches ??? Activity
- * This Activity is launched by Splash Activity
+ * This Activity is first activity that is launched
  */
 
 public class Login extends Activity{
