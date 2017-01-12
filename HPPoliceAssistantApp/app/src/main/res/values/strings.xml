@@ -6,6 +6,7 @@
     <string name="stolen_vehicle"><b>Stolen Vehicle</b></string>
     <string name="offences"><b>OFFENCES</b></string>
     <string name="district">district</string>
+    <string name="is_logged_in">isLoggedIn</string>
     <string-array name="district">
         <item>Select District</item>
         <item>Kinnaur</item>
@@ -79,4 +80,6 @@
         <item>Select PolicePost</item>
         <item>PP Pangi</item>
     </string-array>
+
+
 </resources>

@@ -1,7 +1,9 @@
 package pranav.apps.amazing.hppoliceassistant;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
  * Created by Pranav Gupta on 12/10/2016.
  * This Class is for Logging in into app
  * On Successfully logging in it launches ??? Activity
- * This Activity is launched by ???? Activity
+ * This Activity is launched by Splash Activity
  */
 
 public class Login extends Activity{
@@ -38,6 +40,10 @@ public class Login extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(isLoggedIn()) {
+            goToHomeScreen();
+        }
         setContentView(R.layout.login);
         login = (Button)findViewById(R.id.login);
         district = (Spinner) findViewById(R.id.district);
@@ -231,8 +237,7 @@ public class Login extends Activity{
                                                 }
                                                 if (auth.contentEquals("1")) {
                                                     progressDialog.dismiss();
-                                                    Intent i = new Intent("pranav.apps.amazing.hppoliceassistant.HOME");
-                                                    startActivity(i);
+                                                    goToHomeScreen();
                                                 }
                                             }
                                         }
@@ -253,5 +258,18 @@ public class Login extends Activity{
                 }
             }
         });
+    }
+
+    //Returns whether user was already logged into app or not.
+    //Returns true if user was logged in last time
+    //false if user had logged out last time or did not sign in yet (even for first time)
+    public boolean isLoggedIn() {
+        SharedPreferences sharedPref = getSharedPreferences("userSettings", Context.MODE_PRIVATE);
+        return sharedPref.getBoolean(getString(R.string.is_logged_in), false); //Default "false" because if this string does not exist yet then it means user did not sign in even for once.
+    }
+
+    private void goToHomeScreen() {
+        Intent i = new Intent("pranav.apps.amazing.hppoliceassistant.HOME");
+        startActivity(i);
     }
 }
