@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,6 +33,7 @@ public class Login extends Activity{
     private FirebaseDatabase database;
     private Button login;
     private DatabaseReference rootRef, dRef, nRef;
+    private SessionManager sessionManager;
     Spinner district, police_station, police_post;
     String selected_district = "none", selected_police_station = "none", selected_police_post = "none";
     EditText login_name, login_password;
@@ -40,15 +42,15 @@ public class Login extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*
+        setContentView(R.layout.login);
+       /*
         If user did not logout from last session then directly take him to login screen instead of
         prompting for login details again.
          */
-        if(isLoggedIn()) {
-            goToHomeScreen();
+        sessionManager = new SessionManager(Login.this);
+        if(sessionManager.isLoggedIn()){
+           startActivity(new Intent(this,Home.class));
         }
-        setContentView(R.layout.login);
 
         /*
         Break down following code into three parts:
@@ -206,6 +208,11 @@ public class Login extends Activity{
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
                 progressDialog.setMessage("Checking...");
                 progressDialog.show();
                 name = login_name.getText().toString().trim();
@@ -250,6 +257,7 @@ public class Login extends Activity{
                                                 if (auth.contentEquals("1")) {
                                                     progressDialog.dismiss();
                                                     goToHomeScreen();
+                                                    sessionManager.createLoginSession("null","null");
                                                 }
                                             }
                                         }
@@ -271,15 +279,7 @@ public class Login extends Activity{
             }
         });
     }
-
-    //Returns whether user was already logged into app or not.
-    //Returns true if user was logged in last time
-    //false if user had logged out last time or did not sign in yet (even for first time)
-    public boolean isLoggedIn() {
-        SharedPreferences sharedPref = getSharedPreferences("userSettings", Context.MODE_PRIVATE);
-        return sharedPref.getBoolean(getString(R.string.is_logged_in), false); //Default "false" because if this string does not exist yet then it means user did not sign in even for once.
-    }
-
+    
     /**
      * This method takes user to home screen and finishes this activity
      */

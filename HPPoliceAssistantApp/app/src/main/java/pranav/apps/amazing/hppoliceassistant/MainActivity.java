@@ -40,12 +40,13 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
     private SearchView search;
+    private SessionManager sessionManager;
     private int a;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
-
+        sessionManager = new SessionManager(MainActivity.this);
        // search = (SearchView)findViewById(R.id.search_view);
         //ActionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.logout:
                         mDrawerLayout.closeDrawers();
+                        sessionManager.logoutUser();
                         Intent intent = new Intent(MainActivity.this,Login.class);
                         intent.putExtra("finish", true); // if you are checking for this in your other Activities
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -188,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.logout:
+                sessionManager.logoutUser();
                 Intent intent1 = new Intent(MainActivity.this,Login.class);
                 intent1.putExtra("finish", true); // if you are checking for this in your other Activities
                 intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
