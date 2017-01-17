@@ -38,7 +38,9 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -75,7 +77,6 @@ public class Challan extends Fragment {
     private ProgressDialog progressDialog1;
     private static final int CAMERA_REQUEST = 1888;
     private Uri imageUri;
-    private ValueCallback<Uri> mUploadMessage;
     int FILECHOOSER_RESULTCODE = 1888;
     private File actualImage;
     private Uri fileuri;
@@ -86,8 +87,8 @@ public class Challan extends Fragment {
 
     //object to store challan details
     private ChallanDetails challanDetails, challanDetailswithoutImage;
-
-
+    private String[] month = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
+    private String ampm = "AM";
 
     @Override
 
@@ -99,8 +100,6 @@ public class Challan extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
-
-
        // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mRootRef = new Firebase("https://hppoliceassistant.firebaseio.com/challan");
 
@@ -205,64 +204,57 @@ public class Challan extends Fragment {
                 if(restricted_park.isChecked()){
                     crime = crime+ "Restricted Area Parking,";
                 }
+                if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")
+                        || policeofficer_name.getText().toString().contentEquals("")){
+                    Toast.makeText(getActivity(),"Fields are empty",Toast.LENGTH_SHORT).show();
+                    veh_number.setError("Field can not be empty");
+                    place_name.setError("Fiels can not be empty");
+                    policeofficer_name.setError("Field can not be empty");
+                }
+                else {
 
-                challanDetailswithoutImage = new ChallanDetails(violator_name.getText().toString(),
-                        crime,owner_name.getText().toString(),violator_address.getText().toString(),
-                        veh_number.getText().toString(),place_name.getText().toString(),
-                        offence_section.getText().toString(),challan_amount.getText().toString(),
-                        license_number.getText().toString(),policeofficer_name.getText().toString(),
-                        "disrict","policeStation",other.getText().toString(),"null",
-                        violator_number.getText().toString(),date.getText().toString(),time.getText().toString());
+                    challanDetailswithoutImage = new ChallanDetails(violator_name.getText().toString(),
+                            crime, owner_name.getText().toString(), violator_address.getText().toString(),
+                            veh_number.getText().toString(), place_name.getText().toString(),
+                            offence_section.getText().toString(), challan_amount.getText().toString(),
+                            license_number.getText().toString(), policeofficer_name.getText().toString(),
+                            "disrict", "policeStation", other.getText().toString(), "null",
+                            violator_number.getText().toString(), date.getText().toString(), time.getText().toString());
 
-                //instantiate dialog box
-                customDialog = new CustomDialog(getActivity(),challanDetailswithoutImage);
-                //customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                customDialog.setTitle("Challan Details");
-                customDialog.setCancelable(true);
-                customDialog.show();
-                customDialog.findViewById(R.id.offline).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //local DB
-                        final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
-                        challanDetailswithoutImage.setStatus(0);
-                        if(dbManagerChallan.addChallan(challanDetailswithoutImage)){
-                            Toast.makeText(getActivity(),"Challan Added Offline! Make sure to add it online!",Toast.LENGTH_SHORT).show();
+                    //instantiate dialog box
+                    customDialog = new CustomDialog(getActivity(), challanDetailswithoutImage);
+                    //customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    customDialog.setTitle("Challan Details");
+                    customDialog.setCancelable(true);
+                    customDialog.show();
+                    customDialog.findViewById(R.id.offline).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //local DB
+                            final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(), null, null, 1);
+                            challanDetailswithoutImage.setStatus(0);
+                            Calendar c = Calendar.getInstance();
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                            String strDate = sdf.format(c.getTime());
+                            challanDetailswithoutImage.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
+                            if(Integer.valueOf(strDate.substring(11,13))>12){
+                               ampm = "PM";
+                            }
+                            challanDetailswithoutImage.setTime(strDate.substring(10,strDate.length())+" "+ampm);
+                            if (dbManagerChallan.addChallan(challanDetailswithoutImage)) {
+                                Toast.makeText(getActivity(), "Challan Added Offline! Make sure to add it online!", Toast.LENGTH_SHORT).show();
+                                customDialog.dismiss();
+                            }
+                        }
+                    });
+                    customDialog.findViewById(R.id.submit_challan).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startPosting();
                             customDialog.dismiss();
                         }
-                    }
-                });
-                customDialog.findViewById(R.id.submit_challan).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startPosting();
-                        customDialog.dismiss();
-                    }
-                });
-
-
-                //nak.setText("Done");
-                /*
-                UUID idOne = UUID.randomUUID();
-                UUID idTwo = UUID.randomUUID();
-                UUID idThree = UUID.randomUUID();
-                UUID idFour = UUID.randomUUID();
-                String time = idOne.toString().replace("-", "");
-                String time2 = idTwo.toString().replace("-", "");
-                String time3 = idThree.toString().replace("-", "");
-                String time4 = idFour.toString().replace("-", "");
-                StringBuffer data = new StringBuffer();
-                data.append(time);
-                data.append(time2);
-                data.append(time3);
-                data.append(time4);
-
-                SecureRandom random = new SecureRandom();
-                int beginIndex = random.nextInt(100);       //Begin index + length of your string < data length
-                int endIndex = beginIndex + 10;            //Length of string which you want
-                String ID = data.substring(beginIndex, endIndex);
-                Firebase idChild = mRootRef.child(ID);
-                */
+                    });
+                }
             }
         });
         upload_photo.setOnClickListener(new View.OnClickListener() {
@@ -412,11 +404,6 @@ public class Challan extends Fragment {
     public void showError(String errorMessage) {
         Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
     }
-
-    private int getRandomColor() {
-        Random rand = new Random();
-        return Color.argb(100, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-    }
     /*private void clearImage() {
         actualImageView.setBackgroundColor(getRandomColor());
         compressedImageView.setImageDrawable(null);
@@ -470,40 +457,4 @@ public class Challan extends Fragment {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
     }
-    private void showAttachmentDialog(ValueCallback<Uri> uploadMsg) {
-        this.mUploadMessage = uploadMsg;
-
-        File imageStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyApp");
-        // Create the storage directory if it does not exist
-        if (! imageStorageDir.exists()){
-            imageStorageDir.mkdirs();
-        }
-        File file = new File(imageStorageDir + File.separator + "IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
-
-
-        this.imageUri= Uri.fromFile(file);
-
-
-        final List<Intent> cameraIntents = new ArrayList<Intent>();
-        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        final PackageManager packageManager = getActivity().getPackageManager();
-        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
-        for(ResolveInfo res : listCam) {
-            final String packageName = res.activityInfo.packageName;
-            final Intent intent = new Intent(captureIntent);
-            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-            intent.setPackage(packageName);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            cameraIntents.add(intent);
-        }
-
-        // mUploadMessage = uploadMsg;
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        Intent chooserIntent = Intent.createChooser(intent,"Image Chooser");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
-        this.startActivityForResult(chooserIntent,  FILECHOOSER_RESULTCODE);
-    }
-
 }
