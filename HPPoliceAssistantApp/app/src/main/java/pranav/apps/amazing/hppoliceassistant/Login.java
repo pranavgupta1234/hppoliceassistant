@@ -279,7 +279,7 @@ public class Login extends Activity{
             }
         });
     }
-    
+
     /**
      * This method takes user to home screen and finishes this activity
      */
