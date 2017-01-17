@@ -64,7 +64,7 @@ public class Challan extends Fragment {
             idle_parking,restricted_park;
     private EditText other,offence_section,veh_number,place_name,challan_amount,naka_name,owner_name,violator_name
             ,violator_address,license_number,policeofficer_name,violator_number;
-    private TextView date,time;
+    String date_auto,time_auto;
     private Button submit,reset;
     private ImageView upload_photo;
     private TextView nak;
@@ -132,8 +132,6 @@ public class Challan extends Fragment {
         license_number=(EditText)view.findViewById(R.id.license_number);
         challan_amount=(EditText)view.findViewById(R.id.challan_amount);
         violator_number=(EditText)view.findViewById(R.id.violator_number);
-        date=(TextView)view.findViewById(R.id.date_picker);
-        time=(TextView)view.findViewById(R.id.time_picker);
 
         upload_photo=(ImageView) view.findViewById(R.id.upload_photo);
         reset=(Button)view.findViewById(R.id.reset);
@@ -142,21 +140,6 @@ public class Challan extends Fragment {
         nak=(TextView)view.findViewById(R.id.nak_name);
         mStorage = FirebaseStorage.getInstance().getReference();
         submit=(Button)view.findViewById(R.id.submit);
-
-
-        time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showTimePickerDialog(view);
-            }
-        });
-        date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog(view);
-            }
-        });
-
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,7 +202,7 @@ public class Challan extends Fragment {
                             offence_section.getText().toString(), challan_amount.getText().toString(),
                             license_number.getText().toString(), policeofficer_name.getText().toString(),
                             "disrict", "policeStation", other.getText().toString(), "null",
-                            violator_number.getText().toString(), date.getText().toString(), time.getText().toString());
+                            violator_number.getText().toString(),"will be filled","will be filled");
 
                     //instantiate dialog box
                     customDialog = new CustomDialog(getActivity(), challanDetailswithoutImage);
@@ -285,9 +268,17 @@ public class Challan extends Fragment {
                     veh_number.getText().toString(),place_name.getText().toString(),
                     offence_section.getText().toString(),challan_amount.getText().toString(),
                     license_number.getText().toString(),policeofficer_name.getText().toString(),
-                    "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString());
+                    "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"willbefilled","willbefilled");
                     //local DB
             challanDetails.setStatus(1);
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String strDate = sdf.format(c.getTime());
+            challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
+            if(Integer.valueOf(strDate.substring(11,13))>12){
+                ampm = "PM";
+            }
+            challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     if(dbManagerChallan.addChallan(challanDetails)){
                     Toast.makeText(getActivity(),"Challan Added !",Toast.LENGTH_SHORT).show();
@@ -313,8 +304,16 @@ public class Challan extends Fragment {
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
                             license_number.getText().toString(),policeofficer_name.getText().toString(),
-                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString(),1);
+                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",1);
                     //local DB
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    String strDate = sdf.format(c.getTime());
+                    challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
+                    if(Integer.valueOf(strDate.substring(11,13))>12){
+                        ampm = "PM";
+                    }
+                    challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     challanDetails.setStatus(1);
                     if(dbManagerChallan.addChallan(challanDetails)){
@@ -334,8 +333,16 @@ public class Challan extends Fragment {
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
                             license_number.getText().toString(),policeofficer_name.getText().toString(),
-                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),date.getText().toString(),time.getText().toString(),0);
+                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",0);
                     //local DB
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    String strDate = sdf.format(c.getTime());
+                    challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
+                    if(Integer.valueOf(strDate.substring(11,13))>12){
+                        ampm = "PM";
+                    }
+                    challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     if(dbManagerChallan.addChallan(challanDetails)){
                         Toast.makeText(getActivity(),"Challan Added Offline!",Toast.LENGTH_SHORT).show();
@@ -433,8 +440,6 @@ public class Challan extends Fragment {
         license_number.setText("");
         policeofficer_name.setText("");
         violator_number.setText("");
-        time.setText("fill time here");
-        date.setText("fill date here");
         helmet.setChecked(false);
         rc.setChecked(false);
         insurance.setChecked(false);
@@ -448,13 +453,5 @@ public class Challan extends Fragment {
         idle_parking.setChecked(false);
         restricted_park.setChecked(false);
 
-    }
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(),"datePicker");
-    }
-    public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(), "timePicker");
     }
 }
