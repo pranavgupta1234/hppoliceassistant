@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -283,7 +284,17 @@ public class Challan extends Fragment {
                     if(dbManagerChallan.addChallan(challanDetails)){
                     Toast.makeText(getActivity(),"Challan Added !",Toast.LENGTH_SHORT).show();
                     }
-            idChild.setValue(challanDetails);
+            idChild.setValue(challanDetails, new Firebase.CompletionListener() {
+                @Override
+                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                    if(firebaseError!= null){
+                        Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
 
         }
@@ -319,7 +330,17 @@ public class Challan extends Fragment {
                     if(dbManagerChallan.addChallan(challanDetails)){
                         Toast.makeText(getActivity(),"Challan Added Offline !",Toast.LENGTH_SHORT).show();
                     }
-                    idChild.setValue(challanDetails);
+                    idChild.setValue(challanDetails, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            if(firebaseError!= null){
+                                Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                     progressDialog1.dismiss();
                 }
             }).addOnFailureListener(new OnFailureListener() {
