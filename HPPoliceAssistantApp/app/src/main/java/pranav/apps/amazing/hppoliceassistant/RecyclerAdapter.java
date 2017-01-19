@@ -156,10 +156,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             time=(TextView)view.findViewById(R.id.time);
         }
         public void setImage(Context ctx,String image){
-            Picasso.with(ctx).load(image).fit().centerCrop().into(imageView);
+            Picasso.with(ctx).load(image).resize(120,180).centerCrop().into(imageView);
         }
         public void setImageDialog(Context ctx,String image,ImageView icon){
-            Picasso.with(ctx).load(image).fit().centerCrop().into(icon);
+            Picasso.with(ctx).load(image).fit().into(icon);
         }
 
         public void setImageDialogAlone(Context context, String image, ImageView icon,int position) {
@@ -167,7 +167,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 icon.setBackgroundResource(R.drawable.notavailable);
             }else{
                 icon.setBackgroundResource(R.drawable.loading);
-                Picasso.with(context).load(image).fit().centerCrop().into(icon);
+                Picasso.with(context).load(image).fit().into(icon);
             }
         }
     }
