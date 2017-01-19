@@ -114,7 +114,11 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
 
     public void setFilter(List<ChallanDetails> ch){
         challan = new ArrayList<>();
-        challan.addAll(ch);
+        int size = ch.size();
+        for(int i=0;i<ch.size();i++){
+            challan.add(0,ch.get(size));
+            size--;
+        }
         notifyDataSetChanged();
     }
 

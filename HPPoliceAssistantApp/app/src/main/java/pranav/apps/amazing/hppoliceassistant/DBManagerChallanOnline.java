@@ -101,14 +101,15 @@ public class DBManagerChallanOnline  extends SQLiteOpenHelper{
         //String[] strings = new String[cursor.getCount()];
         if(cursor.getCount()!=0) {
             while (!cursor.isAfterLast()) {
-                information.add(new ChallanDetails(cursor.getString(cursor.getColumnIndex("violator_name")), cursor.getString(cursor.getColumnIndex("offences")),
+                ChallanDetails challanDetails = new ChallanDetails(cursor.getString(cursor.getColumnIndex("violator_name")), cursor.getString(cursor.getColumnIndex("offences")),
                         cursor.getString(cursor.getColumnIndex("vehicle_owner_name")), cursor.getString(cursor.getColumnIndex("violator_address")),
                         cursor.getString(cursor.getColumnIndex("vehicle_number")), cursor.getString(cursor.getColumnIndex("name_of_place")),
                         cursor.getString(cursor.getColumnIndex("offences_section")), cursor.getString(cursor.getColumnIndex("challan_amount")),
                         cursor.getString(cursor.getColumnIndex("license_number")), cursor.getString(cursor.getColumnIndex("officer_name")),
                         "district","policeStation", cursor.getString(cursor.getColumnIndex("other_remarks")),
                         cursor.getString(cursor.getColumnIndex("image")), cursor.getString(cursor.getColumnIndex("violator_number")),
-                        cursor.getString(cursor.getColumnIndex("date")), cursor.getString(cursor.getColumnIndex("time")),cursor.getInt(cursor.getColumnIndex("status"))));
+                        cursor.getString(cursor.getColumnIndex("date")), cursor.getString(cursor.getColumnIndex("time")),cursor.getInt(cursor.getColumnIndex("status")));
+                information.add(0,challanDetails);
                 // information[i] = cursor.getString();
                 cursor.moveToNext();
             }

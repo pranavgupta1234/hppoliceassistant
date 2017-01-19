@@ -118,7 +118,11 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
 
     public void setFilter(List<VehicleEntry> vh){
         vehicleEntries = new ArrayList<>();
-        vehicleEntries.addAll(vh);
+        int size = vh.size();
+        for (int i=0;i<vh.size();i++){
+            vehicleEntries.add(0,vh.get(size));
+            size--;
+        }
         notifyDataSetChanged();
     }
 

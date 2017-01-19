@@ -60,7 +60,7 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
         recyclerview.addItemDecoration(dividerItemDecoration);
         dbManagerChallanOnline = new DBManagerChallanOnline(getActivity(),null,null,1);
         offlineList = dbManagerChallanOnline.showChallan();
-        myRef.addChildEventListener(new com.google.firebase.database.ChildEventListener() {
+        myRef.orderByKey().addChildEventListener(new com.google.firebase.database.ChildEventListener() {
             @Override
             public void onChildAdded(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
