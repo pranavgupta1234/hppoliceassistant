@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -62,7 +63,7 @@ public class Challan extends Fragment {
 
 
     //variables to be used
-    private Firebase mRootRef;
+    private Firebase mrootRef;
     private CheckBox helmet,rc,insurance,license,rash_drive,mobile,number_plate,horn,seat_belt,triple_riding,
             idle_parking,restricted_park;
     private EditText other,offence_section,veh_number,place_name,challan_amount,naka_name,owner_name,violator_name
@@ -83,6 +84,8 @@ public class Challan extends Fragment {
     int FILECHOOSER_RESULTCODE = 1888;
     private File actualImage;
     private Uri fileuri;
+    private FirebaseDatabase database;
+    private DatabaseReference mRootRef;
     private int PICK_IMAGE_REQUEST=1;
 
 
@@ -104,10 +107,12 @@ public class Challan extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
        // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        mRootRef = new Firebase("https://hppoliceassistant.firebaseio.com/challan");
+        mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/challan");
 
         View  view=  getActivity().getLayoutInflater().inflate(R.layout.challan,container,false);
 
+        database =FirebaseDatabase.getInstance();
+        mRootRef= database.getReference("challan");
 
         helmet=(CheckBox)view.findViewById(R.id.helmet);
         rc=(CheckBox)view.findViewById(R.id.rc);
@@ -260,11 +265,11 @@ public class Challan extends Fragment {
         return  view;
     }
     public void startPosting(){
-        final Firebase idChild = mRootRef.push();
+        final DatabaseReference idChild = mRootRef.push();
 
         if(uri == null){
-
-            Toast.makeText(getActivity(),"No Photo Selected, Uploading Data...",Toast.LENGTH_LONG).show();
+            progressDialog1.setMessage("No Photo Selected, Uploading Data...");
+            progressDialog1.show();
             download_url_string ="Photo not available";
             challanDetails = new ChallanDetails(violator_name.getText().toString(),
                     crime,owner_name.getText().toString(),violator_address.getText().toString(),
@@ -283,22 +288,23 @@ public class Challan extends Fragment {
             }
             challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
-                    if(dbManagerChallan.addChallan(challanDetails)){
-                    Toast.makeText(getActivity(),"Challan Added !",Toast.LENGTH_SHORT).show();
-                    }
-            idChild.setValue(challanDetails, new Firebase.CompletionListener() {
+                    dbManagerChallan.addChallan(challanDetails);
+            /**If you are using completion callback listener of Database reference then the instance for Firebase should also be
+             * of DatabaseReference and not of Firebase(initialised through url)
+             */
+            idChild.setValue(challanDetails, new DatabaseReference.CompletionListener() {
                 @Override
-                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                    if(firebaseError!= null){
-                        Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    if(databaseError== null){
+                        progressDialog1.dismiss();
+                        Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                        progressDialog1.dismiss();
+                        Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
                     }
                 }
             });
-            Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
-
         }
         if(uri!=null) {
             progressDialog1.setMessage("Uploading Image and Data....");
@@ -329,9 +335,7 @@ public class Challan extends Fragment {
                     challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     challanDetails.setStatus(1);
-                    if(dbManagerChallan.addChallan(challanDetails)){
-                        Toast.makeText(getActivity(),"Challan Added Offline !",Toast.LENGTH_SHORT).show();
-                    }
+                    dbManagerChallan.addChallan(challanDetails);
                     idChild.setValue(challanDetails, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

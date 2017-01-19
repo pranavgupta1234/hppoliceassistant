@@ -50,20 +50,20 @@ import static android.app.Activity.RESULT_OK;
  * Created by Pranav Gupta on 12/10/2016.
  */
 public class Entry_veh extends Fragment {
-    private Firebase mRootRef;
+    private Firebase mrootRef;
     private EditText veh,phone,description,place,naka,officer;
     private Button submit_det,reset;
     private ImageButton upload;
     private String path;
     private StorageReference mStorage,filepath;
-    private static final int GALLERY_INTENT =2;
     private ProgressDialog progressDialog,progressDialog1;
     private Uri uri=null,downloadUrl=null;
     private String download_url_string="";
-    private int ACTION_IMAGE_CAPTURE_ACTIVITY =1888;
     private VehicleEntry newEntry,newEntrywithoutImage;
     private VehicleEntryDialog vehicleEntryDialog;
     private File actualImage;
+    private FirebaseDatabase database;
+    private DatabaseReference mRootRef ;
     private int PICK_IMAGE_REQUEST=1;
     private String[] month = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
     private String ampm = "AM";
@@ -75,8 +75,9 @@ public class Entry_veh extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        mRootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
-
+        mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
+        database = FirebaseDatabase.getInstance();
+        mRootRef = database.getReference("vehicle_entry");
 
         View  view=  getActivity().getLayoutInflater().inflate(R.layout.entry,container,false);
 
@@ -166,7 +167,7 @@ public class Entry_veh extends Fragment {
     }
 
     private void startPosting() {
-        final Firebase idChild = mRootRef.push();
+        final DatabaseReference idChild = mRootRef.push();
 
         if(uri == null){
             progressDialog1.setMessage("Uploading data....");
@@ -188,9 +189,7 @@ public class Entry_veh extends Fragment {
                 ampm = "PM";
             }
             newEntry.setTime(strDate.substring(10,strDate.length())+" "+ampm);
-            if(dbManagerEntry.addEntry(newEntry)){
-                Toast.makeText(getActivity(),"Entry Added Offline!",Toast.LENGTH_SHORT).show();
-            }
+            dbManagerEntry.addEntry(newEntry);
             idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -232,9 +231,7 @@ public class Entry_veh extends Fragment {
                         ampm = "PM";
                     }
                     newEntry.setTime(strDate.substring(10,strDate.length())+" "+ampm);
-                    if(dbManagerEntry.addEntry(newEntry)){
-                        Toast.makeText(getActivity(),"Entry Added Offline!",Toast.LENGTH_SHORT).show();
-                    }
+                    dbManagerEntry.addEntry(newEntry);
                     idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
