@@ -65,11 +65,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
     public void setFilter(List<VehicleEntry> vh){
         vehicleEntry = new ArrayList<>();
-        int size = vh.size();
-        for(int i=0;i<vh.size();i++){
-            vehicleEntry.add(0,vh.get(size));
-            size--;
-        }
+        vehicleEntry.addAll(vh);
         notifyDataSetChanged();
     }
 

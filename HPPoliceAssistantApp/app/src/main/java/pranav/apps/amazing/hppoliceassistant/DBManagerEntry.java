@@ -71,12 +71,12 @@ public class DBManagerEntry extends SQLiteOpenHelper {
         //String[] strings = new String[cursor.getCount()];
         while(!cursor.isAfterLast()){
             //strings[i] = cursor.getString(cursor.getColumnIndex("list"));
-            entries.add(new VehicleEntry(cursor.getString(cursor.getColumnIndex("vehicle_number")),cursor.getString(cursor.getColumnIndex("phone_number")),
+            VehicleEntry vehicleEntry = new VehicleEntry(cursor.getString(cursor.getColumnIndex("vehicle_number")),cursor.getString(cursor.getColumnIndex("phone_number")),
                     cursor.getString(cursor.getColumnIndex("description")),cursor.getString(cursor.getColumnIndex("name_of_place")),
                     cursor.getString(cursor.getColumnIndex("naka_name")),cursor.getString(cursor.getColumnIndex("date")),
                     cursor.getString(cursor.getColumnIndex("time")),cursor.getString(cursor.getColumnIndex("officer_name")),
-                    cursor.getString(cursor.getColumnIndex("image")),cursor.getInt(cursor.getColumnIndex("status"))));
-
+                    cursor.getString(cursor.getColumnIndex("image")),cursor.getInt(cursor.getColumnIndex("status")));
+            entries.add(0,vehicleEntry);
             cursor.moveToNext();
         }
         cursor.close();

@@ -83,18 +83,18 @@ public class Stolen extends Fragment implements SearchView.OnQueryTextListener{
         recyclerView.setAdapter(adapter);*/
 
 
-        myRef.addChildEventListener(new com.google.firebase.database.ChildEventListener() {
+        myRef.orderByKey().addChildEventListener(new com.google.firebase.database.ChildEventListener() {
             @Override
             public void onChildAdded(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
                 newEntry  = dataSnapshot.getValue(VehicleEntry.class);
-                vehicleEntries.add(newEntry);
+                vehicleEntries.add(0,newEntry);
                 adapter.notifyDataSetChanged();
                 loading.setText("");
             }
             @Override
             public void onChildChanged(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
                 newEntry  = dataSnapshot.getValue(VehicleEntry.class);
-                vehicleEntries.add(newEntry);
+                vehicleEntries.add(0,newEntry);
                 adapter.notifyDataSetChanged();
                 loading.setText("");
             }
@@ -102,7 +102,7 @@ public class Stolen extends Fragment implements SearchView.OnQueryTextListener{
             @Override
             public void onChildRemoved(com.google.firebase.database.DataSnapshot dataSnapshot) {
                 newEntry  = dataSnapshot.getValue(VehicleEntry.class);
-                vehicleEntries.remove(newEntry);
+                vehicleEntries.add(0,newEntry);
                 adapter.notifyDataSetChanged();
                 loading.setText("");
             }
