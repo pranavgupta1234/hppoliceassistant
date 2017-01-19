@@ -26,6 +26,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -167,6 +169,8 @@ public class Entry_veh extends Fragment {
         final Firebase idChild = mRootRef.push();
 
         if(uri == null){
+            progressDialog1.setMessage("Uploading data....");
+            progressDialog1.show();
             Toast.makeText(getActivity(),"No Photo Selected, uploading data...",Toast.LENGTH_LONG).show();
             download_url_string ="Photo not available";
 
@@ -187,14 +191,16 @@ public class Entry_veh extends Fragment {
             if(dbManagerEntry.addEntry(newEntry)){
                 Toast.makeText(getActivity(),"Entry Added Offline!",Toast.LENGTH_SHORT).show();
             }
-            idChild.setValue(newEntry, new Firebase.CompletionListener() {
+            idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                 @Override
-                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                    if(firebaseError!= null){
-                        Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    if(databaseError== null){
+                        progressDialog1.dismiss();
+                        Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                        progressDialog1.dismiss();
+                        Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -229,19 +235,19 @@ public class Entry_veh extends Fragment {
                     if(dbManagerEntry.addEntry(newEntry)){
                         Toast.makeText(getActivity(),"Entry Added Offline!",Toast.LENGTH_SHORT).show();
                     }
-                    idChild.setValue(newEntry, new Firebase.CompletionListener() {
+                    idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                         @Override
-                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            if(firebaseError!= null){
-                                Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError== null){
+                                progressDialog1.dismiss();
+                                Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                                progressDialog1.dismiss();
+                                Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
                             }
                         }
                     });
-
-                    progressDialog1.dismiss();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

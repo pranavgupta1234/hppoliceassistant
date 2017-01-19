@@ -32,6 +32,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -330,18 +332,19 @@ public class Challan extends Fragment {
                     if(dbManagerChallan.addChallan(challanDetails)){
                         Toast.makeText(getActivity(),"Challan Added Offline !",Toast.LENGTH_SHORT).show();
                     }
-                    idChild.setValue(challanDetails, new Firebase.CompletionListener() {
+                    idChild.setValue(challanDetails, new DatabaseReference.CompletionListener() {
                         @Override
-                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            if(firebaseError!= null){
-                                Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError== null){
+                                progressDialog1.dismiss();
+                                Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                                progressDialog1.dismiss();
+                                Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
                             }
                         }
                     });
-                    progressDialog1.dismiss();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
