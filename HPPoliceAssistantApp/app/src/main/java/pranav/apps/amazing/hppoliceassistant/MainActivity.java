@@ -202,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
     private class CustomAdapter extends FragmentPagerAdapter {
         private String fragments[]={"Entry","Challan","Stolen","Search"};
         public CustomAdapter(FragmentManager supportFragmentManager, Context applicationContext) {

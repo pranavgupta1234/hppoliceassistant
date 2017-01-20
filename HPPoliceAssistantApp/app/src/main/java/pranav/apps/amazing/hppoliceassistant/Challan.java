@@ -67,7 +67,7 @@ public class Challan extends Fragment {
     private CheckBox helmet,rc,insurance,license,rash_drive,mobile,number_plate,horn,seat_belt,triple_riding,
             idle_parking,restricted_park;
     private EditText other,offence_section,veh_number,place_name,challan_amount,naka_name,owner_name,violator_name
-            ,violator_address,license_number,policeofficer_name,violator_number;
+            ,violator_address,license_number,violator_number;
     String date_auto,time_auto;
     private Button submit,reset;
     private ImageView upload_photo;
@@ -95,6 +95,7 @@ public class Challan extends Fragment {
     private ChallanDetails challanDetails, challanDetailswithoutImage;
     private String[] month = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
     private String ampm = "AM";
+    String off_name;
 
     @Override
 
@@ -114,6 +115,7 @@ public class Challan extends Fragment {
         database =FirebaseDatabase.getInstance();
         mRootRef= database.getReference("challan");
 
+        off_name = getActivity().getIntent().getStringExtra("name");
         helmet=(CheckBox)view.findViewById(R.id.helmet);
         rc=(CheckBox)view.findViewById(R.id.rc);
         insurance=(CheckBox)view.findViewById(R.id.insurance);
@@ -133,7 +135,6 @@ public class Challan extends Fragment {
         veh_number=(EditText)view.findViewById(R.id.vehicle_number);
         place_name=(EditText)view.findViewById(R.id.place_name);
         naka_name=(EditText)view.findViewById(R.id.naka_name);
-        policeofficer_name=(EditText)view.findViewById(R.id.officer_name);
         owner_name=(EditText)view.findViewById(R.id.vehicle_owner_name);
         violator_name=(EditText)view.findViewById(R.id.violator_name);
         violator_address=(EditText)view.findViewById(R.id.violator_address);
@@ -195,12 +196,10 @@ public class Challan extends Fragment {
                 if(restricted_park.isChecked()){
                     crime = crime+ "Restricted Area Parking,";
                 }
-                if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")
-                        || policeofficer_name.getText().toString().contentEquals("")){
+                if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")){
                     Toast.makeText(getActivity(),"Fields are empty",Toast.LENGTH_SHORT).show();
                     veh_number.setError("Field can not be empty");
                     place_name.setError("Fiels can not be empty");
-                    policeofficer_name.setError("Field can not be empty");
                 }
                 else {
 
@@ -208,7 +207,7 @@ public class Challan extends Fragment {
                             crime, owner_name.getText().toString(), violator_address.getText().toString(),
                             veh_number.getText().toString(), place_name.getText().toString(),
                             offence_section.getText().toString(), challan_amount.getText().toString(),
-                            license_number.getText().toString(), policeofficer_name.getText().toString(),
+                            license_number.getText().toString(), off_name,
                             "disrict", "policeStation", other.getText().toString(), "null",
                             violator_number.getText().toString(),"will be filled","will be filled");
 
@@ -275,7 +274,7 @@ public class Challan extends Fragment {
                     crime,owner_name.getText().toString(),violator_address.getText().toString(),
                     veh_number.getText().toString(),place_name.getText().toString(),
                     offence_section.getText().toString(),challan_amount.getText().toString(),
-                    license_number.getText().toString(),policeofficer_name.getText().toString(),
+                    license_number.getText().toString(),off_name,
                     "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"willbefilled","willbefilled");
                     //local DB
             challanDetails.setStatus(1);
@@ -322,7 +321,7 @@ public class Challan extends Fragment {
                             crime,owner_name.getText().toString(),violator_address.getText().toString(),
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
-                            license_number.getText().toString(),policeofficer_name.getText().toString(),
+                            license_number.getText().toString(),off_name,
                             "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",1);
                     //local DB
                     Calendar c = Calendar.getInstance();
@@ -360,7 +359,7 @@ public class Challan extends Fragment {
                             crime,owner_name.getText().toString(),violator_address.getText().toString(),
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
-                            license_number.getText().toString(),policeofficer_name.getText().toString(),
+                            license_number.getText().toString(),off_name,
                             "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",0);
                     //local DB
                     Calendar c = Calendar.getInstance();
@@ -466,7 +465,6 @@ public class Challan extends Fragment {
         violator_name.setText("");
         violator_address.setText("");
         license_number.setText("");
-        policeofficer_name.setText("");
         violator_number.setText("");
         helmet.setChecked(false);
         rc.setChecked(false);

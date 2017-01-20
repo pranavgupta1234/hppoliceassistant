@@ -18,6 +18,7 @@ import android.widget.Toast;
 public class Home extends Activity{
     private ImageButton entry,challan,stolen_list,search_vehicle;
     boolean doubleBackToExitPressedOnce = false;
+    private String name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,11 +27,15 @@ public class Home extends Activity{
         challan =(ImageButton)findViewById(R.id.challan_iv);
         stolen_list =(ImageButton)findViewById(R.id.stolen_vehicle_iv);
         search_vehicle =(ImageButton)findViewById(R.id.a_iv);
+        Intent i = getIntent();
+        name = i.getStringExtra("name");
+        Toast.makeText(Home.this,"Welcome "+name,Toast.LENGTH_SHORT).show();
         entry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Home.this,MainActivity.class);
                 i.putExtra("Tag", "0");
+                i.putExtra("name",name);
                 startActivity(i);
             }
         });
@@ -39,6 +44,7 @@ public class Home extends Activity{
             public void onClick(View view) {
                 Intent i = new Intent(Home.this,MainActivity.class);
                 i.putExtra("Tag","1");
+                i.putExtra("name",name);
                 startActivity(i);
             }
         });
@@ -47,6 +53,7 @@ public class Home extends Activity{
             public void onClick(View view) {
                 Intent i = new Intent(Home.this,MainActivity.class);
                 i.putExtra("Tag","2");
+                i.putExtra("name",name);
                 startActivity(i);
             }
         });
@@ -55,6 +62,7 @@ public class Home extends Activity{
             public void onClick(View view) {
                 Intent i = new Intent(Home.this,MainActivity.class);
                 i.putExtra("Tag","3");
+                i.putExtra("name",name);
                 startActivity(i);
             }
         });
