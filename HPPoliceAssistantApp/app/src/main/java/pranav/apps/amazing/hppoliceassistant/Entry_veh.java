@@ -107,10 +107,12 @@ public class Entry_veh extends Fragment {
         submit_det.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (veh.getText().toString().trim().contentEquals("") || place.getText().toString().trim().contentEquals("")) {
+                if (veh.getText().toString().trim().contentEquals("") || place.getText().toString().trim().contentEquals("")
+                        ||phone.getText().length()!=10) {
                     Toast.makeText(getActivity(), "Fields are empty", Toast.LENGTH_SHORT).show();
                     veh.setError("Field can not be empty");
                     place.setError("Fiels can not be empty");
+                    phone.setError("Invalid Phone Number");
                 } else {
 
                     newEntrywithoutImage = new VehicleEntry(veh.getText().toString(), phone.getText().toString(), description.getText().toString(), place.getText().toString(),

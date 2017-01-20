@@ -196,10 +196,12 @@ public class Challan extends Fragment {
                 if(restricted_park.isChecked()){
                     crime = crime+ "Restricted Area Parking,";
                 }
-                if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")){
+                if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")
+                        ||violator_number.getText().toString().length()!=10){
                     Toast.makeText(getActivity(),"Fields are empty",Toast.LENGTH_SHORT).show();
                     veh_number.setError("Field can not be empty");
                     place_name.setError("Fiels can not be empty");
+                    violator_number.setError("Invalid Phone Number");
                 }
                 else {
 
