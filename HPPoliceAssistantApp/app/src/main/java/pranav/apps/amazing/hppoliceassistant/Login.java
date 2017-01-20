@@ -257,7 +257,7 @@ public class Login extends Activity{
                                                 if (auth.contentEquals("1")) {
                                                     progressDialog.dismiss();
                                                     goToHomeScreen();
-                                                    sessionManager.createLoginSession("null","null");
+                                                    sessionManager.createLoginSession(login_name.getText().toString(),"null");
                                                 }
                                             }
                                         }
@@ -286,7 +286,7 @@ public class Login extends Activity{
     private void goToHomeScreen() {
         Intent i = new Intent(this, Home.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.putExtra("name",login_name.getText().toString());
+        //i.putExtra("name",login_name.getText().toString());
         startActivity(i);
         finish(); //Finish this activity so that user cannot come back to this activity
     }

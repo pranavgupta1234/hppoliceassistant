@@ -19,6 +19,7 @@ public class Home extends Activity{
     private ImageButton entry,challan,stolen_list,search_vehicle;
     boolean doubleBackToExitPressedOnce = false;
     private String name;
+    private SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +28,8 @@ public class Home extends Activity{
         challan =(ImageButton)findViewById(R.id.challan_iv);
         stolen_list =(ImageButton)findViewById(R.id.stolen_vehicle_iv);
         search_vehicle =(ImageButton)findViewById(R.id.a_iv);
-        Intent i = getIntent();
-        name = i.getStringExtra("name");
+        sessionManager = new SessionManager(Home.this);
+        name = sessionManager.getUserName();
         Toast.makeText(Home.this,"Welcome "+name,Toast.LENGTH_SHORT).show();
         entry.setOnClickListener(new View.OnClickListener() {
             @Override
