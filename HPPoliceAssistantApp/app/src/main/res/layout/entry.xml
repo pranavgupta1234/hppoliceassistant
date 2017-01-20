@@ -85,23 +85,6 @@
         android:padding="12dp"
         android:id="@+id/place"/>
     <TextView
-        android:text="Police Officer Name"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"/>
-    <EditText
-        android:hint="fill officer name here"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLength="16"
-        android:background="@drawable/custom_edittext"
-        android:padding="12dp"
-        android:layout_marginTop="3dp"
-        android:id="@+id/police_officer_name"/>
-    <TextView
         android:text="Naka Name"
         android:textColor="#000000"
         android:textStyle="bold"

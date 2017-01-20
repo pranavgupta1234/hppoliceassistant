@@ -51,7 +51,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class Entry_veh extends Fragment {
     private Firebase mrootRef;
-    private EditText veh,phone,description,place,naka,officer;
+    private EditText veh,phone,description,place,naka;
     private Button submit_det,reset;
     private ImageButton upload;
     private String path;
@@ -67,6 +67,7 @@ public class Entry_veh extends Fragment {
     private int PICK_IMAGE_REQUEST=1;
     private String[] month = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
     private String ampm = "AM";
+    private String off_name;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -80,7 +81,7 @@ public class Entry_veh extends Fragment {
         mRootRef = database.getReference("vehicle_entry");
 
         View  view=  getActivity().getLayoutInflater().inflate(R.layout.entry,container,false);
-
+        off_name = getActivity().getIntent().getStringExtra("name");
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog1 = new ProgressDialog(getActivity());
@@ -90,7 +91,6 @@ public class Entry_veh extends Fragment {
         description=(EditText)view.findViewById(R.id.description);
         place=(EditText)view.findViewById(R.id.place);
         naka=(EditText)view.findViewById(R.id.naka);
-        officer=(EditText)view.findViewById(R.id.police_officer_name);
 
 
         upload=(ImageButton)view.findViewById(R.id.upload);
@@ -107,16 +107,14 @@ public class Entry_veh extends Fragment {
         submit_det.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (veh.getText().toString().trim().contentEquals("") || place.getText().toString().trim().contentEquals("")
-                        || officer.getText().toString().contentEquals("")) {
+                if (veh.getText().toString().trim().contentEquals("") || place.getText().toString().trim().contentEquals("")) {
                     Toast.makeText(getActivity(), "Fields are empty", Toast.LENGTH_SHORT).show();
                     veh.setError("Field can not be empty");
                     place.setError("Fiels can not be empty");
-                    officer.setError("Field can not be empty");
                 } else {
 
                     newEntrywithoutImage = new VehicleEntry(veh.getText().toString(), phone.getText().toString(), description.getText().toString(), place.getText().toString(),
-                            naka.getText().toString(), "", "", officer.getText().toString(), "null");
+                            naka.getText().toString(), "", "", off_name, "null");
                     vehicleEntryDialog = new VehicleEntryDialog(getActivity(), newEntrywithoutImage);
                     vehicleEntryDialog.setTitle("Entry Details");
                     vehicleEntryDialog.setCancelable(true);
@@ -178,7 +176,7 @@ public class Entry_veh extends Fragment {
             newEntry = new VehicleEntry(veh.getText().toString(),phone.getText().toString(),
                     description.getText().toString(),place.getText().toString(),
                     naka.getText().toString(),"","",
-                    officer.getText().toString(),download_url_string);
+                    off_name,download_url_string);
             DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(),null,null,1);
             newEntry.setStatus(1);
             Calendar c = Calendar.getInstance();
@@ -220,7 +218,7 @@ public class Entry_veh extends Fragment {
                     newEntry = new VehicleEntry(veh.getText().toString(),phone.getText().toString(),
                             description.getText().toString(),place.getText().toString(),
                             naka.getText().toString(),"","",
-                            officer.getText().toString(),download_url_string);
+                            off_name,download_url_string);
                     DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(),null,null,1);
                     newEntry.setStatus(1);
                     Calendar c = Calendar.getInstance();
@@ -343,6 +341,5 @@ public class Entry_veh extends Fragment {
         description.setText("");
         place.setText("");
         naka.setText("");
-        officer.setText("");
     }
 }
