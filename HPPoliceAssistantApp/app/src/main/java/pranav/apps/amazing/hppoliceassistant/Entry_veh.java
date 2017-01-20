@@ -107,47 +107,49 @@ public class Entry_veh extends Fragment {
         submit_det.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (veh.getText().toString().trim().contentEquals("") || place.getText().toString().trim().contentEquals("")
-                        ||phone.getText().length()!=10) {
+                if (veh.getText().toString().trim().contentEquals("") || place.getText().toString().trim().contentEquals("")) {
                     Toast.makeText(getActivity(), "Fields are empty", Toast.LENGTH_SHORT).show();
                     veh.setError("Field can not be empty");
                     place.setError("Fiels can not be empty");
-                    phone.setError("Invalid Phone Number");
                 } else {
+                    if (phone.getText().toString().length() >= 1 && phone.getText().toString().length() < 10) {
+                        phone.setError("Invalid Phone Number");
+                    } else {
 
-                    newEntrywithoutImage = new VehicleEntry(veh.getText().toString(), phone.getText().toString(), description.getText().toString(), place.getText().toString(),
-                            naka.getText().toString(), "", "", off_name, "null");
-                    vehicleEntryDialog = new VehicleEntryDialog(getActivity(), newEntrywithoutImage);
-                    vehicleEntryDialog.setTitle("Entry Details");
-                    vehicleEntryDialog.setCancelable(true);
-                    vehicleEntryDialog.show();
-                    vehicleEntryDialog.findViewById(R.id.offline).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            newEntrywithoutImage.setStatus(0);
-                            Calendar c = Calendar.getInstance();
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                            String strDate = sdf.format(c.getTime());
-                            newEntrywithoutImage.setDate(strDate.substring(0, 2) + ", " + month[Integer.valueOf(strDate.substring(3, 4))] + " " + strDate.substring(6, 10));
-                            if (Integer.valueOf(strDate.substring(11, 13)) > 12) {
-                                ampm = "PM";
+                        newEntrywithoutImage = new VehicleEntry(veh.getText().toString(), phone.getText().toString(), description.getText().toString(), place.getText().toString(),
+                                naka.getText().toString(), "", "", off_name, "null");
+                        vehicleEntryDialog = new VehicleEntryDialog(getActivity(), newEntrywithoutImage);
+                        vehicleEntryDialog.setTitle("Entry Details");
+                        vehicleEntryDialog.setCancelable(true);
+                        vehicleEntryDialog.show();
+                        vehicleEntryDialog.findViewById(R.id.offline).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                newEntrywithoutImage.setStatus(0);
+                                Calendar c = Calendar.getInstance();
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                                String strDate = sdf.format(c.getTime());
+                                newEntrywithoutImage.setDate(strDate.substring(0, 2) + ", " + month[Integer.valueOf(strDate.substring(3, 4))] + " " + strDate.substring(6, 10));
+                                if (Integer.valueOf(strDate.substring(11, 13)) > 12) {
+                                    ampm = "PM";
+                                }
+                                newEntrywithoutImage.setTime(strDate.substring(10, strDate.length()) + " " + ampm);
+                                DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(), null, null, 1);
+                                if (dbManagerEntry.addEntry(newEntrywithoutImage)) {
+                                    Toast.makeText(getActivity(), "Entry Added Offline!", Toast.LENGTH_SHORT).show();
+                                    vehicleEntryDialog.dismiss();
+                                }
                             }
-                            newEntrywithoutImage.setTime(strDate.substring(10, strDate.length()) + " " + ampm);
-                            DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(), null, null, 1);
-                            if (dbManagerEntry.addEntry(newEntrywithoutImage)) {
-                                Toast.makeText(getActivity(), "Entry Added Offline!", Toast.LENGTH_SHORT).show();
+                        });
+                        vehicleEntryDialog.findViewById(R.id.submit_challan).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                startPosting();
                                 vehicleEntryDialog.dismiss();
                             }
-                        }
-                    });
-                    vehicleEntryDialog.findViewById(R.id.submit_challan).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            startPosting();
-                            vehicleEntryDialog.dismiss();
-                        }
-                    });
+                        });
 
+                    }
                 }
             }
         });

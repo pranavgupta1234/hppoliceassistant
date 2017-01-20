@@ -196,56 +196,57 @@ public class Challan extends Fragment {
                 if(restricted_park.isChecked()){
                     crime = crime+ "Restricted Area Parking,";
                 }
-                if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")
-                        ||violator_number.getText().toString().length()!=10){
+                if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")){
                     Toast.makeText(getActivity(),"Fields are empty",Toast.LENGTH_SHORT).show();
                     veh_number.setError("Field can not be empty");
                     place_name.setError("Fiels can not be empty");
-                    violator_number.setError("Invalid Phone Number");
                 }
                 else {
+                    if (violator_number.getText().toString().length() >= 1 && violator_number.getText().toString().length() < 10) {
+                        violator_number.setError("Invalid Phone Number");
+                    } else {
+                        challanDetailswithoutImage = new ChallanDetails(violator_name.getText().toString(),
+                                crime, owner_name.getText().toString(), violator_address.getText().toString(),
+                                veh_number.getText().toString(), place_name.getText().toString(),
+                                offence_section.getText().toString(), challan_amount.getText().toString(),
+                                license_number.getText().toString(), off_name,
+                                "disrict", "policeStation", other.getText().toString(), "null",
+                                violator_number.getText().toString(), "will be filled", "will be filled");
 
-                    challanDetailswithoutImage = new ChallanDetails(violator_name.getText().toString(),
-                            crime, owner_name.getText().toString(), violator_address.getText().toString(),
-                            veh_number.getText().toString(), place_name.getText().toString(),
-                            offence_section.getText().toString(), challan_amount.getText().toString(),
-                            license_number.getText().toString(), off_name,
-                            "disrict", "policeStation", other.getText().toString(), "null",
-                            violator_number.getText().toString(),"will be filled","will be filled");
-
-                    //instantiate dialog box
-                    customDialog = new CustomDialog(getActivity(), challanDetailswithoutImage);
-                    //customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    customDialog.setTitle("Challan Details");
-                    customDialog.setCancelable(true);
-                    customDialog.show();
-                    customDialog.findViewById(R.id.offline).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //local DB
-                            final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(), null, null, 1);
-                            challanDetailswithoutImage.setStatus(0);
-                            Calendar c = Calendar.getInstance();
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                            String strDate = sdf.format(c.getTime());
-                            challanDetailswithoutImage.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
-                            if(Integer.valueOf(strDate.substring(11,13))>12){
-                               ampm = "PM";
+                        //instantiate dialog box
+                        customDialog = new CustomDialog(getActivity(), challanDetailswithoutImage);
+                        //customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        customDialog.setTitle("Challan Details");
+                        customDialog.setCancelable(true);
+                        customDialog.show();
+                        customDialog.findViewById(R.id.offline).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //local DB
+                                final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(), null, null, 1);
+                                challanDetailswithoutImage.setStatus(0);
+                                Calendar c = Calendar.getInstance();
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                                String strDate = sdf.format(c.getTime());
+                                challanDetailswithoutImage.setDate(strDate.substring(0, 2) + ", " + month[Integer.valueOf(strDate.substring(3, 4))] + " " + strDate.substring(6, 10));
+                                if (Integer.valueOf(strDate.substring(11, 13)) > 12) {
+                                    ampm = "PM";
+                                }
+                                challanDetailswithoutImage.setTime(strDate.substring(10, strDate.length()) + " " + ampm);
+                                if (dbManagerChallan.addChallan(challanDetailswithoutImage)) {
+                                    Toast.makeText(getActivity(), "Challan Added Offline! Make sure to add it online!", Toast.LENGTH_SHORT).show();
+                                    customDialog.dismiss();
+                                }
                             }
-                            challanDetailswithoutImage.setTime(strDate.substring(10,strDate.length())+" "+ampm);
-                            if (dbManagerChallan.addChallan(challanDetailswithoutImage)) {
-                                Toast.makeText(getActivity(), "Challan Added Offline! Make sure to add it online!", Toast.LENGTH_SHORT).show();
+                        });
+                        customDialog.findViewById(R.id.submit_challan).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                startPosting();
                                 customDialog.dismiss();
                             }
-                        }
-                    });
-                    customDialog.findViewById(R.id.submit_challan).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            startPosting();
-                            customDialog.dismiss();
-                        }
-                    });
+                        });
+                    }
                 }
             }
         });
