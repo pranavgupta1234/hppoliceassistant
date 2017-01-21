@@ -27,7 +27,7 @@
     <EditText
         android:hint="fill vehicle number here"
         android:layout_width="match_parent"
-        android:maxLength="12"
+        android:maxLength="16"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
@@ -64,6 +64,7 @@
         android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLength="60"
         android:background="@drawable/custom_edittext"
         android:padding="12dp"
         android:id="@+id/description"/>

@@ -39,8 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/license_number_text"
-        android:layout_marginStart="130dp"
-        android:layout_marginLeft="130dp"/>
+        android:layout_marginStart="140dp"
+        android:layout_marginLeft="140dp"/>
     <Button
         android:text="Details"
         android:layout_width="70dp"
@@ -58,8 +58,8 @@
         android:layout_height="wrap_content"
         android:text="License No"
         android:layout_below="@id/license_number_text"
-        android:layout_marginStart="130dp"
-        android:layout_marginLeft="130dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginLeft="140dp"
         android:textStyle="bold"
         android:textColor="#000000"
         android:textSize="16sp"/>
@@ -81,7 +81,8 @@
             android:textStyle="bold"
             android:layout_marginTop="6dp"
             android:layout_below="@id/license_number"
-            android:layout_marginLeft="130dp"
+            android:layout_marginLeft="140dp"
+            android:layout_marginStart="140dp"
             android:layout_height="wrap_content"
             android:textSize="16sp"/>
         <TextView

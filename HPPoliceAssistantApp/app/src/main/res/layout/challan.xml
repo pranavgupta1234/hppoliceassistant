@@ -520,6 +520,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/custom_edittext"
             android:padding="12dp"
+            android:maxLength="20"
             android:layout_marginTop="3dp"
             android:id="@+id/vehicle_owner_name"/>
         <TextView
@@ -663,6 +664,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/custom_edittext"
             android:padding="12dp"
+            android:maxLength="50"
             android:layout_marginTop="3dp"
             android:id="@+id/other_offence"/>
     <TextView
