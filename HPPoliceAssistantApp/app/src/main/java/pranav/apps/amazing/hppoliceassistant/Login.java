@@ -70,17 +70,12 @@ public class Login extends Activity{
         rootRef = database.getReference("login");
         nRef = database.getReference("authenticated_users");
         progressDialog = new ProgressDialog(Login.this);
-        ArrayAdapter<CharSequence> adapter_district = ArrayAdapter.createFromResource(this,
-                R.array.district,R.layout.spinner_layout);
-        // Specify the layout to use when the list of choices appears
-        adapter_district.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        district.setAdapter(adapter_district);
-        district.setSelection(0);
+
+        setDistrictDropdown();
+
         final ArrayAdapter<CharSequence> adapter_optionShow = ArrayAdapter.createFromResource(this,
                 R.array.option_station,R.layout.spinner_layout);
-        // Specify the layout to use when the list of choices appears
-        adapter_district.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         // Apply the adapter to the spinner
         police_station.setAdapter(adapter_optionShow);
         police_station.setSelection(0);
@@ -278,6 +273,26 @@ public class Login extends Activity{
                 }
             }
         });
+    }
+
+    /**
+     * This method sets the district dropdown(spinner) and populates it with the list of items from district array resource
+     */
+    private void setDistrictDropdown() {
+
+        /*Create an ArrayAdapter for all the districts for the districts dropdown*/
+        ArrayAdapter<CharSequence> districtArrayAdapter = ArrayAdapter.createFromResource(this,
+                R.array.district, R.layout.spinner_layout);
+
+        /*Specify the layout to use when the list of choices appears*/
+        districtArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        /*Apply the adapter to the spinner*/
+        district.setAdapter(districtArrayAdapter);
+
+        /*Select the first element of the dropdown by default*/
+        district.setSelection(0);
+
     }
 
     /**

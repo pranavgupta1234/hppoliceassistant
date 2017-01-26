@@ -123,10 +123,10 @@ public class SessionManager {
     }
 
     /**
-     * Quick check for login
-     * **/
-    // Get Login State
+     * This method checks if user is already logged in to system
+     * @return true if user logged in else false
+     */
     public boolean isLoggedIn(){
-        return pref.getBoolean(IS_LOGIN, false);
+        return pref.getBoolean(IS_LOGIN, false); //Return default value as 'false' if it is not sure if user logged in.
     }
 }
