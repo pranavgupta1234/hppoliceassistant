@@ -95,41 +95,7 @@ public class Login extends Activity{
         districtSpinner.setAdapter(districtArrayAdapter);
 
         /*When an item is selected in districts dropdown the following function handles the updating of police station dropdown*/
-        districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selected_district = (String) adapterView.getItemAtPosition(i);
-
-                ArrayAdapter<CharSequence> adapter_police_station;
-                switch (selected_district) {
-                    case "Kinnaur":
-                        adapter_police_station = ArrayAdapter.createFromResource(getBaseContext(),
-                                R.array.police_station_kinnaur, R.layout.spinner_layout);
-                        break;
-                    case "Shimla":
-                        adapter_police_station = ArrayAdapter.createFromResource(getBaseContext(),
-                                R.array.police_station_shimla, R.layout.spinner_layout);
-                        break;
-                    case "Mandi":
-                        adapter_police_station = ArrayAdapter.createFromResource(getBaseContext(),
-                                R.array.police_station_mandi, R.layout.spinner_layout);
-                        break;
-                    default: adapter_police_station = ArrayAdapter.createFromResource(getBaseContext(),
-                            R.array.option_station,R.layout.spinner_layout);
-                        break;
-                }
-                // Specify the layout to use when the list of choices appears
-                adapter_police_station.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                // Apply the adapter to the spinner
-                police_station.setAdapter(adapter_police_station);
-                police_station.setSelection(0);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-
+        updatePoliceStationDropdownOnDistrictChange();
     }
 
 
@@ -137,22 +103,17 @@ public class Login extends Activity{
      * This method sets the police station dropdown(spinner) and populates it with the list of police station names whenever a district is selected from district dropdown
      */
     private void setPoliceStationDropdown() {
+
+        /*Create reference to the police station spinner*/
+        Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
+
+        /*Until a real district is selected show "Select Police Station" in the dropdown*/
         final ArrayAdapter<CharSequence> adapter_optionShow = ArrayAdapter.createFromResource(this,
                 R.array.option_station,R.layout.spinner_layout);
-
-        // Apply the adapter to the spinner
-        police_station.setAdapter(adapter_optionShow);
-        police_station.setSelection(0);
-        final ArrayAdapter<CharSequence> adapter_optionShow_post = ArrayAdapter.createFromResource(this,
-                R.array.option_station_post,R.layout.spinner_layout);
-        // Specify the layout to use when the list of choices appears
-        adapter_optionShow_post.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        police_post.setAdapter(adapter_optionShow_post);
-        police_post.setSelection(0);
+        policeStationSpinner.setAdapter(adapter_optionShow);
 
 
-        police_station.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        policeStationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selected_police_station = (String) adapterView.getItemAtPosition(i);
@@ -212,6 +173,16 @@ public class Login extends Activity{
 
             }
         });
+    }
+
+    private void setPolicePostDropdown() {
+        final ArrayAdapter<CharSequence> adapter_optionShow_post = ArrayAdapter.createFromResource(this,
+                R.array.option_station_post,R.layout.spinner_layout);
+        // Specify the layout to use when the list of choices appears
+        adapter_optionShow_post.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        police_post.setAdapter(adapter_optionShow_post);
+        police_post.setSelection(0);
     }
 
     private void setLoginButton() {
@@ -290,21 +261,6 @@ public class Login extends Activity{
         });
     }
 
-    private void setPolicePostDropdown() {
-        police_post.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selected_police_post = (String)adapterView.getItemAtPosition(i);
-                if(!selected_police_post.contentEquals("Select PolicePost")) {
-                    Toast.makeText(getApplicationContext(), "Selected PolicePost :" + selected_police_post + "", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-    }
-
     /**
      * This method takes user to home screen and finishes this activity
      */
@@ -314,5 +270,46 @@ public class Login extends Activity{
         //i.putExtra("name",login_name.getText().toString());
         startActivity(i);
         finish(); //Finish this activity so that user cannot come back to this activity
+    }
+
+    private void updatePoliceStationDropdownOnDistrictChange() {
+        /*Select the district spinner*/
+        Spinner districtSpinner = (Spinner) findViewById(R.id.district);
+        districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selected_district = (String) adapterView.getItemAtPosition(i);
+
+                ArrayAdapter<CharSequence> adapter_police_station;
+                switch (selected_district) {
+                    case "Kinnaur":
+                        adapter_police_station = ArrayAdapter.createFromResource(getBaseContext(),
+                                R.array.police_station_kinnaur, R.layout.spinner_layout);
+                        break;
+                    case "Shimla":
+                        adapter_police_station = ArrayAdapter.createFromResource(getBaseContext(),
+                                R.array.police_station_shimla, R.layout.spinner_layout);
+                        break;
+                    case "Mandi":
+                        adapter_police_station = ArrayAdapter.createFromResource(getBaseContext(),
+                                R.array.police_station_mandi, R.layout.spinner_layout);
+                        break;
+                    default: adapter_police_station = ArrayAdapter.createFromResource(getBaseContext(),
+                            R.array.option_station,R.layout.spinner_layout);
+                        break;
+                }
+                // Specify the layout to use when the list of choices appears
+                adapter_police_station.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Apply the adapter to the spinner
+                police_station.setAdapter(adapter_police_station);
+                police_station.setSelection(0);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+
     }
 }
