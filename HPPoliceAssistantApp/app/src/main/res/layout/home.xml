@@ -12,8 +12,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimaryDark"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,7 +44,9 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/menutItem">
+                style="@style/menutItem"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp">
 
                 <ImageButton
                     android:id="@+id/challan_iv"
@@ -84,17 +85,20 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/menutItem">
+                style="@style/menutItem"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp">
 
                 <ImageButton
                     android:id="@+id/a_iv"
                     style="@style/menuImageStyle"
                     android:src="@drawable/search_filled_300"
-                    android:onClick="openSearchActivity"/>
+                    android:onClick="openSearchActivity" />
 
                 <TextView
                     style="@style/menuTextStyle"
                     android:text="Search Vehicle"
+                    android:textStyle="bold"
                     android:onClick="openSearchActivity"/>
             </LinearLayout>
 
