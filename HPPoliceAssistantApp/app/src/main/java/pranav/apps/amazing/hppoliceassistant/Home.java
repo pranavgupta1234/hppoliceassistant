@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 public class Home extends AppCompatActivity{
     boolean doubleBackToExitPressedOnce = false;
-    String name;
+    String iOName;
     private SessionManager sessionManager;
     /*Used for logging purposes*/
     private String TAG = "Home.java";
@@ -37,35 +37,35 @@ public class Home extends AppCompatActivity{
         sessionManager = new SessionManager(Home.this);
 
 
-        name = sessionManager.getUserName();
-        Toast.makeText(Home.this,"Welcome "+ name, Toast.LENGTH_SHORT).show();
+        iOName = sessionManager.getIOName();
+        Toast.makeText(Home.this,"Welcome "+ iOName, Toast.LENGTH_SHORT).show();
     }
 
     public void openNakaEntryActivity(View v) {
         Intent i = new Intent(Home.this, MainActivity.class);
         i.putExtra("Tag", "0");
-        i.putExtra("name",name);
+        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openChallanActivity(View v) {
         Intent i = new Intent(Home.this, MainActivity.class);
         i.putExtra("Tag","1");
-        i.putExtra("name",name);
+        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openStolenVehicleActivity(View v) {
         Intent i = new Intent(Home.this,MainActivity.class);
         i.putExtra("Tag","2");
-        i.putExtra("name",name);
+        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openSearchActivity(View v) {
         Intent i = new Intent(Home.this,MainActivity.class);
         i.putExtra("Tag","3");
-        i.putExtra("name",name);
+        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 

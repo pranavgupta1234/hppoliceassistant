@@ -38,8 +38,8 @@ public class SessionManager {
     /*Context*/
     private Context _context;
 
-    // Shared pref mode
-    private int PRIVATE_MODE = 0;
+    /*Opens te shared pref in private mode so that the shared pref file is accessible by only this app*/
+    private int PRIVATE_MODE = Context.MODE_PRIVATE;
 
     // Sharedpref file name
     private static final String PREF_NAME = "HPPolice";
@@ -110,10 +110,6 @@ public class SessionManager {
 
     public String getIOName() {
         return pref.getString(IO_NAME, "");
-    }
-
-    public String getUserName(){
-        return pref.getString(IO_NAME, null);
     }
 
     /**
