@@ -285,15 +285,15 @@ public class Login extends Activity {
                         if (realPassword == null) {
                             Toast.makeText(getBaseContext(), "Problem verifying password", Toast.LENGTH_SHORT).show();
                         }
-                        if (realPassword != null) {
-                            if (!realPassword.contentEquals(enteredPassword)) {
-                                dismissProgressDialog();
-                                Toast.makeText(getBaseContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
+                        else {
+                            if (realPassword.contentEquals(enteredPassword)) {
                                 dismissProgressDialog();
                                 sessionManager.createLoginSession(iOName, "null");
                                 goToHomeScreen();
+                            }
+                            else {
+                                dismissProgressDialog();
+                                Toast.makeText(getBaseContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

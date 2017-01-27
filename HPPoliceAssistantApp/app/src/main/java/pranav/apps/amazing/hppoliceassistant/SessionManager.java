@@ -11,6 +11,20 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 public class SessionManager {
+
+    /*District used to login in this session*/
+    public static String district;
+
+    /*Police Station used to login in this session*/
+    public static String policeStation;
+
+    /*Police Post in this session*/
+    public static String policePost;
+
+    /*IO Name in the session*/
+    public static String iOName;
+
+
     // Shared Preferences
     private SharedPreferences pref;
 
@@ -32,8 +46,6 @@ public class SessionManager {
     // User name (make variable public to access from outside)
     public static final String KEY_NAME = "name";
 
-    // Email address (make variable public to access from outside)
-    public static final String KEY_EMAIL = "email";
 
     // Constructor
     public SessionManager(Context context){
@@ -51,9 +63,6 @@ public class SessionManager {
 
         // Storing name in pref
         editor.putString(KEY_NAME, name);
-
-        // Storing email in pref
-        editor.putString(KEY_EMAIL, email);
 
         // commit changes
         editor.commit();
@@ -90,9 +99,6 @@ public class SessionManager {
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-
-        // user email id
-        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
 
         // return user
         return user;
