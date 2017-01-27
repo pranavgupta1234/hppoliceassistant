@@ -33,6 +33,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Home">
+            <intent-filter>
+                <action android:name="pranav.apps.amazing.hppoliceassistant.HOME" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".OfflineChallan">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.OFFLINECHALLAN" />
@@ -48,13 +56,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Home">
-            <intent-filter>
-                <action android:name="pranav.apps.amazing.hppoliceassistant.HOME" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <service android:name=".ChatHeadService" />
     </application>

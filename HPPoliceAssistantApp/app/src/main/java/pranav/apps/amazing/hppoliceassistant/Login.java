@@ -271,13 +271,12 @@ public class Login extends Activity {
                 final String iOName = getIOName();
                 final String enteredPassword = getEnteredPassword();
 
-                DatabaseReference rootRef, dRef;
+                String passwordLocationInFirebase =
+                        "login/" + selectedDistrict + "/" + selectedPoliceStation.replace("/", "") + "/password";
 
-                rootRef = FirebaseDatabase.getInstance().getReference("login");
+                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(passwordLocationInFirebase);
 
-                dRef = rootRef.child(selectedDistrict).child(selectedPoliceStation.replace("/", "")).child("password");
-
-                dRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -288,11 +287,11 @@ public class Login extends Activity {
                         }
                         if (realPassword != null) {
                             if (!realPassword.contentEquals(enteredPassword)) {
-                                progressDialog.dismiss();
+                                dismissProgressDialog();
                                 Toast.makeText(getBaseContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                progressDialog.dismiss();
+                                dismissProgressDialog();
                                 sessionManager.createLoginSession(iOName, "null");
                                 goToHomeScreen();
                             }
@@ -382,6 +381,7 @@ public class Login extends Activity {
         progressDialog.dismiss();
     }
 
+
     /**
      * This method is used to programmatically hide soft keyboard
      */
@@ -393,8 +393,10 @@ public class Login extends Activity {
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+
     /**
-     * The following function checks whether the user entered all the fields. It displays a toast if some field is not entered
+     * The following function checks whether the user entered all the fields.
+     * It displays a toast if some field is not entered requesting the user to enter it.
      *
      * @return true if all fields are entered/selected else false
      */
