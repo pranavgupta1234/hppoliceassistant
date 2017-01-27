@@ -93,9 +93,6 @@ public class Login extends Activity{
         ArrayAdapter<CharSequence> districtArrayAdapter = ArrayAdapter.createFromResource(this,
                 R.array.district, R.layout.spinner_layout);
 
-        /*Specify the layout to use when the list of choices appears*/
-        districtArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         /*Apply the adapter to the spinner*/
         districtSpinner.setAdapter(districtArrayAdapter);
 
