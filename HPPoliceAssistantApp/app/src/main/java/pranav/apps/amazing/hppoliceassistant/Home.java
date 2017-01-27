@@ -42,7 +42,7 @@ public class Home extends AppCompatActivity{
     }
 
     public void openNakaEntryActivity(View v) {
-        Intent i = new Intent(Home.this, MainActivity.class);
+        Intent i = new Intent(Home.this, Entry_veh.class);
         i.putExtra("Tag", "0");
         i.putExtra("name",name);
         startActivity(i);

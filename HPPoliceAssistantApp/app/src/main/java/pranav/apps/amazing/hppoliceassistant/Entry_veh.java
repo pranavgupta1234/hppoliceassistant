@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Entry_veh extends Fragment {
+public class Entry_veh extends FragmentActivity {
     private Firebase mrootRef;
     private EditText veh,phone,description,place,naka;
     private Button submit_det,reset;
@@ -71,31 +72,27 @@ public class Entry_veh extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-    }
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setContentView(R.layout.entry);
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
         database = FirebaseDatabase.getInstance();
         mRootRef = database.getReference("vehicle_entry");
 
-        View  view=  getActivity().getLayoutInflater().inflate(R.layout.entry,container,false);
-        off_name = getActivity().getIntent().getStringExtra("name");
+        off_name = Entry_veh.this.getIntent().getStringExtra("name");
 
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog1 = new ProgressDialog(getActivity());
+        progressDialog = new ProgressDialog(Entry_veh.this);
+        progressDialog1 = new ProgressDialog(Entry_veh.this);
 
-        veh=(EditText)view.findViewById(R.id.vehicle_num);
-        phone=(EditText)view.findViewById(R.id.phone_num);
-        description=(EditText)view.findViewById(R.id.description);
-        place=(EditText)view.findViewById(R.id.place);
-        naka=(EditText)view.findViewById(R.id.naka);
+        veh=(EditText)findViewById(R.id.vehicle_num);
+        phone=(EditText)findViewById(R.id.phone_num);
+        description=(EditText)findViewById(R.id.description);
+        place=(EditText)findViewById(R.id.place);
+        naka=(EditText)findViewById(R.id.naka);
 
 
-        upload=(ImageButton)view.findViewById(R.id.upload);
-        submit_det=(Button)view.findViewById(R.id.make_entry);
-        reset=(Button)view.findViewById(R.id.reset);
+        upload=(ImageButton)findViewById(R.id.upload);
+        submit_det=(Button)findViewById(R.id.make_entry);
+        reset=(Button)findViewById(R.id.reset);
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,9 +105,9 @@ public class Entry_veh extends Fragment {
             @Override
             public void onClick(View view) {
                 if (veh.getText().toString().trim().contentEquals("") || place.getText().toString().trim().contentEquals("")) {
-                    Toast.makeText(getActivity(), "Fields are empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Entry_veh.this, "Fields are empty", Toast.LENGTH_SHORT).show();
                     veh.setError("Field can not be empty");
-                    place.setError("Fiels can not be empty");
+                    place.setError("Field can not be empty");
                 } else {
                     if (phone.getText().toString().length() >= 1 && phone.getText().toString().length() < 10) {
                         phone.setError("Invalid Phone Number");
@@ -118,7 +115,7 @@ public class Entry_veh extends Fragment {
 
                         newEntrywithoutImage = new VehicleEntry(veh.getText().toString(), phone.getText().toString(), description.getText().toString(), place.getText().toString(),
                                 naka.getText().toString(), "", "", off_name, "null");
-                        vehicleEntryDialog = new VehicleEntryDialog(getActivity(), newEntrywithoutImage);
+                        vehicleEntryDialog = new VehicleEntryDialog(Entry_veh.this, newEntrywithoutImage);
                         vehicleEntryDialog.setTitle("Entry Details");
                         vehicleEntryDialog.setCancelable(true);
                         vehicleEntryDialog.show();
@@ -134,9 +131,9 @@ public class Entry_veh extends Fragment {
                                     ampm = "PM";
                                 }
                                 newEntrywithoutImage.setTime(strDate.substring(10, strDate.length()) + " " + ampm);
-                                DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(), null, null, 1);
+                                DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry_veh.this, null, null, 1);
                                 if (dbManagerEntry.addEntry(newEntrywithoutImage)) {
-                                    Toast.makeText(getActivity(), "Entry Added Offline!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Entry_veh.this, "Entry Added Offline!", Toast.LENGTH_SHORT).show();
                                     vehicleEntryDialog.dismiss();
                                 }
                             }
@@ -165,7 +162,6 @@ public class Entry_veh extends Fragment {
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
         });
-        return  view;
     }
 
     private void startPosting() {
@@ -174,14 +170,14 @@ public class Entry_veh extends Fragment {
         if(uri == null){
             progressDialog1.setMessage("Uploading data....");
             progressDialog1.show();
-            Toast.makeText(getActivity(),"No Photo Selected, uploading data...",Toast.LENGTH_LONG).show();
+            Toast.makeText(Entry_veh.this,"No Photo Selected, uploading data...",Toast.LENGTH_LONG).show();
             download_url_string ="Photo not available";
 
             newEntry = new VehicleEntry(veh.getText().toString(),phone.getText().toString(),
                     description.getText().toString(),place.getText().toString(),
                     naka.getText().toString(),"","",
                     off_name,download_url_string);
-            DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(),null,null,1);
+            DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry_veh.this,null,null,1);
             newEntry.setStatus(1);
             Calendar c = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -197,11 +193,11 @@ public class Entry_veh extends Fragment {
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                     if(databaseError== null){
                         progressDialog1.dismiss();
-                        Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Entry_veh.this,"Upload Done ",Toast.LENGTH_SHORT).show();
                     }
                     else {
                         progressDialog1.dismiss();
-                        Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                        Toast.makeText(Entry_veh.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -213,7 +209,7 @@ public class Entry_veh extends Fragment {
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(getActivity(), "Upload Done !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Entry_veh.this, "Upload Done !", Toast.LENGTH_LONG).show();
                     downloadUrl = taskSnapshot.getDownloadUrl();
                     if(downloadUrl!=null) {
                         download_url_string = downloadUrl.toString();
@@ -223,7 +219,7 @@ public class Entry_veh extends Fragment {
                             description.getText().toString(),place.getText().toString(),
                             naka.getText().toString(),"","",
                             off_name,download_url_string);
-                    DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(),null,null,1);
+                    DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry_veh.this,null,null,1);
                     newEntry.setStatus(1);
                     Calendar c = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -239,11 +235,11 @@ public class Entry_veh extends Fragment {
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             if(databaseError== null){
                                 progressDialog1.dismiss();
-                                Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Entry_veh.this,"Upload Done ",Toast.LENGTH_SHORT).show();
                             }
                             else {
                                 progressDialog1.dismiss();
-                                Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                                Toast.makeText(Entry_veh.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -251,7 +247,7 @@ public class Entry_veh extends Fragment {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "Upload Failed !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Entry_veh.this, "Upload Failed !", Toast.LENGTH_LONG).show();
                     progressDialog1.dismiss();
                     newEntry.setStatus(0);
                     Calendar c = Calendar.getInstance();
@@ -262,9 +258,9 @@ public class Entry_veh extends Fragment {
                         ampm = "PM";
                     }
                     newEntry.setTime(strDate.substring(10,strDate.length())+" "+ampm);
-                    DBManagerEntry dbManagerEntry = new DBManagerEntry(getActivity(),null,null,1);
+                    DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry_veh.this,null,null,1);
                     if(dbManagerEntry.addEntry(newEntry)){
-                        Toast.makeText(getActivity(),"Entry Added Offline!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Entry_veh.this,"Entry Added Offline!",Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -283,22 +279,22 @@ public class Entry_veh extends Fragment {
         }*/
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
             if (data == null) {
-                Toast.makeText(getActivity(),"Error Loading File ",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Entry_veh.this,"Error Loading File ",Toast.LENGTH_SHORT).show();
                 return;
             }
             try {
-                actualImage = FileUtil.from(getActivity(), data.getData());
+                actualImage = FileUtil.from(Entry_veh.this, data.getData());
                 upload.setImageBitmap(BitmapFactory.decodeFile(actualImage.getAbsolutePath()));
                 //actualSizeTextView.setText(String.format("Size : %s", getReadableFileSize(actualImage.length())));
                 //clearImage();
                 if (actualImage == null) {
-                    Toast.makeText(getActivity(),"Please Choose an image",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Entry_veh.this,"Please Choose an image",Toast.LENGTH_SHORT).show();
                 } else {
                     progressDialog.setMessage("Compressing Image");
                     progressDialog.show();
 
                     // Compress image in main thread
-                    actualImage = Compressor.getDefault(getActivity()).compressToFile(actualImage);
+                    actualImage = Compressor.getDefault(Entry_veh.this).compressToFile(actualImage);
                     //setCompressedImage();
 
                     // Compress image to bitmap in main thread
@@ -327,7 +323,7 @@ public class Entry_veh extends Fragment {
                     progressDialog.dismiss();
                 }
             } catch (IOException e) {
-                Toast.makeText(getActivity(),"Failed to read picture data",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Entry_veh.this,"Failed to read picture data",Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
