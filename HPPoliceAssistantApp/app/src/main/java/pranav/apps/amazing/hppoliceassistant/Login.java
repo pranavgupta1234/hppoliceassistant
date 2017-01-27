@@ -24,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import static android.content.ContentValues.TAG;
+import static pranav.apps.amazing.hppoliceassistant.R.id.police_post;
+import static pranav.apps.amazing.hppoliceassistant.R.id.police_station;
 
 /**
  * Created by Pranav Gupta on 12/10/2016.
@@ -33,14 +35,9 @@ import static android.content.ContentValues.TAG;
  */
 
 public class Login extends Activity {
-    private FirebaseDatabase database;
-    private Button login;
-    private DatabaseReference rootRef, dRef, nRef;
+
     private SessionManager sessionManager;
-    Spinner district, police_station, police_post;
-    String selected_district = "none", selected_police_station = "none", selected_police_post = "none";
-    EditText login_name, login_password;
-    String name, password;
+
     ProgressDialog progressDialog;
 
     /*Used for logging purposes*/
@@ -58,16 +55,6 @@ public class Login extends Activity {
         if (sessionManager.isLoggedIn()) {
             startActivity(new Intent(this, Home.class));
         }
-
-        login = (Button) findViewById(R.id.login);
-        district = (Spinner) findViewById(R.id.district);
-        police_station = (Spinner) findViewById(R.id.police_station);
-        police_post = (Spinner) findViewById(R.id.police_post);
-
-
-        database = FirebaseDatabase.getInstance();
-        rootRef = database.getReference("login");
-        nRef = database.getReference("authenticated_users");
 
 
         /*Populate Districts dropdown(spinner) with a list of districts in HP*/
@@ -118,7 +105,7 @@ public class Login extends Activity {
     private void populatePoliceStationSpinner() {
 
         /*Create reference to the police station spinner*/
-        Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
+        Spinner policeStationSpinner = (Spinner) findViewById(police_station);
 
         /*Until a real district is selected show "Select Police Station" in the dropdown*/
         /*Create an array adapter for "Select Police Station"*/
@@ -138,7 +125,7 @@ public class Login extends Activity {
     private void populatePolicePostDropdown() {
 
         /*Create reference to the police station spinner*/
-        Spinner policePostSpinner = (Spinner) findViewById(R.id.police_post);
+        Spinner policePostSpinner = (Spinner) findViewById(police_post);
 
         /*Until a real police Station is selected show "Select Police Post" in the dropdown*/
         /*Create an array adapter for "Select Police Post"*/
@@ -162,10 +149,10 @@ public class Login extends Activity {
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selected_district = (String) adapterView.getItemAtPosition(i);
+                String selectedDistrict = (String) adapterView.getItemAtPosition(i);
 
                 ArrayAdapter<CharSequence> adapter_police_station;
-                switch (selected_district) {
+                switch (selectedDistrict) {
                     case "Kinnaur":
                         adapter_police_station = ArrayAdapter.createFromResource(getBaseContext(),
                                 R.array.police_station_kinnaur, R.layout.spinner_layout);
@@ -185,9 +172,13 @@ public class Login extends Activity {
                 }
                 // Specify the layout to use when the list of choices appears
                 adapter_police_station.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                /*Get reference to police station dropdown*/
+                Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
+
                 // Apply the adapter to the spinner
-                police_station.setAdapter(adapter_police_station);
-                police_station.setSelection(0);
+                policeStationSpinner.setAdapter(adapter_police_station);
+                policeStationSpinner.setSelection(0);
             }
 
             @Override
@@ -203,7 +194,7 @@ public class Login extends Activity {
      * When a police station is selected this method updates the police post spinner according to selected police post
      */
     private void setPoliceStationChangeListener() {
-        Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
+        Spinner policeStationSpinner = (Spinner) findViewById(police_station);
         policeStationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -240,8 +231,11 @@ public class Login extends Activity {
                 /*Set the layout for the dropdown*/
                 policePostAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+                /*Get reference to police post spinner*/
+                Spinner policePostSpinner = (Spinner) findViewById(R.id.police_post);
+
                 /*Apply the adapter to the spinner*/
-                police_post.setAdapter(policePostAdapter);
+                policePostSpinner.setAdapter(policePostAdapter);
             }
 
             @Override
@@ -256,8 +250,8 @@ public class Login extends Activity {
      * This function determines what happens when login button is clicked
      */
     private void setLoginButton() {
-
-        login.setOnClickListener(new View.OnClickListener() {
+        Button loginButton = (Button) findViewById(R.id.login);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -274,56 +268,33 @@ public class Login extends Activity {
                 String selectedDistrict = getSelectedDistrict();
                 String selectedPoliceStation = getSelectedPoliceStation();
                 String selectedPolicePost = getSelectedPolicePost();
-                String iOName = getIOName();
+                final String iOName = getIOName();
                 final String enteredPassword = getEnteredPassword();
 
-                Log.v(TAG, "Entered password is: " + enteredPassword);
+                DatabaseReference rootRef, dRef;
 
-                dRef = rootRef.child(selectedDistrict).child(selectedPoliceStation.replace("/", "")).child(selected_police_post.replace("/", ""));
-                final DatabaseReference to_user = nRef.child(selectedDistrict.toLowerCase()).child(iOName.toLowerCase());
+                rootRef = FirebaseDatabase.getInstance().getReference("login");
+
+                dRef = rootRef.child(selectedDistrict).child(selectedPoliceStation.replace("/", "")).child("password");
 
                 dRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        //
-                        String pass = dataSnapshot.getValue(String.class);
-                        if (pass == null) {
-                            Toast.makeText(getBaseContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show();
+
+                        String realPassword = dataSnapshot.getValue(String.class);
+
+                        if (realPassword == null) {
+                            Toast.makeText(getBaseContext(), "Problem verifying password", Toast.LENGTH_SHORT).show();
                         }
-                        if (pass != null) {
-                            if (!pass.contentEquals(enteredPassword)) {
+                        if (realPassword != null) {
+                            if (!realPassword.contentEquals(enteredPassword)) {
                                 progressDialog.dismiss();
                                 Toast.makeText(getBaseContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
                             }
-                            if (pass.contentEquals(enteredPassword)) {
-                                    /*to add user authentication */
-
-                                to_user.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        String auth = dataSnapshot.getValue(String.class);
-                                        if (auth == null) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(getBaseContext(), "User doesn't exist !", Toast.LENGTH_LONG).show();
-                                        }
-                                        if (auth != null) {
-                                            if (auth.contentEquals("0")) {
-                                                progressDialog.dismiss();
-                                                Toast.makeText(getBaseContext(), "You are not a authenticated User ! Sorry :( ", Toast.LENGTH_LONG).show();
-                                            }
-                                            if (auth.contentEquals("1")) {
-                                                progressDialog.dismiss();
-                                                goToHomeScreen();
-                                                sessionManager.createLoginSession(login_name.getText().toString(), "null");
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
+                            else {
+                                progressDialog.dismiss();
+                                sessionManager.createLoginSession(iOName, "null");
+                                goToHomeScreen();
                             }
                         }
                     }
@@ -367,7 +338,7 @@ public class Login extends Activity {
      * @return Selected Police Station's string value
      */
     private String getSelectedPoliceStation() {
-        Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
+        Spinner policeStationSpinner = (Spinner) findViewById(police_station);
         return policeStationSpinner.getSelectedItem().toString();
     }
 
@@ -377,7 +348,7 @@ public class Login extends Activity {
      * @return Selected Police Post's dropdown
      */
     private String getSelectedPolicePost() {
-        Spinner policePostSpinner = (Spinner) findViewById(R.id.police_post);
+        Spinner policePostSpinner = (Spinner) findViewById(police_post);
         return policePostSpinner.getSelectedItem().toString();
     }
 

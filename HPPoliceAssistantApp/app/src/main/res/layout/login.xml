@@ -47,6 +47,7 @@
             android:layout_marginTop="10dp"
             android:background="@android:color/white"
             android:hint="I/O Name"
+            android:inputType="textPersonName"
             android:padding="12dp" />
 
         <EditText
