@@ -64,10 +64,15 @@ public class Login extends Activity{
         nRef = database.getReference("authenticated_users");
         progressDialog = new ProgressDialog(Login.this);
 
-        setDistrictDropdown();
-        setPoliceStationDropdown();
+        /*Populate Districts dropdown(spinner) with a list of districts in HP*/
+        populateDistrictSpinner();
+
+        populatePoliceStationSpinner();
 
         setPolicePostDropdown();
+
+        /*When a district is selected this method updates the police station spinner according to the selected district*/
+        setDistrictChangeListener();
 
         setLoginButton();
 
@@ -77,9 +82,9 @@ public class Login extends Activity{
     }
 
     /**
-     * This method sets the district dropdown(spinner) and populates it with the list of items from district array resource
+     * This method populates Districts dropdown(spinner) with a list of districts in HP
      */
-    private void setDistrictDropdown() {
+    private void populateDistrictSpinner() {
 
         /*Select the district spinner*/
         Spinner districtSpinner = (Spinner) findViewById(R.id.district);
@@ -94,24 +99,24 @@ public class Login extends Activity{
         /*Apply the adapter to the spinner*/
         districtSpinner.setAdapter(districtArrayAdapter);
 
-        /*When an item is selected in districts dropdown the following function handles the updating of police station dropdown*/
-        updatePoliceStationDropdownOnDistrictChange();
     }
 
 
     /**
      * This method sets the police station dropdown(spinner) and populates it with the list of police station names whenever a district is selected from district dropdown
      */
-    private void setPoliceStationDropdown() {
+    private void populatePoliceStationSpinner() {
 
         /*Create reference to the police station spinner*/
         Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
 
         /*Until a real district is selected show "Select Police Station" in the dropdown*/
+        /*Create an array adapter for "Select Police Station"*/
         final ArrayAdapter<CharSequence> adapter_optionShow = ArrayAdapter.createFromResource(this,
                 R.array.option_station,R.layout.spinner_layout);
-        policeStationSpinner.setAdapter(adapter_optionShow);
 
+        /*Apply the adapter to the spinner*/
+        policeStationSpinner.setAdapter(adapter_optionShow);
 
         policeStationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -272,7 +277,7 @@ public class Login extends Activity{
         finish(); //Finish this activity so that user cannot come back to this activity
     }
 
-    private void updatePoliceStationDropdownOnDistrictChange() {
+    private void setDistrictChangeListener() {
         /*Select the district spinner*/
         Spinner districtSpinner = (Spinner) findViewById(R.id.district);
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
