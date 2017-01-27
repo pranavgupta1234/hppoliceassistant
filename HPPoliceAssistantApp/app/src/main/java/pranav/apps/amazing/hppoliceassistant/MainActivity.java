@@ -212,11 +212,11 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new Entry_veh();
+                    return new Search();
                 case 1:
-                    return new Challan();
+                    return new Search();
                 case 2:
-                    return new Stolen();
+                    return new Search();
                 case 3:
                     return new Search();
                 default:

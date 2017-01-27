@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Challan extends Fragment {
+public class Challan extends FragmentActivity {
 
 
     //variables to be used
@@ -102,53 +103,48 @@ public class Challan extends Fragment {
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
-       // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        setContentView(R.layout.challan);
+        // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/challan");
 
-        View  view=  getActivity().getLayoutInflater().inflate(R.layout.challan,container,false);
 
         database =FirebaseDatabase.getInstance();
         mRootRef= database.getReference("challan");
 
-        off_name = getActivity().getIntent().getStringExtra("name");
-        helmet=(CheckBox)view.findViewById(R.id.helmet);
-        rc=(CheckBox)view.findViewById(R.id.rc);
-        insurance=(CheckBox)view.findViewById(R.id.insurance);
-        license=(CheckBox)view.findViewById(R.id.license);
-        rash_drive=(CheckBox)view.findViewById(R.id.rash_drive);
-        mobile=(CheckBox)view.findViewById(R.id.mobile);
-        number_plate=(CheckBox)view.findViewById(R.id.number_plate);
-        seat_belt=(CheckBox)view.findViewById(R.id.seat_belt);
-        horn=(CheckBox)view.findViewById(R.id.pressure_horn);
-        triple_riding=(CheckBox)view.findViewById(R.id.triple_riding);
-        idle_parking=(CheckBox)view.findViewById(R.id.idle_parking);
-        restricted_park=(CheckBox)view.findViewById(R.id.restricted);
+        off_name = Challan.this.getIntent().getStringExtra("name");
+        helmet=(CheckBox)findViewById(R.id.helmet);
+        rc=(CheckBox)findViewById(R.id.rc);
+        insurance=(CheckBox)findViewById(R.id.insurance);
+        license=(CheckBox)findViewById(R.id.license);
+        rash_drive=(CheckBox)findViewById(R.id.rash_drive);
+        mobile=(CheckBox)findViewById(R.id.mobile);
+        number_plate=(CheckBox)findViewById(R.id.number_plate);
+        seat_belt=(CheckBox)findViewById(R.id.seat_belt);
+        horn=(CheckBox)findViewById(R.id.pressure_horn);
+        triple_riding=(CheckBox)findViewById(R.id.triple_riding);
+        idle_parking=(CheckBox)findViewById(R.id.idle_parking);
+        restricted_park=(CheckBox)findViewById(R.id.restricted);
 
 
-        other=(EditText)view.findViewById(R.id.other_offence);
-        offence_section=(EditText)view.findViewById(R.id.offence_section);
-        veh_number=(EditText)view.findViewById(R.id.vehicle_number);
-        place_name=(EditText)view.findViewById(R.id.place_name);
-        naka_name=(EditText)view.findViewById(R.id.naka_name);
-        owner_name=(EditText)view.findViewById(R.id.vehicle_owner_name);
-        violator_name=(EditText)view.findViewById(R.id.violator_name);
-        violator_address=(EditText)view.findViewById(R.id.violator_address);
-        license_number=(EditText)view.findViewById(R.id.license_number);
-        challan_amount=(EditText)view.findViewById(R.id.challan_amount);
-        violator_number=(EditText)view.findViewById(R.id.violator_number);
+        other=(EditText)findViewById(R.id.other_offence);
+        offence_section=(EditText)findViewById(R.id.offence_section);
+        veh_number=(EditText)findViewById(R.id.vehicle_number);
+        place_name=(EditText)findViewById(R.id.place_name);
+        naka_name=(EditText)findViewById(R.id.naka_name);
+        owner_name=(EditText)findViewById(R.id.vehicle_owner_name);
+        violator_name=(EditText)findViewById(R.id.violator_name);
+        violator_address=(EditText)findViewById(R.id.violator_address);
+        license_number=(EditText)findViewById(R.id.license_number);
+        challan_amount=(EditText)findViewById(R.id.challan_amount);
+        violator_number=(EditText)findViewById(R.id.violator_number);
 
-        upload_photo=(ImageView) view.findViewById(R.id.upload_photo);
-        reset=(Button)view.findViewById(R.id.reset);
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog1 = new ProgressDialog(getActivity());
-        nak=(TextView)view.findViewById(R.id.nak_name);
+        upload_photo=(ImageView)findViewById(R.id.upload_photo);
+        reset=(Button)findViewById(R.id.reset);
+        progressDialog = new ProgressDialog(Challan.this);
+        progressDialog1 = new ProgressDialog(Challan.this);
+        nak=(TextView)findViewById(R.id.nak_name);
         mStorage = FirebaseStorage.getInstance().getReference();
-        submit=(Button)view.findViewById(R.id.submit);
+        submit=(Button)findViewById(R.id.submit);
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,7 +193,7 @@ public class Challan extends Fragment {
                     crime = crime+ "Restricted Area Parking,";
                 }
                 if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")){
-                    Toast.makeText(getActivity(),"Fields are empty",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Challan.this,"Fields are empty",Toast.LENGTH_SHORT).show();
                     veh_number.setError("Field can not be empty");
                     place_name.setError("Field can not be empty");
                 }
@@ -219,7 +215,7 @@ public class Challan extends Fragment {
                          * or offline storage and it contains all details previously filled by user an shows 3 buttons including
                          * edit , online and offline
                          * */
-                        customDialog = new CustomDialog(getActivity(), challanDetailswithoutImage);
+                        customDialog = new CustomDialog(Challan.this, challanDetailswithoutImage);
                         customDialog.setTitle("Challan Details");
                         customDialog.setCancelable(true);
                         customDialog.show();
@@ -229,7 +225,7 @@ public class Challan extends Fragment {
                                 /** DBManager Challan is intended for offline storage of challans and status field determines whether it
                                  * is posted online or not (if posted then 1 else 0) and determine the color of details button
                                  * */
-                                final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(), null, null, 1);
+                                final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this, null, null, 1);
                                 challanDetailswithoutImage.setStatus(0);
                                 /** Auto population of date and time from android system
                                  * */
@@ -242,7 +238,7 @@ public class Challan extends Fragment {
                                 }
                                 challanDetailswithoutImage.setTime(strDate.substring(10, strDate.length()) + " " + ampm);
                                 if (dbManagerChallan.addChallan(challanDetailswithoutImage)) {
-                                    Toast.makeText(getActivity(), "Challan Added Offline! Make sure to add it online!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Challan.this, "Challan Added Offline! Make sure to add it online!", Toast.LENGTH_SHORT).show();
                                     customDialog.dismiss();
                                 }
                             }
@@ -270,8 +266,8 @@ public class Challan extends Fragment {
 
             }
         });
-        return  view;
     }
+
     public void startPosting(){
         final DatabaseReference idChild = mRootRef.push();
         /** in case user does not select an image(as uri is initially kept null) then create a challan with Photo not available and then send data
@@ -301,7 +297,7 @@ public class Challan extends Fragment {
              * this will be shown in green color details box indicating that it is already sent
              * */
             challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
-                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
+                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
                     dbManagerChallan.addChallan(challanDetails);
             /**If you are using completion callback listener of Database reference then the instance for Firebase should also be
              * of DatabaseReference and not of Firebase(the one which is initialised through url)
@@ -311,11 +307,11 @@ public class Challan extends Fragment {
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                     if(databaseError== null){
                         progressDialog1.dismiss();
-                        Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Challan.this,"Upload Done ",Toast.LENGTH_SHORT).show();
                     }
                     else {
                         progressDialog1.dismiss();
-                        Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                        Toast.makeText(Challan.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -329,7 +325,7 @@ public class Challan extends Fragment {
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(getActivity(), "Upload Done !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Challan.this, "Upload Done !", Toast.LENGTH_LONG).show();
                     downloadUrl = taskSnapshot.getDownloadUrl();
                     if(downloadUrl!=null) {
                         download_url_string = downloadUrl.toString();
@@ -356,7 +352,7 @@ public class Challan extends Fragment {
 
                     /** even if challan is stored online we will keep a local copy of it with green marker
                      * */
-                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
+                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
                     challanDetails.setStatus(1);
                     dbManagerChallan.addChallan(challanDetails);
                     idChild.setValue(challanDetails, new DatabaseReference.CompletionListener() {
@@ -364,11 +360,11 @@ public class Challan extends Fragment {
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             if(databaseError== null){
                                 progressDialog1.dismiss();
-                                Toast.makeText(getActivity(),"Upload Done ",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Challan.this,"Upload Done ",Toast.LENGTH_SHORT).show();
                             }
                             else {
                                 progressDialog1.dismiss();
-                                Toast.makeText(getActivity(),"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                                Toast.makeText(Challan.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -380,7 +376,7 @@ public class Challan extends Fragment {
                  * */
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "Upload Failed !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Challan.this, "Upload Failed !", Toast.LENGTH_LONG).show();
                     progressDialog1.dismiss();
                     download_url_string="null";
                     challanDetails = new ChallanDetails(violator_name.getText().toString(),
@@ -398,9 +394,9 @@ public class Challan extends Fragment {
                         ampm = "PM";
                     }
                     challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
-                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
+                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
                     if(dbManagerChallan.addChallan(challanDetails)){
-                        Toast.makeText(getActivity(),"Challan Added Offline!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Challan.this,"Challan Added Offline!",Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -421,7 +417,7 @@ public class Challan extends Fragment {
                 return;
             }
             try {
-                actualImage = FileUtil.from(getActivity(), data.getData());
+                actualImage = FileUtil.from(Challan.this, data.getData());
                 upload_photo.setImageBitmap(BitmapFactory.decodeFile(actualImage.getAbsolutePath()));
                 //actualSizeTextView.setText(String.format("Size : %s", getReadableFileSize(actualImage.length())));
                 //clearImage();
@@ -430,7 +426,7 @@ public class Challan extends Fragment {
                 } else {
 
                     // Compress image in main thread
-                    actualImage = Compressor.getDefault(getActivity()).compressToFile(actualImage);
+                    actualImage = Compressor.getDefault(Challan.this).compressToFile(actualImage);
                     //setCompressedImage();
 
                     // Compress image to bitmap in main thread
@@ -464,7 +460,7 @@ public class Challan extends Fragment {
         }
     }
     public void showError(String errorMessage) {
-        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(Challan.this, errorMessage, Toast.LENGTH_SHORT).show();
     }
     /*private void clearImage() {
         actualImageView.setBackgroundColor(getRandomColor());

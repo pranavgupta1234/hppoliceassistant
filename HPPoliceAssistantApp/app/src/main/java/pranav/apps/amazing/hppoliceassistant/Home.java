@@ -49,7 +49,7 @@ public class Home extends AppCompatActivity{
     }
 
     public void openChallanActivity(View v) {
-        Intent i = new Intent(Home.this, MainActivity.class);
+        Intent i = new Intent(Home.this, Challan.class);
         i.putExtra("Tag","1");
         i.putExtra("name",name);
         startActivity(i);
