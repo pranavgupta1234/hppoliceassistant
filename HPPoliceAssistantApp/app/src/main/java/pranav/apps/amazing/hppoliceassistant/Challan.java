@@ -199,12 +199,14 @@ public class Challan extends Fragment {
                 if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")){
                     Toast.makeText(getActivity(),"Fields are empty",Toast.LENGTH_SHORT).show();
                     veh_number.setError("Field can not be empty");
-                    place_name.setError("Fiels can not be empty");
+                    place_name.setError("Field can not be empty");
                 }
                 else {
                     if (violator_number.getText().toString().length() >= 1 && violator_number.getText().toString().length() < 10) {
                         violator_number.setError("Invalid Phone Number");
                     } else {
+                        /** creating a challan without image section population intended for offline storage
+                         */
                         challanDetailswithoutImage = new ChallanDetails(violator_name.getText().toString(),
                                 crime, owner_name.getText().toString(), violator_address.getText().toString(),
                                 veh_number.getText().toString(), place_name.getText().toString(),
@@ -213,18 +215,24 @@ public class Challan extends Fragment {
                                 "disrict", "policeStation", other.getText().toString(), "null",
                                 violator_number.getText().toString(), "will be filled", "will be filled");
 
-                        //instantiate dialog box
+                        /** CustomDialog is a dialog intended to be used for pre verification before submission either to online
+                         * or offline storage and it contains all details previously filled by user an shows 3 buttons including
+                         * edit , online and offline
+                         * */
                         customDialog = new CustomDialog(getActivity(), challanDetailswithoutImage);
-                        //customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         customDialog.setTitle("Challan Details");
                         customDialog.setCancelable(true);
                         customDialog.show();
                         customDialog.findViewById(R.id.offline).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                //local DB
+                                /** DBManager Challan is intended for offline storage of challans and status field determines whether it
+                                 * is posted online or not (if posted then 1 else 0) and determine the color of details button
+                                 * */
                                 final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(), null, null, 1);
                                 challanDetailswithoutImage.setStatus(0);
+                                /** Auto population of date and time from android system
+                                 * */
                                 Calendar c = Calendar.getInstance();
                                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                                 String strDate = sdf.format(c.getTime());
@@ -239,6 +247,8 @@ public class Challan extends Fragment {
                                 }
                             }
                         });
+                        /** for online submission of challan into firebase database
+                         * */
                         customDialog.findViewById(R.id.submit_challan).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -253,10 +263,6 @@ public class Challan extends Fragment {
         upload_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-/*
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image*//*");
-                startActivityForResult(intent,GALLERY_INTENT);*/
 
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
@@ -268,7 +274,9 @@ public class Challan extends Fragment {
     }
     public void startPosting(){
         final DatabaseReference idChild = mRootRef.push();
-
+        /** in case user does not select an image(as uri is initially kept null) then create a challan with Photo not available and then send data
+         * to server
+         * */
         if(uri == null){
             progressDialog1.setMessage("No Photo Selected, Uploading Data...");
             progressDialog1.show();
@@ -288,11 +296,15 @@ public class Challan extends Fragment {
             if(Integer.valueOf(strDate.substring(11,13))>12){
                 ampm = "PM";
             }
+            /** even if the officer is sending challan to the server we are keeping a copy of it locally so that officer can go to
+             * his offline section and see the challan he has made and he can easily differentiate from other offline challan as
+             * this will be shown in green color details box indicating that it is already sent
+             * */
             challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     dbManagerChallan.addChallan(challanDetails);
             /**If you are using completion callback listener of Database reference then the instance for Firebase should also be
-             * of DatabaseReference and not of Firebase(initialised through url)
+             * of DatabaseReference and not of Firebase(the one which is initialised through url)
              */
             idChild.setValue(challanDetails, new DatabaseReference.CompletionListener() {
                 @Override
@@ -308,6 +320,8 @@ public class Challan extends Fragment {
                 }
             });
         }
+        /** if the user has already selected an image then this will be executed
+         * */
         if(uri!=null) {
             progressDialog1.setMessage("Uploading Image and Data....");
             progressDialog1.show();
@@ -320,6 +334,10 @@ public class Challan extends Fragment {
                     if(downloadUrl!=null) {
                         download_url_string = downloadUrl.toString();
                     }
+                    /** download url is the url of the firebase location at which image is stored
+                     * we will store this url in our database so as to fetch the image later
+                     * */
+
                     challanDetails = new ChallanDetails(violator_name.getText().toString(),
                             crime,owner_name.getText().toString(),violator_address.getText().toString(),
                             veh_number.getText().toString(),place_name.getText().toString(),
@@ -335,6 +353,9 @@ public class Challan extends Fragment {
                         ampm = "PM";
                     }
                     challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
+
+                    /** even if challan is stored online we will keep a local copy of it with green marker
+                     * */
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(getActivity(),null,null,1);
                     challanDetails.setStatus(1);
                     dbManagerChallan.addChallan(challanDetails);
@@ -353,6 +374,10 @@ public class Challan extends Fragment {
                     });
                 }
             }).addOnFailureListener(new OnFailureListener() {
+
+                /** this failure listener is for problem that occur during image upload so that in such case we will store
+                 * the rest data into database online and we will also add a challan online
+                 * */
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(getActivity(), "Upload Failed !", Toast.LENGTH_LONG).show();
@@ -363,7 +388,7 @@ public class Challan extends Fragment {
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
                             license_number.getText().toString(),off_name,
-                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",0);
+                            "district","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",0);
                     //local DB
                     Calendar c = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
