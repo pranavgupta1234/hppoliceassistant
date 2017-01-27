@@ -53,6 +53,7 @@ public class Login extends Activity {
          */
         sessionManager = new SessionManager(Login.this);
         if (sessionManager.isLoggedIn()) {
+            sessionManager.createLoginSession();
             startActivity(new Intent(this, Home.class));
         }
 
@@ -74,6 +75,11 @@ public class Login extends Activity {
 
         /*Set behaviour for when login button is clicked*/
         setLoginButton();
+
+        /* This function populates district and IO Name from last successful login if any
+        * As a result of selecting the district, last selected police station and in turn
+        * last selected police post is also automatically selected*/
+        populateDataFromLastLogin();
 
 
     }
@@ -178,7 +184,9 @@ public class Login extends Activity {
 
                 // Apply the adapter to the spinner
                 policeStationSpinner.setAdapter(adapter_police_station);
-                policeStationSpinner.setSelection(0);
+
+                /*Select police station that was selected in last successful login, if any*/
+                selectPoliceStationFromLastLogin();
             }
 
             @Override
@@ -236,6 +244,9 @@ public class Login extends Activity {
 
                 /*Apply the adapter to the spinner*/
                 policePostSpinner.setAdapter(policePostAdapter);
+
+                /*Select police post that was selected in last successful login, if any*/
+                selectPolicePostFromLastLogin();
             }
 
             @Override
@@ -265,9 +276,9 @@ public class Login extends Activity {
                 displayProgressDialog();
 
                 /*Get the data entered by user*/
-                String selectedDistrict = getSelectedDistrict();
-                String selectedPoliceStation = getSelectedPoliceStation();
-                String selectedPolicePost = getSelectedPolicePost();
+                final String selectedDistrict = getSelectedDistrict();
+                final String selectedPoliceStation = getSelectedPoliceStation();
+                final String selectedPolicePost = getSelectedPolicePost();
                 final String iOName = getIOName();
                 final String enteredPassword = getEnteredPassword();
 
@@ -285,15 +296,15 @@ public class Login extends Activity {
                         if (realPassword == null) {
                             Toast.makeText(getBaseContext(), "Problem verifying password", Toast.LENGTH_SHORT).show();
                         }
-                        if (realPassword != null) {
-                            if (!realPassword.contentEquals(enteredPassword)) {
+                        else {
+                            if (realPassword.contentEquals(enteredPassword)) {
                                 dismissProgressDialog();
-                                Toast.makeText(getBaseContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
+                                sessionManager.createLoginSession(selectedDistrict, selectedPoliceStation, selectedPolicePost, iOName);
+                                goToHomeScreen();
                             }
                             else {
                                 dismissProgressDialog();
-                                sessionManager.createLoginSession(iOName, "null");
-                                goToHomeScreen();
+                                Toast.makeText(getBaseContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -308,6 +319,41 @@ public class Login extends Activity {
         });
     }
 
+
+    /* This function populates district and IO Name from last successful login if any
+    * As a result of selecting the district, last selected police station and in turn
+    * last selected police post is also automatically selected*/
+    private void populateDataFromLastLogin() {
+        Spinner districtSpinner = (Spinner) findViewById(R.id.district);
+        int position = ((ArrayAdapter)districtSpinner.getAdapter()).getPosition(sessionManager.getDistrict());
+        if(position >= 0) {
+            districtSpinner.setSelection(position);
+        }
+
+        EditText iOName = (EditText) findViewById(R.id.io_name);
+        if(!sessionManager.getIOName().equals("")) {
+            iOName.setText(sessionManager.getIOName());
+        }
+    }
+
+    /*This method selects the police station from last successful login, if any, and if police station available in current list of police station spinner*/
+    private void selectPoliceStationFromLastLogin() {
+        Log.v(TAG, "Police Station retrieved from session manager is" + sessionManager.getPoliceStation());
+        Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
+        int position = ((ArrayAdapter)policeStationSpinner.getAdapter()).getPosition(sessionManager.getPoliceStation());
+        if(position >= 0) {
+            policeStationSpinner.setSelection(position);
+        }
+    }
+
+    /*This method selects the police post from last successful login, if any, and if police post available in current list of police post spinner*/
+    private void selectPolicePostFromLastLogin() {
+        Spinner policePostSpinner = (Spinner) findViewById(R.id.police_post);
+        int position = ((ArrayAdapter)policePostSpinner.getAdapter()).getPosition(sessionManager.getPolicePost());
+        if(position >= 0) {
+            policePostSpinner.setSelection(position);
+        }
+    }
 
     /**
      * This method takes user to home screen and finishes this activity
@@ -357,7 +403,7 @@ public class Login extends Activity {
      * @return IO Name String
      */
     private String getIOName() {
-        EditText iONameEditText = (EditText) findViewById(R.id.name);
+        EditText iONameEditText = (EditText) findViewById(R.id.io_name);
         return iONameEditText.getText().toString().trim();
     }
 
@@ -431,4 +477,5 @@ public class Login extends Activity {
         }
         return true;
     }
+
 }

@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -23,6 +24,8 @@ public class Home extends AppCompatActivity{
     boolean doubleBackToExitPressedOnce = false;
     String name;
     private SessionManager sessionManager;
+    /*Used for logging purposes*/
+    private String TAG = "Home.java";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,8 @@ public class Home extends AppCompatActivity{
         setSupportActionBar(myToolbar);
 
         sessionManager = new SessionManager(Home.this);
+
+
         name = sessionManager.getUserName();
         Toast.makeText(Home.this,"Welcome "+ name, Toast.LENGTH_SHORT).show();
     }
