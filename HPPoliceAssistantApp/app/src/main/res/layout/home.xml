@@ -30,7 +30,7 @@
             android:padding="8dp">
 
             <LinearLayout
-                style="@style/menutItem">
+                style="@style/menuItem">
 
                 <ImageButton
                     android:id="@+id/entry_iv"
@@ -45,7 +45,7 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/menutItem">
+                style="@style/menuItem">
 
                 <ImageButton
                     android:id="@+id/challan_iv"
@@ -69,7 +69,7 @@
             android:padding="8dp">
 
             <LinearLayout
-                style="@style/menutItem">
+                style="@style/menuItem">
 
                 <ImageButton
                     android:id="@+id/stolen_vehicle_iv"
@@ -84,7 +84,7 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/menutItem">
+                style="@style/menuItem">
 
                 <ImageButton
                     android:id="@+id/a_iv"
