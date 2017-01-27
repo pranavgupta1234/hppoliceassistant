@@ -1,160 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="4dp"
-    android:background="#00BCD4"
-    android:layout_gravity="center_vertical|center_horizontal">
-    <TextView
-        android:text="Select Option"
-        android:fontFamily="cursive"
-        android:textColor="#000000"
-        android:layout_width="wrap_content"
-        android:textSize="29dp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="wrap_content" />
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical|center_horizontal">
-        //1
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="100"
+            android:layout_height="0dp"
+            android:layout_weight="50"
             android:orientation="horizontal"
-            android:layout_gravity="center_vertical">
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/homebutton_back"
-                android:layout_weight="50"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_vertical"
-                android:id="@+id/naka_entry_layout"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp">
+            android:padding="8dp">
+
+            <LinearLayout
+                style="@style/menutItem">
 
                 <ImageButton
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:paddingTop="30dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp"
-                    android:paddingLeft="18dp"
+                    android:id="@+id/entry_iv"
+                    style="@style/menuImageStyle"
                     android:src="@drawable/icon_entry"
-                    android:id="@+id/entry_iv" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/naka_data_entry"
-                    android:textColor="#fff"
-                    android:textSize="15dp"
-                    android:paddingTop="170dp"
-                    android:gravity="center_horizontal"
-                    android:id="@+id/naka_ent" />
+                    android:onClick="openNakaEntryActivity"/>
 
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_weight="50"
-                android:background="@drawable/homebutton_back"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_vertical"
-                android:id="@+id/challan_entry_layout"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="5dp">
+                <TextView
+                    style="@style/menuTextStyle"
+                    android:text="@string/naka_data_entry"
+                    android:onClick="openNakaEntryActivity" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/menutItem">
 
                 <ImageButton
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:paddingTop="30dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp"
+                    android:id="@+id/challan_iv"
+                    style="@style/menuImageStyle"
                     android:src="@drawable/challan"
-                    android:id="@+id/challan_iv" />
+                    android:onClick="openChallanActivity"/>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/menuTextStyle"
                     android:text="@string/challan"
-                    android:textColor="#fff"
-                    android:textSize="15dp"
-                    android:paddingTop="170dp"
-                    android:gravity="center_horizontal"/>
-
-            </FrameLayout>
+                    android:onClick="openChallanActivity"/>
+            </LinearLayout>
 
         </LinearLayout>
 
-        //2
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="100"
-            android:orientation="horizontal">
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_weight="50"
-                android:background="@drawable/homebutton_back"
-                android:id="@+id/stolen_vehicle_layout"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp">
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <LinearLayout
+                style="@style/menutItem">
 
                 <ImageButton
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:paddingTop="30dp"
-                    android:paddingLeft="18dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp"
+                    android:id="@+id/stolen_vehicle_iv"
+                    style="@style/menuImageStyle"
                     android:src="@drawable/icon_stolen"
-                    android:id="@+id/stolen_vehicle_iv" />
+                    android:onClick="openStolenVehicleActivity"/>
+
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/menuTextStyle"
                     android:text="@string/stolen_vehicle"
-                    android:textColor="#fff"
-                    android:textSize="15dp"
-                    android:paddingTop="170dp"
-                    android:gravity="center_horizontal"/>
+                    android:onClick="openStolenVehicleActivity"/>
+            </LinearLayout>
 
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_weight="50"
-                android:background="@drawable/homebutton_back"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="5dp">
+            <LinearLayout
+                style="@style/menutItem">
 
                 <ImageButton
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:paddingTop="30dp"
-                    android:src="@drawable/icon_stolen"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/a_iv" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Search Vehicle"
-                    android:textColor="#fff"
-                    android:textSize="15dp"
-                    android:paddingTop="170dp"
-                    android:gravity="center_horizontal"/>
+                    android:id="@+id/a_iv"
+                    style="@style/menuImageStyle"
+                    android:src="@drawable/search_filled_300"
+                    android:onClick="openSearchActivity"/>
 
-            </FrameLayout>
+                <TextView
+                    style="@style/menuTextStyle"
+                    android:text="Search Vehicle"
+                    android:onClick="openSearchActivity"/>
+            </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
+
 </LinearLayout>

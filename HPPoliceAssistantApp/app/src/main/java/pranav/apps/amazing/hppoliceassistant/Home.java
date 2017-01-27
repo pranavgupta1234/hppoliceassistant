@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 /**
@@ -15,59 +19,51 @@ import android.widget.Toast;
  */
 
 
-public class Home extends Activity{
-    private ImageButton entry,challan,stolen_list,search_vehicle;
+public class Home extends AppCompatActivity{
     boolean doubleBackToExitPressedOnce = false;
-    private String name;
+    String name;
     private SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        entry =(ImageButton)findViewById(R.id.entry_iv);
-        challan =(ImageButton)findViewById(R.id.challan_iv);
-        stolen_list =(ImageButton)findViewById(R.id.stolen_vehicle_iv);
-        search_vehicle =(ImageButton)findViewById(R.id.a_iv);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
         sessionManager = new SessionManager(Home.this);
         name = sessionManager.getUserName();
-        Toast.makeText(Home.this,"Welcome "+name,Toast.LENGTH_SHORT).show();
-        entry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Home.this,MainActivity.class);
-                i.putExtra("Tag", "0");
-                i.putExtra("name",name);
-                startActivity(i);
-            }
-        });
-        challan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Home.this,MainActivity.class);
-                i.putExtra("Tag","1");
-                i.putExtra("name",name);
-                startActivity(i);
-            }
-        });
-        stolen_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Home.this,MainActivity.class);
-                i.putExtra("Tag","2");
-                i.putExtra("name",name);
-                startActivity(i);
-            }
-        });
-        search_vehicle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Home.this,MainActivity.class);
-                i.putExtra("Tag","3");
-                i.putExtra("name",name);
-                startActivity(i);
-            }
-        });
+        Toast.makeText(Home.this,"Welcome "+ name, Toast.LENGTH_SHORT).show();
     }
+
+    public void openNakaEntryActivity(View v) {
+        Intent i = new Intent(Home.this, MainActivity.class);
+        i.putExtra("Tag", "0");
+        i.putExtra("name",name);
+        startActivity(i);
+    }
+
+    public void openChallanActivity(View v) {
+        Intent i = new Intent(Home.this, MainActivity.class);
+        i.putExtra("Tag","1");
+        i.putExtra("name",name);
+        startActivity(i);
+    }
+
+    public void openStolenVehicleActivity(View v) {
+        Intent i = new Intent(Home.this,MainActivity.class);
+        i.putExtra("Tag","2");
+        i.putExtra("name",name);
+        startActivity(i);
+    }
+
+    public void openSearchActivity(View v) {
+        Intent i = new Intent(Home.this,MainActivity.class);
+        i.putExtra("Tag","3");
+        i.putExtra("name",name);
+        startActivity(i);
+    }
+
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
