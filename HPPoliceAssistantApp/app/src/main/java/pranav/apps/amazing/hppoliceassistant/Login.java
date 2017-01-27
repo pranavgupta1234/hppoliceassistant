@@ -208,57 +208,41 @@ public class Login extends Activity {
         policeStationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selected_police_station = (String) adapterView.getItemAtPosition(i);
-                if (!selected_police_station.contentEquals("Select PoliceStation")) {
-                    Toast.makeText(getApplicationContext(), "Selected PoliceStation: :" + selected_police_station + "", Toast.LENGTH_SHORT).show();
-                }
-                if (selected_police_station.contentEquals("PS B/Nagar")) {
-                    ArrayAdapter<CharSequence> adapter_police_post_bnagar = ArrayAdapter.createFromResource(getBaseContext(),
-                            R.array.PS_BNagar_policepost, R.layout.spinner_layout);
-                    // Specify the layout to use when the list of choices appears
-                    adapter_police_post_bnagar.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    // Apply the adapter to the spinner
-                    police_post.setAdapter(adapter_police_post_bnagar);
-                    police_post.setSelection(0);
+                String selectedPoliceStation = getSelectedPoliceStation();
+
+                ArrayAdapter<CharSequence> policePostAdapter;
+                switch (selectedPoliceStation) {
+                    case "PS B/Nagar":
+                        policePostAdapter = ArrayAdapter.createFromResource(getBaseContext(),
+                                R.array.PS_BNagar_policepost, R.layout.spinner_layout);
+                        break;
+                    case "PS Pooh":
+                        policePostAdapter = ArrayAdapter.createFromResource(getBaseContext(),
+                                R.array.PS_Pooh_policepost, R.layout.spinner_layout);
+                        break;
+                    case "PS Sangla":
+                        policePostAdapter =  ArrayAdapter.createFromResource(getBaseContext(),
+                                R.array.PS_Sangla_policepost, R.layout.spinner_layout);
+                        break;
+                    case "PS R/Peo":
+                        policePostAdapter =  ArrayAdapter.createFromResource(getBaseContext(),
+                                R.array.PS_Rpeo_policepost, R.layout.spinner_layout);
+                        break;
+                    case "PS Sadar":
+                        policePostAdapter = ArrayAdapter.createFromResource(getBaseContext(),
+                                R.array.PS_Sadar_policepost, R.layout.spinner_layout);
+                        break;
+                    default:
+                        policePostAdapter = ArrayAdapter.createFromResource(getBaseContext(),
+                                R.array.option_station_post, R.layout.spinner_layout);
+                        break;
 
                 }
-                if (selected_police_station.contentEquals("PS Pooh")) {
-                    ArrayAdapter<CharSequence> adapter_police_post_pooh = ArrayAdapter.createFromResource(getBaseContext(),
-                            R.array.PS_Pooh_policepost, R.layout.spinner_layout);
-                    // Specify the layout to use when the list of choices appears
-                    adapter_police_post_pooh.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    // Apply the adapter to the spinner
-                    police_post.setAdapter(adapter_police_post_pooh);
-                    police_post.setSelection(0);
-                }
-                if (selected_police_station.contentEquals("PS Sangla")) {
-                    ArrayAdapter<CharSequence> adapter_police_post_sangla = ArrayAdapter.createFromResource(getBaseContext(),
-                            R.array.PS_Sangla_policepost, R.layout.spinner_layout);
-                    // Specify the layout to use when the list of choices appears
-                    adapter_police_post_sangla.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    // Apply the adapter to the spinner
-                    police_post.setAdapter(adapter_police_post_sangla);
-                    police_post.setSelection(0);
-                }
-                if (selected_police_station.contentEquals("PS R/Peo")) {
-                    ArrayAdapter<CharSequence> adapter_police_post_rpeo = ArrayAdapter.createFromResource(getBaseContext(),
-                            R.array.PS_Rpeo_policepost, R.layout.spinner_layout);
-                    // Specify the layout to use when the list of choices appears
-                    adapter_police_post_rpeo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    // Apply the adapter to the spinner
-                    police_post.setAdapter(adapter_police_post_rpeo);
-                    police_post.setSelection(0);
-                }
-                if (selected_police_station.contentEquals("PS Sadar")) {
-                    ArrayAdapter<CharSequence> adapter_police_post_sadar = ArrayAdapter.createFromResource(getBaseContext(),
-                            R.array.PS_Sadar_policepost, R.layout.spinner_layout);
-                    // Specify the layout to use when the list of choices appears
-                    adapter_police_post_sadar.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    // Apply the adapter to the spinner
-                    police_post.setAdapter(adapter_police_post_sadar);
-                    police_post.setSelection(0);
-                }
+                /*Set the layout for the dropdown*/
+                policePostAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+                /*Apply the adapter to the spinner*/
+                police_post.setAdapter(policePostAdapter);
             }
 
             @Override
