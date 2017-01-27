@@ -8,20 +8,20 @@
     <string name="district">district</string>
     <string name="is_logged_in">isLoggedIn</string>
     <string-array name="district">
-        <item>Select District</item>
+        <item>@string/select_district</item>
         <item>Kinnaur</item>
         <item>Shimla</item>
         <item>Mandi</item>
     </string-array>
     <string-array name="police_station_kinnaur">
-        <item>Select PoliceStation</item>
+        <item>@string/select_police_station</item>
         <item>PS B/Nagar</item>
         <item>PS Pooh</item>
         <item>PS Sangla</item>
         <item>PS R/Peo</item>
     </string-array>
     <string-array name="police_station_shimla">
-        <item>Select PoliceStation</item>
+        <item>@string/select_police_station</item>
         <item>PS Sunni</item>
         <item>PS Kupvi</item>
         <item>PS Nerwa</item>
@@ -42,44 +42,52 @@
         <item>PS Sadar</item>
     </string-array>
     <string-array name="police_station_mandi">
-        <item>Select PoliceStation</item>
+        <item>@string/select_police_station</item>
         <item>PS Sadar</item>
     </string-array>
     <string-array name="option_station">
-        <item>Select PoliceStation</item>
+        <item>@string/select_police_station</item>
     </string-array>
     <string-array name="option_station_post">
-        <item>Select PolicePost</item>
+        <item>@string/select_police_post</item>
     </string-array>
     <string-array name="PS_Sadar_policepost">
-        <item>Select PolicePost</item>
+        <item>@string/select_police_post</item>
     </string-array>
 
     <string-array name="PS_RPeo_policepost">
-        <item>Select PolicePost</item>
+        <item>@string/select_police_post</item>
         <item>PP Pangi</item>
     </string-array>
 
     <string-array name="PS_BNagar_policepost">
-        <item>Select PolicePost</item>
+        <item>@string/select_police_post</item>
         <item>PP Tapri</item>
         <item>PP Katgaon</item>
         <item>PP Nichar</item>
     </string-array>
 
     <string-array name="PS_Pooh_policepost">
-        <item>Select PolicePost</item>
+        <item>@string/select_police_post</item>
         <item>PP Yangthang</item>
         <item>PP Moorang</item>
     </string-array>
     <string-array name="PS_Sangla_policepost">
-        <item>Select PolicePost</item>
+        <item>@string/select_police_post</item>
         <item>PP Karcham</item>
     </string-array>
     <string-array name="PS_Rpeo_policepost">
-        <item>Select PolicePost</item>
+        <item>@string/select_police_post</item>
         <item>PP Pangi</item>
     </string-array>
 
+    <string name="select_district">Select District</string>
+    <string name="select_police_station">Select Police Station</string>
+    <string name="select_police_post">Select Police Post</string>
 
+    <string name="select_district_toast">Please select some district</string>
+    <string name="select_police_station_toast">Please select some police station</string>
+    <string name="select_police_post_toast">Please select some police post</string>
+    <string name="enter_io_name_toast">Please enter IO Name</string>
+    <string name="enter_password_toast">Please enter password</string>
 </resources>

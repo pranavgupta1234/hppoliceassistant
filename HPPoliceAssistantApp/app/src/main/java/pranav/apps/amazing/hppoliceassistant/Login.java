@@ -63,13 +63,12 @@ public class Login extends Activity {
         district = (Spinner) findViewById(R.id.district);
         police_station = (Spinner) findViewById(R.id.police_station);
         police_post = (Spinner) findViewById(R.id.police_post);
-        login_name = (EditText) findViewById(R.id.name);
-        login_password = (EditText) findViewById(R.id.password);
+
 
         database = FirebaseDatabase.getInstance();
         rootRef = database.getReference("login");
         nRef = database.getReference("authenticated_users");
-        progressDialog = new ProgressDialog(Login.this);
+
 
         /*Populate Districts dropdown(spinner) with a list of districts in HP*/
         populateDistrictSpinner();
@@ -86,8 +85,8 @@ public class Login extends Activity {
         /*When a police station is selected this method updates the police post spinner according to selected police post*/
         setPoliceStationChangeListener();
 
+        /*Set behaviour for when login button is clicked*/
         setLoginButton();
-
 
 
     }
@@ -221,11 +220,11 @@ public class Login extends Activity {
                                 R.array.PS_Pooh_policepost, R.layout.spinner_layout);
                         break;
                     case "PS Sangla":
-                        policePostAdapter =  ArrayAdapter.createFromResource(getBaseContext(),
+                        policePostAdapter = ArrayAdapter.createFromResource(getBaseContext(),
                                 R.array.PS_Sangla_policepost, R.layout.spinner_layout);
                         break;
                     case "PS R/Peo":
-                        policePostAdapter =  ArrayAdapter.createFromResource(getBaseContext(),
+                        policePostAdapter = ArrayAdapter.createFromResource(getBaseContext(),
                                 R.array.PS_Rpeo_policepost, R.layout.spinner_layout);
                         break;
                     case "PS Sadar":
@@ -253,89 +252,88 @@ public class Login extends Activity {
     }
 
 
-
+    /**
+     * This function determines what happens when login button is clicked
+     */
     private void setLoginButton() {
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                final String selectedDistrict = getSelectedDistrict();
-                final String selectedPoliceStation = getSelectedPoliceStation();
-                final String selectedPolicePost = getSelectedPolicePost();
+                hideKeyboard();
 
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-                progressDialog.setMessage("Checking...");
-                progressDialog.show();
-                name = login_name.getText().toString().trim();
-                password = login_password.getText().toString().trim();
-                Log.v(TAG, "Selected Police Post is: " + selectedPolicePost);
-                Log.v(TAG, "Selected District is: " + selectedDistrict);
-                Log.v(TAG, "Selected Police Station is: " + selectedPoliceStation);
-                if (name.contentEquals("") || password.contentEquals("") || selectedPolicePost.contentEquals("none") || selectedPoliceStation.contentEquals("none") || selectedDistrict.contentEquals("none")) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getBaseContext(), "Please Enter all details", Toast.LENGTH_SHORT).show();
+                /*If user did not enter any detail the exit the function after displaying appropriate message*/
+                if (!validInput()) {
+                    return;
                 }
-                if (!name.contentEquals("") && !password.contentEquals("") && !selectedPolicePost.contentEquals("none") && !selectedPoliceStation.contentEquals("none") && !selectedDistrict.contentEquals("none")) {
-                    dRef = rootRef.child(selectedDistrict).child(selectedPoliceStation.replace("/", "")).child(selected_police_post.replace("/", ""));
-                    final DatabaseReference to_user = nRef.child(selectedDistrict.toLowerCase()).child(name.toLowerCase());
 
-                    dRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            //
-                            String pass = dataSnapshot.getValue(String.class);
-                            if (pass == null) {
-                                Toast.makeText(getBaseContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                displayProgressDialog();
+
+                /*Get the data entered by user*/
+                String selectedDistrict = getSelectedDistrict();
+                String selectedPoliceStation = getSelectedPoliceStation();
+                String selectedPolicePost = getSelectedPolicePost();
+                String iOName = getIOName();
+                final String enteredPassword = getEnteredPassword();
+
+                Log.v(TAG, "Entered password is: " + enteredPassword);
+
+                dRef = rootRef.child(selectedDistrict).child(selectedPoliceStation.replace("/", "")).child(selected_police_post.replace("/", ""));
+                final DatabaseReference to_user = nRef.child(selectedDistrict.toLowerCase()).child(iOName.toLowerCase());
+
+                dRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //
+                        String pass = dataSnapshot.getValue(String.class);
+                        if (pass == null) {
+                            Toast.makeText(getBaseContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                        }
+                        if (pass != null) {
+                            if (!pass.contentEquals(enteredPassword)) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getBaseContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
                             }
-                            if (pass != null) {
-                                if (!pass.contentEquals(password)) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getBaseContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
-                                }
-                                if (pass.contentEquals(password)) {
+                            if (pass.contentEquals(enteredPassword)) {
                                     /*to add user authentication */
 
-                                    to_user.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            String auth = dataSnapshot.getValue(String.class);
-                                            if (auth == null) {
+                                to_user.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        String auth = dataSnapshot.getValue(String.class);
+                                        if (auth == null) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getBaseContext(), "User doesn't exist !", Toast.LENGTH_LONG).show();
+                                        }
+                                        if (auth != null) {
+                                            if (auth.contentEquals("0")) {
                                                 progressDialog.dismiss();
-                                                Toast.makeText(getBaseContext(), "User doesn't exist !", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getBaseContext(), "You are not a authenticated User ! Sorry :( ", Toast.LENGTH_LONG).show();
                                             }
-                                            if (auth != null) {
-                                                if (auth.contentEquals("0")) {
-                                                    progressDialog.dismiss();
-                                                    Toast.makeText(getBaseContext(), "You are not a authenticated User ! Sorry :( ", Toast.LENGTH_LONG).show();
-                                                }
-                                                if (auth.contentEquals("1")) {
-                                                    progressDialog.dismiss();
-                                                    goToHomeScreen();
-                                                    sessionManager.createLoginSession(login_name.getText().toString(), "null");
-                                                }
+                                            if (auth.contentEquals("1")) {
+                                                progressDialog.dismiss();
+                                                goToHomeScreen();
+                                                sessionManager.createLoginSession(login_name.getText().toString(), "null");
                                             }
                                         }
+                                    }
 
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                        }
-                                    });
-                                }
+                                    }
+                                });
                             }
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            Toast.makeText(getBaseContext(), "Operation Cancelled", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(getBaseContext(), "Operation Cancelled", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
     }
@@ -355,6 +353,7 @@ public class Login extends Activity {
 
     /**
      * This method returns the selected district in the dropdown
+     *
      * @return Selected district's string value
      */
     private String getSelectedDistrict() {
@@ -364,6 +363,7 @@ public class Login extends Activity {
 
     /**
      * This method returns the selected police station in the dropdown
+     *
      * @return Selected Police Station's string value
      */
     private String getSelectedPoliceStation() {
@@ -372,11 +372,90 @@ public class Login extends Activity {
     }
 
     /**
-     * THis method returns the selected police post in the dropdown
+     * This method returns the selected police post in the dropdown
+     *
      * @return Selected Police Post's dropdown
      */
     private String getSelectedPolicePost() {
         Spinner policePostSpinner = (Spinner) findViewById(R.id.police_post);
         return policePostSpinner.getSelectedItem().toString();
+    }
+
+    /**
+     * This method returns the IO Name entered by user
+     *
+     * @return IO Name String
+     */
+    private String getIOName() {
+        EditText iONameEditText = (EditText) findViewById(R.id.name);
+        return iONameEditText.getText().toString().trim();
+    }
+
+    /**
+     * This method returns the password entered by user
+     *
+     * @return Password String entered by user
+     */
+    private String getEnteredPassword() {
+        EditText enteredPasswordEditText = (EditText) findViewById(R.id.password);
+        return enteredPasswordEditText.getText().toString().trim();
+    }
+
+    private void displayProgressDialog() {
+        progressDialog = new ProgressDialog(Login.this);
+        progressDialog.setMessage("Checking...");
+        progressDialog.show();
+    }
+
+    private void dismissProgressDialog() {
+        progressDialog.dismiss();
+    }
+
+    /**
+     * This method is used to programmatically hide soft keyboard
+     */
+    private void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
+     * The following function checks whether the user entered all the fields. It displays a toast if some field is not entered
+     *
+     * @return true if all fields are entered/selected else false
+     */
+    private boolean validInput() {
+        /*Get the data entered by user*/
+        String selectedDistrict = getSelectedDistrict();
+        String selectedPoliceStation = getSelectedPoliceStation();
+        String selectedPolicePost = getSelectedPolicePost();
+        String iOName = getIOName();
+        String enteredPassword = getEnteredPassword();
+        Log.v(TAG, "Entered by user: " +selectedDistrict);
+        Log.v(TAG, "From XML resource: " + R.string.select_district);
+        if (selectedDistrict.equals(getResources().getString(R.string.select_district))) {
+            Toast.makeText(this, R.string.select_district_toast, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (selectedPoliceStation.equals(getResources().getString(R.string.select_police_station))) {
+            Toast.makeText(this, R.string.select_police_station_toast, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (selectedPolicePost.equals(getResources().getString(R.string.select_police_post))) {
+            Toast.makeText(this, R.string.select_police_post_toast, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (iOName.equals("")) {
+            Toast.makeText(this, R.string.enter_io_name_toast, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (enteredPassword.equals("")) {
+            Toast.makeText(this, R.string.enter_password_toast, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 }
