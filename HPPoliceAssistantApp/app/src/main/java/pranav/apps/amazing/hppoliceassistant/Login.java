@@ -271,9 +271,15 @@ public class Login extends Activity {
 
 
     private void setLoginButton() {
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                final String selectedDistrict = getSelectedDistrict();
+                final String selectedPoliceStation = getSelectedPoliceStation();
+                final String selectedPolicePost = getSelectedPolicePost();
+
                 InputMethodManager inputManager = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -283,16 +289,16 @@ public class Login extends Activity {
                 progressDialog.show();
                 name = login_name.getText().toString().trim();
                 password = login_password.getText().toString().trim();
-                Log.v(TAG, "Selected Police Post is: " + selected_police_post);
-                Log.v(TAG, "Selected District is: " + selected_district);
-                Log.v(TAG, "Selected Police Station is: " + selected_police_station);
-                if (name.contentEquals("") || password.contentEquals("") || selected_police_post.contentEquals("none") || selected_police_station.contentEquals("none") || selected_district.contentEquals("none")) {
+                Log.v(TAG, "Selected Police Post is: " + selectedPolicePost);
+                Log.v(TAG, "Selected District is: " + selectedDistrict);
+                Log.v(TAG, "Selected Police Station is: " + selectedPoliceStation);
+                if (name.contentEquals("") || password.contentEquals("") || selectedPolicePost.contentEquals("none") || selectedPoliceStation.contentEquals("none") || selectedDistrict.contentEquals("none")) {
                     progressDialog.dismiss();
-                  //  Toast.makeText(getBaseContext(), "Please Enter all details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Please Enter all details", Toast.LENGTH_SHORT).show();
                 }
-                if (!name.contentEquals("") && !password.contentEquals("") && !selected_police_post.contentEquals("none") && !selected_police_station.contentEquals("none") && !selected_district.contentEquals("none")) {
-                    dRef = rootRef.child(selected_district).child(selected_police_station.replace("/", "")).child(selected_police_post.replace("/", ""));
-                    final DatabaseReference to_user = nRef.child(selected_district.toLowerCase()).child(name.toLowerCase());
+                if (!name.contentEquals("") && !password.contentEquals("") && !selectedPolicePost.contentEquals("none") && !selectedPoliceStation.contentEquals("none") && !selectedDistrict.contentEquals("none")) {
+                    dRef = rootRef.child(selectedDistrict).child(selectedPoliceStation.replace("/", "")).child(selected_police_post.replace("/", ""));
+                    final DatabaseReference to_user = nRef.child(selectedDistrict.toLowerCase()).child(name.toLowerCase());
 
                     dRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -360,5 +366,33 @@ public class Login extends Activity {
         //i.putExtra("name",login_name.getText().toString());
         startActivity(i);
         finish(); //Finish this activity so that user cannot come back to this activity
+    }
+
+
+    /**
+     * This method returns the selected district in the dropdown
+     * @return Selected district's string value
+     */
+    private String getSelectedDistrict() {
+        Spinner districtSpinner = (Spinner) findViewById(R.id.district);
+        return districtSpinner.getSelectedItem().toString();
+    }
+
+    /**
+     * This method returns the selected police station in the dropdown
+     * @return Selected Police Station's string value
+     */
+    private String getSelectedPoliceStation() {
+        Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
+        return policeStationSpinner.getSelectedItem().toString();
+    }
+
+    /**
+     * THis method returns the selected police post in the dropdown
+     * @return Selected Police Post's dropdown
+     */
+    private String getSelectedPolicePost() {
+        Spinner policePostSpinner = (Spinner) findViewById(R.id.police_post);
+        return policePostSpinner.getSelectedItem().toString();
     }
 }
