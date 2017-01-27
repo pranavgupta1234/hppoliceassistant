@@ -116,7 +116,7 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
         challan = new ArrayList<>();
         int size = ch.size();
         for(int i=0;i<ch.size();i++){
-            challan.add(0,ch.get(size));
+            challan.add(0,ch.get(size-1));
             size--;
         }
         notifyDataSetChanged();

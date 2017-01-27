@@ -165,8 +165,10 @@ public class Stolen extends Fragment implements SearchView.OnQueryTextListener{
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
+    public boolean onQueryTextChange(String query) {
+        final List<VehicleEntry> filteredEntry = filter(vehicleEntries, query);
+        adapter.setFilter(filteredEntry);
+        return true;
     }
     private List<VehicleEntry> filter(List<VehicleEntry> models, String query) {
         if(query.contentEquals("")){

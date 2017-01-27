@@ -159,7 +159,9 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return false;
+        final List<ChallanDetails> filteredChallan = filter(offlineList, query);
+        adapterOffline.setFilter(filteredChallan);
+        return true;
     }
 
 

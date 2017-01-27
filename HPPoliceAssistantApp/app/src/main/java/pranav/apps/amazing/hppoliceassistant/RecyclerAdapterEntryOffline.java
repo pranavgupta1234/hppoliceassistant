@@ -120,7 +120,7 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
         vehicleEntries = new ArrayList<>();
         int size = vh.size();
         for (int i=0;i<vh.size();i++){
-            vehicleEntries.add(0,vh.get(size));
+            vehicleEntries.add(0,vh.get(size-1));
             size--;
         }
         notifyDataSetChanged();
