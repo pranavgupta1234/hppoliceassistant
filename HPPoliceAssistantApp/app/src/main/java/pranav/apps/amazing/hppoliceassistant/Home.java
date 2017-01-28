@@ -1,30 +1,21 @@
 package pranav.apps.amazing.hppoliceassistant;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 /**
  * Created by Pranav Gupta on 12/18/2016.
  */
-
-
 public class Home extends AppCompatActivity{
     boolean doubleBackToExitPressedOnce = false;
 
@@ -43,7 +34,6 @@ public class Home extends AppCompatActivity{
         setSupportActionBar(myToolbar);
         myToolbar.inflateMenu(R.menu.menu_menu);
 
-
         sessionManager = new SessionManager(Home.this);
 
         /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
@@ -58,13 +48,14 @@ public class Home extends AppCompatActivity{
     }
 
 
+    /**
+     * Following function handles action to be carried out if some menu item is clicked from the app bar
+     * @param item The menu item that is clicked by user
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         switch (id) {
             case R.id.offline_challan:
                 Intent i = new Intent(Home.this,OfflineChallan.class);
