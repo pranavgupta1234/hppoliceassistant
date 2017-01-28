@@ -40,9 +40,8 @@ public class Home extends AppCompatActivity{
         setContentView(R.layout.home);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        myToolbar.setTitle("HP Police Assistant");
         setSupportActionBar(myToolbar);
-        myToolbar.inflateMenu(R.menu.popup_menu);
+        myToolbar.inflateMenu(R.menu.menu_menu);
 
 
         sessionManager = new SessionManager(Home.this);
@@ -57,7 +56,7 @@ public class Home extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.popup_menu, menu);//Menu Resource, Menu
+        getMenuInflater().inflate(R.menu.menu_menu, menu);//Menu Resource, Menu
         return true;
     }
 
@@ -70,9 +69,6 @@ public class Home extends AppCompatActivity{
         int id = item.getItemId();
 
         switch (id) {
-            case android.R.id.home:
-                //mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
             case R.id.offline_challan:
                 Intent i = new Intent(Home.this,OfflineChallan.class);
                 startActivity(i);
@@ -81,15 +77,8 @@ public class Home extends AppCompatActivity{
                 Intent intent = new Intent(Home.this,OfflineEntry.class);
                 startActivity(intent);
                 return true;
-            case R.id.logout:
+            case R.id.action_logout:
                 sessionManager.logoutUser();
-                Intent intent1 = new Intent(Home.this,Login.class);
-                intent1.putExtra("finish", true); // if you are checking for this in your other Activities
-                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent1);
-                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

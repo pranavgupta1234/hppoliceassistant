@@ -7,5 +7,13 @@
         android:icon="@drawable/ic_logout"
         android:title="@string/logout"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/offline_challan"
+        android:title="Offline Challan Entries"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/offline_entry"
+        android:title="Offline Vehicle Entries"
+        app:showAsAction="never" />
 
 </menu>

@@ -87,7 +87,7 @@ public class SessionManager {
         editor.putBoolean(IS_LOGIN, false);
         editor.commit();
 
-        /**  broadcast a logout message to all your Activities needing to stay under a logged-in status
+        /**  broadcast a logout message to all Activities
          * http://stackoverflow.com/questions/3007998/on-logout-clear-activity-history-stack-preventing-back-button-from-opening-l**/
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction("com.pranav.apps.amazing.ACTION_LOGOUT");
