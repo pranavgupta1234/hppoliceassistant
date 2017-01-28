@@ -56,6 +56,9 @@ public class Search extends FragmentActivity implements SearchView.OnQueryTextLi
         DatabaseReference myRef = database.getReference("challan");              //migrate from tree in other branches
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.popup_menu);
+        toolbar.inflateMenu(R.menu.menu_search);
+
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         search=(TextView)findViewById(R.id.loading);
         LinearLayoutManager layoutManager = new LinearLayoutManager(Search.this);
@@ -145,8 +148,33 @@ public class Search extends FragmentActivity implements SearchView.OnQueryTextLi
                         return true; // Return true to expand action view
                     }
                 });
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
+    /*    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search,menu);
+
+        final MenuItem item = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(this);
+
+        MenuItemCompat.setOnActionExpandListener(item,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        // Do something when collapsed
+                        adapterOffline.setFilter(offlineList);
+                        return true; // Return true to collapse action view
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        // Do something when expanded
+                        return true; // Return true to expand action view
+                    }
+                });
+        return true;
+    }*/
 
     @Override
     public boolean onQueryTextChange(String newText) {

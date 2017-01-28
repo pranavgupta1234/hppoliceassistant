@@ -14,16 +14,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:menu="@menu/popup_menu"/>
     <TextView
-        android:text="Stolen Items"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_green_dark"
-        android:layout_gravity="center_horizontal"
-        android:textSize="20sp"
-        android:id="@+id/stolen"/>
-    <TextView
         android:text="Loading..."
         android:textStyle="bold"
         android:textSize="25dp"
@@ -36,8 +26,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:layout_below="@id/stolen"
+        android:layout_margin="6dp"
+        android:layout_below="@id/toolbar"
         tools:context=".Stolen">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyle_view"

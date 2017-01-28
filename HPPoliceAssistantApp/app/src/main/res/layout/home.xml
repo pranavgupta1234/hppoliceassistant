@@ -29,13 +29,14 @@
             android:padding="8dp">
 
             <LinearLayout
-                style="@style/menutItem">
+                style="@style/menutItem"
+                android:clickable="true"
+                android:onClick="openNakaEntryActivity">
 
                 <ImageButton
                     android:id="@+id/entry_iv"
                     style="@style/menuImageStyle"
-                    android:src="@drawable/icon_entry"
-                    android:onClick="openNakaEntryActivity"/>
+                    android:src="@drawable/icon_entry" />
 
                 <TextView
                     style="@style/menuTextStyle"
@@ -46,13 +47,13 @@
             <LinearLayout
                 style="@style/menutItem"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp">
-
+                android:layout_marginLeft="4dp"
+                android:clickable="true"
+                android:onClick="openChallanActivity">
                 <ImageButton
                     android:id="@+id/challan_iv"
                     style="@style/menuImageStyle"
-                    android:src="@drawable/challan"
-                    android:onClick="openChallanActivity"/>
+                    android:src="@drawable/challan" />
 
                 <TextView
                     style="@style/menuTextStyle"
@@ -70,13 +71,14 @@
             android:padding="8dp">
 
             <LinearLayout
-                style="@style/menutItem">
+                style="@style/menutItem"
+                android:clickable="true"
+                android:onClick="openStolenVehicleActivity">
 
                 <ImageButton
                     android:id="@+id/stolen_vehicle_iv"
                     style="@style/menuImageStyle"
-                    android:src="@drawable/icon_stolen"
-                    android:onClick="openStolenVehicleActivity"/>
+                    android:src="@drawable/icon_stolen" />
 
                 <TextView
                     style="@style/menuTextStyle"
@@ -87,13 +89,14 @@
             <LinearLayout
                 style="@style/menutItem"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp">
+                android:layout_marginLeft="4dp"
+                android:clickable="true"
+                android:onClick="openSearchActivity">
 
                 <ImageButton
                     android:id="@+id/a_iv"
                     style="@style/menuImageStyle"
-                    android:src="@drawable/search_filled_300"
-                    android:onClick="openSearchActivity" />
+                    android:src="@drawable/search_filled_300" />
 
                 <TextView
                     style="@style/menuTextStyle"

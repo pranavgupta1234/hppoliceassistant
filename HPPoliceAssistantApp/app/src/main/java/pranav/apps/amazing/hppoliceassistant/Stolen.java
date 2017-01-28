@@ -1,32 +1,18 @@
 package pranav.apps.amazing.hppoliceassistant;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.ListViewAutoScrollHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.firebase.database.DatabaseError;
@@ -44,9 +30,10 @@ import java.util.UUID;
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Stolen extends FragmentActivity implements SearchView.OnQueryTextListener{
+public class Stolen extends Activity implements SearchView.OnQueryTextListener{
     Firebase mRef;
     Firebase childRef;
+    private SessionManager sessionManager;
 
     private DatabaseReference mDatabase;               //its like an address pointer to your database location
     private ListView lv;
@@ -74,7 +61,12 @@ public class Stolen extends FragmentActivity implements SearchView.OnQueryTextLi
         DatabaseReference myRef = database.getReference("vehicle_entry");              //migrate from tree in other branches
         mDatabase =FirebaseDatabase.getInstance().getReference("vehicle_entry");
 
+        sessionManager = new SessionManager(Stolen.this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Stolen Items");
+        toolbar.inflateMenu(R.menu.menu_search);
+        toolbar.inflateMenu(R.menu.popup_menu);
         recyclerView = (RecyclerView)findViewById(R.id.recyle_view);
         recyclerView.setHasFixedSize(true);
 
@@ -88,7 +80,6 @@ public class Stolen extends FragmentActivity implements SearchView.OnQueryTextLi
         adapter = new RecyclerAdapter(Stolen.this,vehicleEntries);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
         /*adapter = new RecyclerAdapter(Stolen.this,vehicleEntries);
         recyclerView.setAdapter(adapter);*/
 
@@ -130,14 +121,47 @@ public class Stolen extends FragmentActivity implements SearchView.OnQueryTextLi
         vehicleEntries.clear();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                //mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.offline_challan:
+                Intent i = new Intent(Stolen.this,OfflineChallan.class);
+                startActivity(i);
+                return true;
+            case R.id.offline_entry:
+                Intent intent = new Intent(Stolen.this,OfflineEntry.class);
+                startActivity(intent);
+                return true;
+            case R.id.logout:
+                sessionManager.logoutUser();
+                Intent intent1 = new Intent(Stolen.this,Login.class);
+                intent1.putExtra("finish", true); // if you are checking for this in your other Activities
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent1);
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.popup_menu, menu);
 
         final MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-        searchView.setOnQueryTextListener(this);
+        searchView.setOnQueryTextListener(Stolen.this);
 
         MenuItemCompat.setOnActionExpandListener(item,
                 new MenuItemCompat.OnActionExpandListener() {

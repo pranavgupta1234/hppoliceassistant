@@ -180,15 +180,15 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+                return false;
             case R.id.offline_challan:
                 Intent i = new Intent(MainActivity.this,OfflineChallan.class);
                 startActivity(i);
-                return true;
+                return false;
             case R.id.offline_entry:
                 Intent intent = new Intent(MainActivity.this,OfflineEntry.class);
                 startActivity(intent);
-                return true;
+                return false;
             case R.id.logout:
                 sessionManager.logoutUser();
                 Intent intent1 = new Intent(MainActivity.this,Login.class);
@@ -198,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent1);
                 finish();
+                return false;
         }
 
         return super.onOptionsItemSelected(item);
