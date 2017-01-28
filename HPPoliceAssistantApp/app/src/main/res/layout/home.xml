@@ -10,9 +10,10 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimaryDark"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+        app:menu="@menu/popup_menu"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +37,8 @@
                 <ImageButton
                     android:id="@+id/entry_iv"
                     style="@style/menuImageStyle"
-                    android:src="@drawable/icon_entry" />
+                    android:src="@drawable/icon_entry"
+                    android:onClick="openNakaEntryActivity"/>
 
                 <TextView
                     style="@style/menuTextStyle"
@@ -53,7 +55,8 @@
                 <ImageButton
                     android:id="@+id/challan_iv"
                     style="@style/menuImageStyle"
-                    android:src="@drawable/challan" />
+                    android:src="@drawable/challan"
+                    android:onClick="openChallanActivity"/>
 
                 <TextView
                     style="@style/menuTextStyle"
@@ -78,7 +81,8 @@
                 <ImageButton
                     android:id="@+id/stolen_vehicle_iv"
                     style="@style/menuImageStyle"
-                    android:src="@drawable/icon_stolen" />
+                    android:src="@drawable/icon_stolen"
+                    android:onClick="openStolenVehicleActivity"/>
 
                 <TextView
                     style="@style/menuTextStyle"
@@ -96,7 +100,8 @@
                 <ImageButton
                     android:id="@+id/a_iv"
                     style="@style/menuImageStyle"
-                    android:src="@drawable/search_filled_300" />
+                    android:src="@drawable/search_filled_300"
+                    android:onClick="openSearchActivity"/>
 
                 <TextView
                     style="@style/menuTextStyle"

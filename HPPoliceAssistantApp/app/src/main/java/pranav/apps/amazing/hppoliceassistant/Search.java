@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,7 +38,7 @@ import java.util.Map;
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Search extends FragmentActivity implements SearchView.OnQueryTextListener {
+public class Search extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerview;
     private List<ChallanDetails> challanDetails = new ArrayList<>();
     private List<ChallanDetails> offlineList = new ArrayList<>();
@@ -56,8 +57,7 @@ public class Search extends FragmentActivity implements SearchView.OnQueryTextLi
         DatabaseReference myRef = database.getReference("challan");              //migrate from tree in other branches
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.popup_menu);
-        toolbar.inflateMenu(R.menu.menu_search);
+        setSupportActionBar(toolbar);
 
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         search=(TextView)findViewById(R.id.loading);
@@ -126,8 +126,14 @@ public class Search extends FragmentActivity implements SearchView.OnQueryTextLi
     }*/
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search,menu);
+        getMenuInflater().inflate(R.menu.popup_menu,menu);
 
         final MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
@@ -150,31 +156,6 @@ public class Search extends FragmentActivity implements SearchView.OnQueryTextLi
                 });
         return super.onCreateOptionsMenu(menu);
     }
-    /*    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search,menu);
-
-        final MenuItem item = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-        searchView.setOnQueryTextListener(this);
-
-        MenuItemCompat.setOnActionExpandListener(item,
-                new MenuItemCompat.OnActionExpandListener() {
-                    @Override
-                    public boolean onMenuItemActionCollapse(MenuItem item) {
-                        // Do something when collapsed
-                        adapterOffline.setFilter(offlineList);
-                        return true; // Return true to collapse action view
-                    }
-
-                    @Override
-                    public boolean onMenuItemActionExpand(MenuItem item) {
-                        // Do something when expanded
-                        return true; // Return true to expand action view
-                    }
-                });
-        return true;
-    }*/
 
     @Override
     public boolean onQueryTextChange(String newText) {

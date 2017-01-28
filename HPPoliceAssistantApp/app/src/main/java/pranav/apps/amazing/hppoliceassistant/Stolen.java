@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -30,7 +31,7 @@ import java.util.UUID;
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Stolen extends Activity implements SearchView.OnQueryTextListener{
+public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextListener{
     Firebase mRef;
     Firebase childRef;
     private SessionManager sessionManager;
@@ -64,6 +65,7 @@ public class Stolen extends Activity implements SearchView.OnQueryTextListener{
         sessionManager = new SessionManager(Stolen.this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         toolbar.setTitle("Stolen Items");
         toolbar.inflateMenu(R.menu.menu_search);
         toolbar.inflateMenu(R.menu.popup_menu);
