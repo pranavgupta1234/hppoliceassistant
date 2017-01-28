@@ -55,14 +55,38 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Challan">
+        <activity android:name=".Challan"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
-                <action android:name="pranav.apps.amazing.hppoliceassistant.OFFLINEENTRY" />
+                <action android:name="pranav.apps.amazing.hppoliceassistant.CHALLAN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".Entry_veh"
+            android:windowSoftInputMode="adjustNothing">
+            <intent-filter>
+                <action android:name="pranav.apps.amazing.hppoliceassistant.ENTRY_VEH" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Stolen"
+            android:windowSoftInputMode="adjustNothing">
+            <intent-filter>
+                <action android:name="pranav.apps.amazing.hppoliceassistant.STOLEN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Search"
+            android:windowSoftInputMode="adjustNothing">
+            <intent-filter>
+                <action android:name="pranav.apps.amazing.hppoliceassistant.SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".ChatHeadService" />
     </application>

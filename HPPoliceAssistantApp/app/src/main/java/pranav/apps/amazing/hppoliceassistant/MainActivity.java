@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private class CustomAdapter extends FragmentPagerAdapter {
+    /*private class CustomAdapter extends FragmentPagerAdapter {
         private String fragments[]={"Entry","Challan","Stolen","Search"};
         public CustomAdapter(FragmentManager supportFragmentManager, Context applicationContext) {
         super(supportFragmentManager);
@@ -233,9 +233,9 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return fragments[position];
         }
-    }
+    }*/
     //to generate text inside tabs of tablayout and set icons
-    private void createTabIcons() {
+    /*private void createTabIcons() {
 
         TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabOne.setText("Entry");
@@ -256,5 +256,5 @@ public class MainActivity extends AppCompatActivity {
         tabFour.setText("Search");
         tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_place, 0, 0);
         tabLayout.getTabAt(3).setCustomView(tabFour);
-    }
+    }*/
 }

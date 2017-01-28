@@ -7,11 +7,13 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +37,7 @@ import java.util.Map;
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Search extends Fragment implements SearchView.OnQueryTextListener {
+public class Search extends FragmentActivity implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerview;
     private List<ChallanDetails> challanDetails = new ArrayList<>();
     private List<ChallanDetails> offlineList = new ArrayList<>();
@@ -44,21 +46,32 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
     private TextView search;
     private RVAdapter adapterOffline;
     DBManagerChallanOnline dbManagerChallanOnline;
-    @Nullable
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.search);
         FirebaseDatabase database =FirebaseDatabase.getInstance();              //it return root url
         DatabaseReference myRef = database.getReference("challan");              //migrate from tree in other branches
-        View view = getActivity().getLayoutInflater().inflate(R.layout.search, container, false);
 
-        recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
-        search=(TextView)view.findViewById(R.id.loading);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
+        search=(TextView)findViewById(R.id.loading);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(Search.this);
         recyclerview.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerview.getContext(),
                 layoutManager.getOrientation());
         recyclerview.addItemDecoration(dividerItemDecoration);
-        dbManagerChallanOnline = new DBManagerChallanOnline(getActivity(),null,null,1);
+
+
+        challanDetails = new ArrayList<>();
+        adapter = new RVAdapter(Search.this,challanDetails);
+        adapterOffline = new RVAdapter(Search.this,offlineList);
+        recyclerview.setAdapter(adapterOffline);
+        adapter.notifyDataSetChanged();
+        //Toast.makeText(Search.this,String.valueOf(offlineList.size()),Toast.LENGTH_SHORT).show();
+        dbManagerChallanOnline = new DBManagerChallanOnline(Search.this,null,null,1);
         offlineList = dbManagerChallanOnline.showChallan();
         myRef.addChildEventListener(new com.google.firebase.database.ChildEventListener() {
             @Override
@@ -98,11 +111,10 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(),"Something Went Wrong",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Search.this,"Something Went Wrong",Toast.LENGTH_SHORT).show();
             }
         });
         //challanDetails.clear();
-        return view;
     }
 
     /*private void invalidate() {
@@ -111,23 +123,8 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
     }*/
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        setHasOptionsMenu(true);
-
-        challanDetails = new ArrayList<>();
-        adapter = new RVAdapter(getActivity(),challanDetails);
-        adapterOffline = new RVAdapter(getActivity(),offlineList);
-        recyclerview.setAdapter(adapterOffline);
-        adapter.notifyDataSetChanged();
-        //Toast.makeText(getActivity(),String.valueOf(offlineList.size()),Toast.LENGTH_SHORT).show();
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_search, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search,menu);
 
         final MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
@@ -148,6 +145,7 @@ public class Search extends Fragment implements SearchView.OnQueryTextListener {
                         return true; // Return true to expand action view
                     }
                 });
+        return true;
     }
 
     @Override

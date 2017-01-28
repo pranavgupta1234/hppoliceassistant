@@ -56,14 +56,14 @@ public class Home extends AppCompatActivity{
     }
 
     public void openStolenVehicleActivity(View v) {
-        Intent i = new Intent(Home.this,MainActivity.class);
+        Intent i = new Intent(Home.this,Stolen.class);
         i.putExtra("Tag","2");
         i.putExtra("name",name);
         startActivity(i);
     }
 
     public void openSearchActivity(View v) {
-        Intent i = new Intent(Home.this,MainActivity.class);
+        Intent i = new Intent(Home.this,Search.class);
         i.putExtra("Tag","3");
         i.putExtra("name",name);
         startActivity(i);
