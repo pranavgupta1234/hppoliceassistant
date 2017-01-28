@@ -42,28 +42,28 @@ public class Home extends AppCompatActivity{
     }
 
     public void openNakaEntryActivity(View v) {
-        Intent i = new Intent(Home.this, MainActivity.class);
+        Intent i = new Intent(Home.this, Entry_veh.class);
         i.putExtra("Tag", "0");
         i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openChallanActivity(View v) {
-        Intent i = new Intent(Home.this, MainActivity.class);
+        Intent i = new Intent(Home.this, Challan.class);
         i.putExtra("Tag","1");
         i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openStolenVehicleActivity(View v) {
-        Intent i = new Intent(Home.this,MainActivity.class);
+        Intent i = new Intent(Home.this,Stolen.class);
         i.putExtra("Tag","2");
         i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openSearchActivity(View v) {
-        Intent i = new Intent(Home.this,MainActivity.class);
+        Intent i = new Intent(Home.this,Search.class);
         i.putExtra("Tag","3");
         i.putExtra("iOName",iOName);
         startActivity(i);

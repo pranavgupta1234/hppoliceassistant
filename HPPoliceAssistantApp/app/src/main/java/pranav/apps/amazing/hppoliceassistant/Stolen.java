@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.ListViewAutoScrollHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +44,7 @@ import java.util.UUID;
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Stolen extends Fragment implements SearchView.OnQueryTextListener{
+public class Stolen extends FragmentActivity implements SearchView.OnQueryTextListener{
     Firebase mRef;
     Firebase childRef;
 
@@ -58,28 +60,36 @@ public class Stolen extends Fragment implements SearchView.OnQueryTextListener{
 
     private VehicleEntry newEntry;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.stolen);
 
-       // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         //mRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");        //this can be used but its deprecated now
-       // DatabaseReference databaseReference = FirebaseDatabase.getInstance();//.getReferenceFromUrl("https://hppoliceassistant.firebaseio.com/vehicle");
+        // DatabaseReference databaseReference = FirebaseDatabase.getInstance();//.getReferenceFromUrl("https://hppoliceassistant.firebaseio.com/vehicle");
 
 
         FirebaseDatabase database =FirebaseDatabase.getInstance();              //it return root url
         DatabaseReference myRef = database.getReference("vehicle_entry");              //migrate from tree in other branches
         mDatabase =FirebaseDatabase.getInstance().getReference("vehicle_entry");
-        View  view=  getActivity().getLayoutInflater().inflate(R.layout.stolen,container,false);
-        recyclerView = (RecyclerView)view.findViewById(R.id.recyle_view);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        recyclerView = (RecyclerView)findViewById(R.id.recyle_view);
         recyclerView.setHasFixedSize(true);
 
-        loading=(TextView)view.findViewById(R.id.loading);
+        loading=(TextView)findViewById(R.id.loading);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(Stolen.this);
         recyclerView.setLayoutManager(layoutManager);
 
-        /*adapter = new RecyclerAdapter(getActivity(),vehicleEntries);
+
+        vehicleEntries = new ArrayList<>();
+        adapter = new RecyclerAdapter(Stolen.this,vehicleEntries);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        /*adapter = new RecyclerAdapter(Stolen.this,vehicleEntries);
         recyclerView.setAdapter(adapter);*/
 
 
@@ -118,23 +128,12 @@ public class Stolen extends Fragment implements SearchView.OnQueryTextListener{
             }
         });
         vehicleEntries.clear();
-        return  view;
-    }
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        setHasOptionsMenu(true);
-
-        vehicleEntries = new ArrayList<>();
-        adapter = new RecyclerAdapter(getActivity(),vehicleEntries);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
     }
 
+
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_search, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
 
         final MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
@@ -155,6 +154,7 @@ public class Stolen extends Fragment implements SearchView.OnQueryTextListener{
                         return true; // Return true to expand action view
                     }
                 });
+        return true;
     }
 
     @Override

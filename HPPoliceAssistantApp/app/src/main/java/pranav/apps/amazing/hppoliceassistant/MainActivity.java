@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
-        sessionManager = new SessionManager(MainActivity.this);
+        /*sessionManager = new SessionManager(MainActivity.this);
        // search = (SearchView)findViewById(R.id.search_view);
         //ActionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-         /*
+         *//*
         //FloatingActionButton
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 }).show();
             }
         });
-        */
+        *//*
         //ViewPager and TabLayout
         final ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
         viewPager.setAdapter(new CustomAdapter(getSupportFragmentManager(),getApplicationContext()));
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                // tabLayout.setVisibility(View.VISIBLE);
             }
         });
-         createTabIcons();
+         createTabIcons();*/
     }
 
     @Override
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private class CustomAdapter extends FragmentPagerAdapter {
+    /*private class CustomAdapter extends FragmentPagerAdapter {
         private String fragments[]={"Entry","Challan","Stolen","Search"};
         public CustomAdapter(FragmentManager supportFragmentManager, Context applicationContext) {
         super(supportFragmentManager);
@@ -212,11 +212,11 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new Entry_veh();
+                    return new Search();
                 case 1:
-                    return new Challan();
+                    return new Search();
                 case 2:
-                    return new Stolen();
+                    return new Search();
                 case 3:
                     return new Search();
                 default:
@@ -233,9 +233,9 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return fragments[position];
         }
-    }
+    }*/
     //to generate text inside tabs of tablayout and set icons
-    private void createTabIcons() {
+    /*private void createTabIcons() {
 
         TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabOne.setText("Entry");
@@ -256,5 +256,5 @@ public class MainActivity extends AppCompatActivity {
         tabFour.setText("Search");
         tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_place, 0, 0);
         tabLayout.getTabAt(3).setCustomView(tabFour);
-    }
+    }*/
 }
