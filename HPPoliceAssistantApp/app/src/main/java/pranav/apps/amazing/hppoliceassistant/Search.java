@@ -169,7 +169,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
 
         final MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-        searchView.setOnQueryTextListener(this);
+        searchView.setOnQueryTextListener(Search.this);
 
         MenuItemCompat.setOnActionExpandListener(item,
                 new MenuItemCompat.OnActionExpandListener() {

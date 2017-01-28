@@ -67,8 +67,6 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("Stolen Items");
-        toolbar.inflateMenu(R.menu.menu_search);
-        toolbar.inflateMenu(R.menu.popup_menu);
         recyclerView = (RecyclerView)findViewById(R.id.recyle_view);
         recyclerView.setHasFixedSize(true);
 
@@ -159,6 +157,7 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search,menu);
         getMenuInflater().inflate(R.menu.popup_menu, menu);
 
         final MenuItem item = menu.findItem(R.id.action_search);
