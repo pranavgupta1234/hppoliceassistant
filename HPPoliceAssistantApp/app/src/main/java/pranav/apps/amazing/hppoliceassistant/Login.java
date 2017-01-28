@@ -47,13 +47,16 @@ public class Login extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-       /*
+
+        /*Create a new session (a session may not yet be a logged in session)*/
+        sessionManager = new SessionManager(Login.this);
+
+        /*
         If user did not logout from last session then directly take him to login screen instead of
         prompting for login details again.
          */
-        sessionManager = new SessionManager(Login.this);
         if (sessionManager.isLoggedIn()) {
-            startActivity(new Intent(this, Home.class));
+            goToHomeScreen();
         }
 
 
@@ -360,7 +363,6 @@ public class Login extends Activity {
     private void goToHomeScreen() {
         Intent i = new Intent(this, Home.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //i.putExtra("name",login_name.getText().toString());
         startActivity(i);
         finish(); //Finish this activity so that user cannot come back to this activity
     }
