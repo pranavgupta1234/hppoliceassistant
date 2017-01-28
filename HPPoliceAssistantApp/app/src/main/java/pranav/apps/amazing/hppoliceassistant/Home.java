@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 public class Home extends AppCompatActivity{
     boolean doubleBackToExitPressedOnce = false;
-    String iOName;
+
     private SessionManager sessionManager;
 
     BroadcastReceiver logoutBroadcastReceiver;
@@ -48,9 +48,6 @@ public class Home extends AppCompatActivity{
 
         /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
         setLogoutBroadcastReceiver();
-
-        iOName = sessionManager.getIOName();
-        Toast.makeText(Home.this,"Welcome "+ iOName, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -87,29 +84,21 @@ public class Home extends AppCompatActivity{
 
     public void openNakaEntryActivity(View v) {
         Intent i = new Intent(Home.this, Entry_veh.class);
-        i.putExtra("Tag", "0");
-        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openChallanActivity(View v) {
         Intent i = new Intent(Home.this, Challan.class);
-        i.putExtra("Tag","1");
-        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openStolenVehicleActivity(View v) {
         Intent i = new Intent(Home.this,Stolen.class);
-        i.putExtra("Tag","2");
-        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openSearchActivity(View v) {
         Intent i = new Intent(Home.this,Search.class);
-        i.putExtra("Tag","3");
-        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
