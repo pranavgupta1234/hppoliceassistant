@@ -33,7 +33,7 @@
         <item name="android:layout_weight">50</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@drawable/border_image</item>
+
     </style>
 
 </resources>
