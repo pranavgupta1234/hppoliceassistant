@@ -53,7 +53,6 @@ public class Login extends Activity {
          */
         sessionManager = new SessionManager(Login.this);
         if (sessionManager.isLoggedIn()) {
-            sessionManager.createLoginSession();
             startActivity(new Intent(this, Home.class));
         }
 

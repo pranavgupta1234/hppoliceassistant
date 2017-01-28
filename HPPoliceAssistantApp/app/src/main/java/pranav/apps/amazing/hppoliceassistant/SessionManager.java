@@ -13,19 +13,6 @@ public class SessionManager {
     /*Used for logging purposes*/
     private String TAG = "SessionManager.java";
 
-    /*District used to login in this session*/
-    public static String district;
-
-    /*Police Station used to login in this session*/
-    public static String policeStation;
-
-    /*Police Post in this session*/
-    public static String policePost;
-
-    /*IO Name in the session*/
-    public static String iOName;
-
-
     /*Shared Preferences*/
     private SharedPreferences pref;
 
@@ -64,11 +51,6 @@ public class SessionManager {
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
-        this.district = district;
-        this.policeStation = policeStation;
-        this.policePost = policePost;
-        this.iOName = iOName;
-
         editor.putString(DISTRICT, district);
         editor.putString(POLICE_STATION, policeStation);
         editor.putString(POLICE_POST, policePost);
@@ -76,17 +58,6 @@ public class SessionManager {
 
         // commit changes
         editor.commit();
-    }
-
-
-    /**
-     * The method just initialises this class' public static variables
-     */
-    public void createLoginSession(){
-        this.district = pref.getString(DISTRICT, "");
-        this.policeStation = pref.getString(POLICE_STATION, "");
-        this.policePost = pref.getString(POLICE_POST, "");
-        this.iOName = pref.getString(IO_NAME, "");
     }
 
 
@@ -107,15 +78,14 @@ public class SessionManager {
     }
 
     /**
-     * Clear session details
+     * This method stores in shared pref that user logged out
+     * It sends a broadcast intent of logout (so that other activities of the app can finish themselves
+     * It also opens the login activity.
      * */
     public void logoutUser(){
-        // Clearing all data from Shared Preferences
+        /*Store in shared pref that user logged out*/
         editor.putBoolean(IS_LOGIN, false);
         editor.commit();
-
-        // After logout redirect user to Loing Activity
-        Intent i = new Intent(_context, Login.class);
 
         /**  broadcast a logout message to all your Activities needing to stay under a logged-in status
          * http://stackoverflow.com/questions/3007998/on-logout-clear-activity-history-stack-preventing-back-button-from-opening-l**/
@@ -123,6 +93,9 @@ public class SessionManager {
         broadcastIntent.setAction("com.pranav.apps.amazing.ACTION_LOGOUT");
         _context.sendBroadcast(broadcastIntent);
 
+
+        // After logout redirect user to Loing Activity
+        Intent i = new Intent(_context, Login.class);
         // Staring Login Activity
         _context.startActivity(i);
     }
