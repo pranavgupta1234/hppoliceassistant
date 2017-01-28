@@ -45,6 +45,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
     private RVAdapter adapter;
     private  ChallanDetails challan;
     private TextView search;
+    private SessionManager sessionManager;
     private RVAdapter adapterOffline;
     DBManagerChallanOnline dbManagerChallanOnline;
 
@@ -55,6 +56,8 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         setContentView(R.layout.search);
         FirebaseDatabase database =FirebaseDatabase.getInstance();              //it return root url
         DatabaseReference myRef = database.getReference("challan");              //migrate from tree in other branches
+
+        sessionManager = new SessionManager(Search.this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,7 +130,36 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                //mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.offline_challan:
+                Intent i = new Intent(Search.this,OfflineChallan.class);
+                startActivity(i);
+                return true;
+            case R.id.offline_entry:
+                Intent intent = new Intent(Search.this,OfflineEntry.class);
+                startActivity(intent);
+                return true;
+            case R.id.logout:
+                sessionManager.logoutUser();
+                Intent intent1 = new Intent(Search.this,Login.class);
+                intent1.putExtra("finish", true); // if you are checking for this in your other Activities
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent1);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

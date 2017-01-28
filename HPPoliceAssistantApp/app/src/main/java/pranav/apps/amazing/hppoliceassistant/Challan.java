@@ -17,8 +17,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ValueCallback;
@@ -61,7 +64,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Challan extends FragmentActivity {
+public class Challan extends AppCompatActivity {
 
 
     //variables to be used
@@ -89,6 +92,7 @@ public class Challan extends FragmentActivity {
     private FirebaseDatabase database;
     private DatabaseReference mRootRef;
     private int PICK_IMAGE_REQUEST=1;
+    private SessionManager sessionManager;
 
 
     private CustomDialog customDialog;
@@ -108,14 +112,17 @@ public class Challan extends FragmentActivity {
         // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/challan");
 
+        sessionManager = new SessionManager(Challan.this);
 
         database =FirebaseDatabase.getInstance();
         mRootRef= database.getReference("challan");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.popup_menu);
+        setSupportActionBar(toolbar);
         toolbar.setTitle("Create a Challan");
         //setSupportActionBar(toolbar);
+
+
 
         off_name = Challan.this.getIntent().getStringExtra("name");
         helmet=(CheckBox)findViewById(R.id.helmet);
@@ -481,6 +488,46 @@ public class Challan extends FragmentActivity {
         final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.popup_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                //mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.offline_challan:
+                Intent i = new Intent(Challan.this,OfflineChallan.class);
+                startActivity(i);
+                return true;
+            case R.id.offline_entry:
+                Intent intent = new Intent(Challan.this,OfflineEntry.class);
+                startActivity(intent);
+                return true;
+            case R.id.logout:
+                sessionManager.logoutUser();
+                Intent intent1 = new Intent(Challan.this,Login.class);
+                intent1.putExtra("finish", true); // if you are checking for this in your other Activities
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent1);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     private void resetAll()
     {

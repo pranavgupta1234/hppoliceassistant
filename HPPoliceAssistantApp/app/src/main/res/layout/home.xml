@@ -10,10 +10,10 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:background="?attr/colorPrimaryDark"
         android:elevation="4dp"
-        app:menu="@menu/popup_menu"/>
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:menu="@menu/popup_menu" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,9 +30,7 @@
             android:padding="8dp">
 
             <LinearLayout
-                style="@style/menutItem"
-                android:clickable="true"
-                android:onClick="openNakaEntryActivity">
+                style="@style/menuItem">
 
                 <ImageButton
                     android:id="@+id/entry_iv"
@@ -47,11 +45,14 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/menutItem"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:clickable="true"
-                android:onClick="openChallanActivity">
+                android:layout_width="@dimen/menu_border_width"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:layout_marginTop="@dimen/menu_border_margin"
+                android:layout_marginBottom="@dimen/menu_border_margin"/>
+            <LinearLayout
+                style="@style/menuItem">
+
                 <ImageButton
                     android:id="@+id/challan_iv"
                     style="@style/menuImageStyle"
@@ -68,15 +69,20 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="@dimen/menu_border_width"
+            android:background="#fff"
+            android:layout_marginRight="44dp"
+            android:layout_marginLeft="44dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="50"
             android:orientation="horizontal"
             android:padding="8dp">
 
             <LinearLayout
-                style="@style/menutItem"
-                android:clickable="true"
-                android:onClick="openStolenVehicleActivity">
+                style="@style/menuItem">
 
                 <ImageButton
                     android:id="@+id/stolen_vehicle_iv"
@@ -91,11 +97,14 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/menutItem"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:clickable="true"
-                android:onClick="openSearchActivity">
+                android:layout_width="@dimen/menu_border_width"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:layout_marginTop="@dimen/menu_border_margin"
+                android:layout_marginBottom="@dimen/menu_border_margin"/>
+
+            <LinearLayout
+                style="@style/menuItem">
 
                 <ImageButton
                     android:id="@+id/a_iv"
@@ -106,7 +115,6 @@
                 <TextView
                     style="@style/menuTextStyle"
                     android:text="Search Vehicle"
-                    android:textStyle="bold"
                     android:onClick="openSearchActivity"/>
             </LinearLayout>
 

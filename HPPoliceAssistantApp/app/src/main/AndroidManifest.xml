@@ -34,7 +34,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Home">
+        <activity android:name=".Home"
+            android:label="@string/menu">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.HOME" />
 

@@ -1,7 +1,10 @@
 package pranav.apps.amazing.hppoliceassistant;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -24,8 +27,11 @@ import android.widget.Toast;
 
 public class Home extends AppCompatActivity{
     boolean doubleBackToExitPressedOnce = false;
-    String name;
+    String iOName;
     private SessionManager sessionManager;
+
+    BroadcastReceiver logoutBroadcastReceiver;
+
     /*Used for logging purposes*/
     private String TAG = "Home.java";
     @Override
@@ -34,21 +40,27 @@ public class Home extends AppCompatActivity{
         setContentView(R.layout.home);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle("HP Police Assistant");
         setSupportActionBar(myToolbar);
         myToolbar.inflateMenu(R.menu.popup_menu);
 
+
         sessionManager = new SessionManager(Home.this);
 
+        /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
+        setLogoutBroadcastReceiver();
 
-        name = sessionManager.getUserName();
-        Toast.makeText(Home.this,"Welcome "+ name, Toast.LENGTH_SHORT).show();
+        iOName = sessionManager.getIOName();
+        Toast.makeText(Home.this,"Welcome "+ iOName, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.popup_menu,menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.popup_menu, menu);//Menu Resource, Menu
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -79,36 +91,36 @@ public class Home extends AppCompatActivity{
                 startActivity(intent1);
                 finish();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void openNakaEntryActivity(View v) {
         Intent i = new Intent(Home.this, Entry_veh.class);
         i.putExtra("Tag", "0");
-        i.putExtra("name",name);
+        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openChallanActivity(View v) {
         Intent i = new Intent(Home.this, Challan.class);
         i.putExtra("Tag","1");
-        i.putExtra("name",name);
+        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openStolenVehicleActivity(View v) {
         Intent i = new Intent(Home.this,Stolen.class);
         i.putExtra("Tag","2");
-        i.putExtra("name",name);
+        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
     public void openSearchActivity(View v) {
         Intent i = new Intent(Home.this,Search.class);
         i.putExtra("Tag","3");
-        i.putExtra("name",name);
+        i.putExtra("iOName",iOName);
         startActivity(i);
     }
 
@@ -131,5 +143,25 @@ public class Home extends AppCompatActivity{
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
+
+
+    /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
+    private void setLogoutBroadcastReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.pranav.apps.amazing.ACTION_LOGOUT");
+        logoutBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        };
+        registerReceiver(logoutBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(logoutBroadcastReceiver);
+        super.onDestroy();
     }
 }

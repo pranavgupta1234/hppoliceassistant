@@ -3,31 +3,15 @@ package pranav.apps.amazing.hppoliceassistant;
 /**
  * Created by Pranav Gupta on 1/14/2017.
  */
-import java.util.HashMap;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
 public class SessionManager {
 
     /*Used for logging purposes*/
     private String TAG = "SessionManager.java";
-
-    /*District used to login in this session*/
-    public static String district;
-
-    /*Police Station used to login in this session*/
-    public static String policeStation;
-
-    /*Police Post in this session*/
-    public static String policePost;
-
-    /*IO Name in the session*/
-    public static String iOName;
-
 
     /*Shared Preferences*/
     private SharedPreferences pref;
@@ -37,9 +21,6 @@ public class SessionManager {
 
     /*Context*/
     private Context _context;
-
-    // Shared pref mode
-    private int PRIVATE_MODE = 0;
 
     // Sharedpref file name
     private static final String PREF_NAME = "HPPolice";
@@ -59,7 +40,7 @@ public class SessionManager {
     // Constructor
     public SessionManager(Context context){
         this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        pref = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE); /*Opens te shared pref in private mode so that the shared pref file is accessible by only this app*/
         editor = pref.edit();
     }
 
@@ -70,11 +51,6 @@ public class SessionManager {
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
-        this.district = district;
-        this.policeStation = policeStation;
-        this.policePost = policePost;
-        this.iOName = iOName;
-
         editor.putString(DISTRICT, district);
         editor.putString(POLICE_STATION, policeStation);
         editor.putString(POLICE_POST, policePost);
@@ -82,17 +58,6 @@ public class SessionManager {
 
         // commit changes
         editor.commit();
-    }
-
-
-    /**
-     * The method just initialises this class' public static variables
-     */
-    public void createLoginSession(){
-        this.district = pref.getString(DISTRICT, "");
-        this.policeStation = pref.getString(POLICE_STATION, "");
-        this.policePost = pref.getString(POLICE_POST, "");
-        this.iOName = pref.getString(IO_NAME, "");
     }
 
 
@@ -112,26 +77,25 @@ public class SessionManager {
         return pref.getString(IO_NAME, "");
     }
 
-    public String getUserName(){
-        return pref.getString(IO_NAME, null);
-    }
-
     /**
-     * Clear session details
+     * This method stores in shared pref that user logged out
+     * It sends a broadcast intent of logout (so that other activities of the app can finish themselves
+     * It also opens the login activity.
      * */
     public void logoutUser(){
-        // Clearing all data from Shared Preferences
+        /*Store in shared pref that user logged out*/
         editor.putBoolean(IS_LOGIN, false);
         editor.commit();
 
+        /**  broadcast a logout message to all your Activities needing to stay under a logged-in status
+         * http://stackoverflow.com/questions/3007998/on-logout-clear-activity-history-stack-preventing-back-button-from-opening-l**/
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("com.pranav.apps.amazing.ACTION_LOGOUT");
+        _context.sendBroadcast(broadcastIntent);
+
+
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, Login.class);
-        // Closing all the Activities
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        // Add new Flag to start new Activity
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
         // Staring Login Activity
         _context.startActivity(i);
     }
