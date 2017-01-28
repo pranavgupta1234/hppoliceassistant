@@ -113,6 +113,8 @@ public class Challan extends FragmentActivity {
         mRootRef= database.getReference("challan");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.popup_menu);
+        toolbar.setTitle("Create a Challan");
         //setSupportActionBar(toolbar);
 
         off_name = Challan.this.getIntent().getStringExtra("name");

@@ -82,6 +82,8 @@ public class Entry_veh extends FragmentActivity {
         off_name = Entry_veh.this.getIntent().getStringExtra("name");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.popup_menu);
+        toolbar.setTitle("Create a Vehicle Entry");
 
         progressDialog = new ProgressDialog(Entry_veh.this);
         progressDialog1 = new ProgressDialog(Entry_veh.this);

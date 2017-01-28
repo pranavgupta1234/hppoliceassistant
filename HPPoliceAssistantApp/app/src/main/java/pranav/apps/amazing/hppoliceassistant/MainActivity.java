@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
-        sessionManager = new SessionManager(MainActivity.this);
+        /*sessionManager = new SessionManager(MainActivity.this);
        // search = (SearchView)findViewById(R.id.search_view);
         //ActionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-         /*
+         *//*
         //FloatingActionButton
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 }).show();
             }
         });
-        */
+        *//*
         //ViewPager and TabLayout
         final ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
         viewPager.setAdapter(new CustomAdapter(getSupportFragmentManager(),getApplicationContext()));
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                // tabLayout.setVisibility(View.VISIBLE);
             }
         });
-         createTabIcons();
+         createTabIcons();*/
     }
 
     @Override
