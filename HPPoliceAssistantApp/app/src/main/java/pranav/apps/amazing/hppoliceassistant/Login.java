@@ -305,6 +305,7 @@ public class Login extends Activity {
                 else {
 
                     if (!isConnectedToInternet()) {
+                        dismissProgressDialog();
                         //Throw toast asking user to connect
                         Toast.makeText(Login.this, "Please connect to Internet to be able to Login first time with this police station", Toast.LENGTH_LONG).show();
                         return;
