@@ -3,13 +3,10 @@ package pranav.apps.amazing.hppoliceassistant;
 /**
  * Created by Pranav Gupta on 1/14/2017.
  */
-import java.util.HashMap;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
 public class SessionManager {
 
@@ -38,9 +35,6 @@ public class SessionManager {
     /*Context*/
     private Context _context;
 
-    /*Opens te shared pref in private mode so that the shared pref file is accessible by only this app*/
-    private int PRIVATE_MODE = Context.MODE_PRIVATE;
-
     // Sharedpref file name
     private static final String PREF_NAME = "HPPolice";
 
@@ -59,7 +53,7 @@ public class SessionManager {
     // Constructor
     public SessionManager(Context context){
         this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        pref = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE); /*Opens te shared pref in private mode so that the shared pref file is accessible by only this app*/
         editor = pref.edit();
     }
 
