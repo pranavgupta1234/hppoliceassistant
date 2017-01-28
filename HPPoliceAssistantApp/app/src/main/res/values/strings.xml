@@ -7,6 +7,8 @@
     <string name="offences"><b>OFFENCES</b></string>
     <string name="district">district</string>
     <string name="is_logged_in">isLoggedIn</string>
+    <string name="menu">Menu</string>
+    <string name="logout">Logout</string>
     <string-array name="district">
         <item>@string/select_district</item>
         <item>Kinnaur</item>

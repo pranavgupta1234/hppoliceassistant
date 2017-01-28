@@ -1,7 +1,10 @@
 package pranav.apps.amazing.hppoliceassistant;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -9,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,6 +29,9 @@ public class Home extends AppCompatActivity{
     boolean doubleBackToExitPressedOnce = false;
     String iOName;
     private SessionManager sessionManager;
+
+    BroadcastReceiver logoutBroadcastReceiver;
+
     /*Used for logging purposes*/
     private String TAG = "Home.java";
     @Override
@@ -36,9 +44,30 @@ public class Home extends AppCompatActivity{
 
         sessionManager = new SessionManager(Home.this);
 
+        /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
+        setLogoutBroadcastReceiver();
 
         iOName = sessionManager.getIOName();
         Toast.makeText(Home.this,"Welcome "+ iOName, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_menu, menu);//Menu Resource, Menu
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                sessionManager.logoutUser();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void openNakaEntryActivity(View v) {
@@ -88,5 +117,25 @@ public class Home extends AppCompatActivity{
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
+
+
+    /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
+    private void setLogoutBroadcastReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.pranav.apps.amazing.ACTION_LOGOUT");
+        logoutBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        };
+        registerReceiver(logoutBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(logoutBroadcastReceiver);
+        super.onDestroy();
     }
 }

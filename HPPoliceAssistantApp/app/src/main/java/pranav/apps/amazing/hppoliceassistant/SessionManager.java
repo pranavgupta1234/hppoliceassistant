@@ -116,11 +116,12 @@ public class SessionManager {
 
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, Login.class);
-        // Closing all the Activities
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        // Add new Flag to start new Activity
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        /**  broadcast a logout message to all your Activities needing to stay under a logged-in status
+         * http://stackoverflow.com/questions/3007998/on-logout-clear-activity-history-stack-preventing-back-button-from-opening-l**/
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("com.pranav.apps.amazing.ACTION_LOGOUT");
+        _context.sendBroadcast(broadcastIntent);
 
         // Staring Login Activity
         _context.startActivity(i);
