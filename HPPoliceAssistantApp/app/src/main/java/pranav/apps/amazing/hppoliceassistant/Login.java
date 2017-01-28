@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -281,42 +283,64 @@ public class Login extends Activity {
                 final String selectedDistrict = getSelectedDistrict();
                 final String selectedPoliceStation = getSelectedPoliceStation();
                 final String selectedPolicePost = getSelectedPolicePost();
-                final String iOName = getIOName();
+                final String iOName = getEnteredIOName();
                 final String enteredPassword = getEnteredPassword();
 
-                String passwordLocationInFirebase =
-                        "login/" + selectedDistrict + "/" + selectedPoliceStation.replace("/", "") + "/password";
+                /*Check if password exists in local store
+                * if exists loginIfTrueCredentials
+                * else check internet
+                * if no internet ask for internet connection
+                * else login through internet(and save password in local store)*/
 
-                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(passwordLocationInFirebase);
+                SharedPreferences sharedPrefPassword = getSharedPreferences("passwords", Context.MODE_PRIVATE);
+                String realPasswordLocal = sharedPrefPassword.getString(selectedDistrict + selectedPoliceStation, "");
 
-                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!realPasswordLocal.equals("")) {
+                    /*Indicating the password is stored in local database*/
+                    Log.v(TAG, "Real password in local store is: " + realPasswordLocal);
+                    /*Dismiss progress dialog after fetching the password from server*/
+                    dismissProgressDialog();
+                    loginIfTrueCredentials(enteredPassword, realPasswordLocal, selectedDistrict, selectedPoliceStation, selectedPolicePost, iOName);
+                }
+                else {
 
-                        String realPassword = dataSnapshot.getValue(String.class);
+                    if (!isConnectedToInternet()) {
+                        //Throw toast asking user to connect
+                        Toast.makeText(Login.this, "Please connect to Internet to be able to Login first time with this police station", Toast.LENGTH_LONG).show();
+                        return;
+                    }
 
-                        if (realPassword == null) {
-                            Toast.makeText(getBaseContext(), "Problem verifying password", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            if (realPassword.contentEquals(enteredPassword)) {
-                                dismissProgressDialog();
-                                sessionManager.createLoginSession(selectedDistrict, selectedPoliceStation, selectedPolicePost, iOName);
-                                goToHomeScreen();
+                    /*Indicating the password is NOT stored in local database*/
+                    String passwordLocationInFirebase =
+                    "login/" + selectedDistrict + "/" + selectedPoliceStation.replace("/", "") + "/password";
+
+                    DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(passwordLocationInFirebase);
+
+                    dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        /*Dismiss progress dialog after fetching the password from server*/
+                            dismissProgressDialog();
+                            String realPassword = dataSnapshot.getValue(String.class);
+
+                            /*Store password in local database so that user do not have to be connected to internet to login next time through this PS*/
+                            storePasswordInSharedPref(realPassword, selectedDistrict, selectedPoliceStation);
+
+                            if (realPassword == null) {
+                                Toast.makeText(getBaseContext(), "Problem verifying password", Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                dismissProgressDialog();
-                                Toast.makeText(getBaseContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
+                                loginIfTrueCredentials(enteredPassword, realPassword, selectedDistrict, selectedPoliceStation, selectedPolicePost, iOName);
                             }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(getBaseContext(), "Operation Cancelled", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Toast.makeText(getBaseContext(), "Operation Cancelled", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }
@@ -403,7 +427,7 @@ public class Login extends Activity {
      *
      * @return IO Name String
      */
-    private String getIOName() {
+    private String getEnteredIOName() {
         EditText iONameEditText = (EditText) findViewById(R.id.io_name);
         return iONameEditText.getText().toString().trim();
     }
@@ -452,7 +476,7 @@ public class Login extends Activity {
         String selectedDistrict = getSelectedDistrict();
         String selectedPoliceStation = getSelectedPoliceStation();
         String selectedPolicePost = getSelectedPolicePost();
-        String iOName = getIOName();
+        String iOName = getEnteredIOName();
         String enteredPassword = getEnteredPassword();
         Log.v(TAG, "Entered by user: " +selectedDistrict);
         Log.v(TAG, "From XML resource: " + R.string.select_district);
@@ -479,4 +503,36 @@ public class Login extends Activity {
         return true;
     }
 
+    private void loginIfTrueCredentials(String enteredPassword, String realPassword, String selectedDistrict, String selectedPoliceStation, String selectedPolicePost, String iOName) {
+        if (realPassword.contentEquals(enteredPassword)) {
+            sessionManager.createLoginSession(selectedDistrict, selectedPoliceStation, selectedPolicePost, iOName);
+            goToHomeScreen();
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    /*Store password in local database so that user do not have to be connected to internet to login next time through this PS*/
+    public void storePasswordInSharedPref(String realPassword, String selectedDistrict, String selectedPoliceStation) {
+        SharedPreferences sharedPrefPassword = getSharedPreferences("passwords", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefPassword.edit();
+        editor.putString(selectedDistrict + selectedPoliceStation, realPassword); //Now next time user won't need internet to login for this police station!
+        editor.commit();
+
+    }
+
+    /**
+     * Check if device connected to Internet
+     * @return true if connected else false
+     */
+    public boolean isConnectedToInternet() {
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&      //isConnected tells if Connected
+                activeNetwork.isConnectedOrConnecting();
+    }
 }
