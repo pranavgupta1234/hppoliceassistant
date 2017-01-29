@@ -49,6 +49,8 @@ public class Search extends AppCompatActivity {
 
     private String TAG = "Search.java";
 
+    BroadcastReceiver logoutBroadcastReceiver;
+
     private final String VEHICLE = "vehicle number";
     private final String PHONE = "phone number";
     private final String NAME = "violator name";
@@ -67,6 +69,9 @@ public class Search extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         handleIntent(getIntent());
+
+        /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
+        setLogoutBroadcastReceiver();
     }
 
     @Override
@@ -141,6 +146,24 @@ public class Search extends AppCompatActivity {
         return true;
     }
 
+    /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
+    private void setLogoutBroadcastReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.pranav.apps.amazing.ACTION_LOGOUT");
+        logoutBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        };
+        registerReceiver(logoutBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(logoutBroadcastReceiver);
+        super.onDestroy();
+    }
 }
 
 
