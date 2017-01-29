@@ -235,4 +235,6 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
             unregisterReceiver(logoutBroadcastReceiver);
         }
     }
+
+    // this is added
 }
