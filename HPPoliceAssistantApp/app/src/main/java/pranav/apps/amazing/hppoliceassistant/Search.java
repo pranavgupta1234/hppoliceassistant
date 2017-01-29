@@ -43,21 +43,36 @@ import static pranav.apps.amazing.hppoliceassistant.R.id.recyclerview;
 import static pranav.apps.amazing.hppoliceassistant.R.layout.search;
 
 /**
- * Created by Pranav Gupta on 12/10/2016.
+ * This activity allows user to fetch Challan data from online database filtered according to
+ * search queries.
+ * Search queries can be made on one of following fields:
+ * o Vehicle Number
+ * o Phone number of violator
+ * o Name of violator
+ * o License number of violator
+ * User selects one of the above 4 from the app bar and then the search is carried out on that
+ * field only.
+ * Then user enters the search query in the app bar and hit search button on the soft-keyboard
+ * A list of Challans is fetched from server based on that query and is displayed in the same
+ * activity in a recycler view
  */
 public class Search extends AppCompatActivity {
 
     private String TAG = "Search.java";
 
-    BroadcastReceiver logoutBroadcastReceiver;
+    /*Used to listen to logout broadcast so that this activity finishes when user logs out*/
+    private BroadcastReceiver logoutBroadcastReceiver;
 
+    /*Search on the Challan Database is based on one of the following types*/
     private final String VEHICLE = "vehicle number";
     private final String PHONE = "phone number";
     private final String NAME = "violator name";
     private final String LICENSE = "license number";
 
-    private String search_based_on = VEHICLE; //Search is based on vehicle number by default
+    /*By default search is based on VEHICLE*/
+    private String search_based_on = VEHICLE;
 
+    /*Used to point to reference to tThe search view used in the app bar to input query*/
     SearchView searchView;
 
     @Override
@@ -65,34 +80,44 @@ public class Search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
 
+        /*Set up app bar*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*This method handles the intents this activity receives
+        * It is particularly used to handle the input query entered by user*/
         handleIntent(getIntent());
 
         /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
         setLogoutBroadcastReceiver();
     }
 
+    /**
+     * This method creates the menu when this activity is created
+     * It sets up the search view.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.search_menu, menu);
 
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-
+        setUpSearchView(menu);
         return true;
     }
 
+    /**
+     * This method handles what happens when user clicks on various menu items in the app bar
+     * @param item menu item which the user clicked
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            /*When user chose to (clicked) search based on vehicle number then,
+            * set query hint of search view to "Enter Vehicle Number"
+            * It also stores what user chose in search_based_on field
+            * Similar to this case below 3 cases are handles similarly*/
             case R.id.search_based_on_vehicle:
                 searchView.setQueryHint(getResources().getString(R.string.search_hint_vehicle));
                 search_based_on = VEHICLE;
@@ -115,15 +140,25 @@ public class Search extends AppCompatActivity {
         return true;
     }
 
+    /*This method is used as this activity's launchmode is "singletop"
+    * Refer: https://developer.android.com/training/search/setup.html*/
     @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
 
+
+    /**
+     * This method receives intent that this activity receives
+     * It is mainly used to handle ACTION_SEARCH intent which is received by this activity from
+     * itself when user submits the search query. This intent contains the search query which
+     * can then be used to fetch data from server.
+     * @param intent Intent recieved by this activity
+     */
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            if(!validQuery(query, search_based_on)) {
+            if (!validQuery(query, search_based_on)) {
                 Toast.makeText(this, "Please enter valid " + search_based_on, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -137,7 +172,8 @@ public class Search extends AppCompatActivity {
      * This method returns whether the string entered by user is a valid string
      * according to dataType e.g. if dataType is vehicle number then string should not
      * contain any special character and can be alphanumeric
-     * @param data  The data whose type is to be checked
+     *
+     * @param data     The data whose type is to be checked
      * @param dataType data type of the data e.g. VEHICLE, LICENSE, PHONE etc.
      * @return true if data is according to data type else false
      */
@@ -163,6 +199,16 @@ public class Search extends AppCompatActivity {
     protected void onDestroy() {
         unregisterReceiver(logoutBroadcastReceiver);
         super.onDestroy();
+    }
+
+    /* Sets up the search view.
+     * Specifically, it associates searchable configuration with the SearchView*/
+    private void setUpSearchView(Menu menu) {
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
     }
 }
 
