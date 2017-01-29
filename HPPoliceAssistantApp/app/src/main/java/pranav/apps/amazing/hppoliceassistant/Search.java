@@ -1,6 +1,5 @@
 package pranav.apps.amazing.hppoliceassistant;
 
-import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,17 +15,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,113 +35,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static pranav.apps.amazing.hppoliceassistant.R.id.recyclerview;
-import static pranav.apps.amazing.hppoliceassistant.R.layout.search;
-
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Search extends AppCompatActivity {
-
-    private String TAG = "Search.java";
-
-    private final String VEHICLE = "vehicle number";
-    private final String PHONE = "phone number";
-    private final String NAME = "violator name";
-    private final String LICENSE = "license number";
-
-    private String search_based_on = VEHICLE; //Search is based on vehicle number by default
-
-    SearchView searchView;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.search);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        handleIntent(getIntent());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.search_menu, menu);
-
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.search_based_on_vehicle:
-                searchView.setQueryHint("Enter Vehicle Number");
-                search_based_on = VEHICLE;
-                break;
-            case R.id.search_based_on_phone:
-                searchView.setQueryHint("Enter Phone Number");
-                search_based_on = PHONE;
-                break;
-            case R.id.search_based_on_name:
-                searchView.setQueryHint("Enter Violator Name");
-                search_based_on = NAME;
-                break;
-            case R.id.search_based_on_license:
-                searchView.setQueryHint("Enter License Number");
-                search_based_on = LICENSE;
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
-
-    public void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            if(!validQuery(query, search_based_on)) {
-                Toast.makeText(this, "Please enter valid " + search_based_on, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            /*Fetch the data from the server according to query and display the data*/
-
-        }
-    }
-
-    /**
-     * This method returns whether the string entered by user is a valid string
-     * according to dataType e.g. if dataType is vehicle number then string should not
-     * contain any special character and can be alphanumeric
-     * @param data  The data whose type is to be checked
-     * @param dataType data type of the data e.g. VEHICLE, LICENSE, PHONE etc.
-     * @return true if data is according to data type else false
-     */
-    private boolean validQuery(String data, String dataType) {
-        /*@TODO Implement this funciton*/
-        return true;
-    }
-
-}
-
-
-/*
-Old Search activity code
 public class Search extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerview;
     private List<ChallanDetails> challanDetails = new ArrayList<>();
@@ -231,10 +123,10 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         //challanDetails.clear();
     }
 
-    *//*private void invalidate() {
+    /*private void invalidate() {
         challanDetails=dbManagerChallanOnline.showChallan();
         adapter.notifyDataSetChanged();
-    }*//*
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -334,5 +226,5 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         return filteredModelList;
     }
 }
-*/
+
 

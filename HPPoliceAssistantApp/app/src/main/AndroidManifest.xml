@@ -81,14 +81,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".Search"
-            android:launchMode="singleTop"
-            android:label="Search Challan"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="pranav.apps.amazing.hppoliceassistant.SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
         </activity>
 
         <service android:name=".ChatHeadService" />

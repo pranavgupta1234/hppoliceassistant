@@ -26,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 import static pranav.apps.amazing.hppoliceassistant.R.id.police_post;
 import static pranav.apps.amazing.hppoliceassistant.R.id.police_station;
 
-
 /**
  * Created by Pranav Gupta on 12/10/2016.
  * Modified by: Gopal Krishan Aggarwal on 29/01/2017
@@ -182,7 +181,7 @@ public class Login extends Activity {
                 adapter_police_station.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                 /*Get reference to police station dropdown*/
-                Spinner policeStationSpinner = (Spinner) findViewById(police_station);
+                Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
 
                 // Apply the adapter to the spinner
                 policeStationSpinner.setAdapter(adapter_police_station);
@@ -242,7 +241,7 @@ public class Login extends Activity {
                 policePostAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                 /*Get reference to police post spinner*/
-                Spinner policePostSpinner = (Spinner) findViewById(police_post);
+                Spinner policePostSpinner = (Spinner) findViewById(R.id.police_post);
 
                 /*Apply the adapter to the spinner*/
                 policePostSpinner.setAdapter(policePostAdapter);
@@ -363,7 +362,7 @@ public class Login extends Activity {
      * and if police station available in current list of police station spinner
      */
     private void selectPoliceStationFromLastLogin() {
-        Spinner policeStationSpinner = (Spinner) findViewById(police_station);
+        Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
         int position = ((ArrayAdapter)policeStationSpinner.getAdapter()).getPosition(sessionManager.getPoliceStation());
         if(position >= 0) {
             policeStationSpinner.setSelection(position);
@@ -375,7 +374,7 @@ public class Login extends Activity {
      * and if police post available in current list of police post spinner
      */
     private void selectPolicePostFromLastLogin() {
-        Spinner policePostSpinner = (Spinner) findViewById(police_post);
+        Spinner policePostSpinner = (Spinner) findViewById(R.id.police_post);
         int position = ((ArrayAdapter)policePostSpinner.getAdapter()).getPosition(sessionManager.getPolicePost());
         if(position >= 0) {
             policePostSpinner.setSelection(position);

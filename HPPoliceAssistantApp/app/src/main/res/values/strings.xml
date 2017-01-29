@@ -9,15 +9,6 @@
     <string name="is_logged_in">isLoggedIn</string>
     <string name="menu">Menu</string>
     <string name="logout">Logout</string>
-    <string name="search_title">Search based on Vehicle Number</string>
-    <string name="search_hint_vehicle_number">Search based on Vehicle Number</string>
-    <string-array name="search_based_on_array">
-        <item>Search based on</item>
-        <item>Vehicle Number</item>
-        <item>Phone Number</item>
-        <item>Violator Name</item>
-        <item>License number</item>
-    </string-array>
     <string-array name="district">
         <item>@string/select_district</item>
         <item>Kinnaur</item>
