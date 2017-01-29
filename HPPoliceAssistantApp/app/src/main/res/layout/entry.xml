@@ -15,12 +15,14 @@
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:menu="@menu/popup_menu"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="6dp">
-
+    <TextView
+        android:text="Vehicle Details"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_green_dark"
+        android:layout_gravity="center"
+        android:textSize="25dp"/>
     <TextView
         android:text="Vehicle Number"
         android:textColor="#000000"
@@ -117,29 +119,21 @@
         android:id="@+id/upload"
         android:scaleType="fitXY"
         android:layout_gravity="center_horizontal"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="6dp">
-            <Button
-                android:text="RESET"
-                android:textStyle="bold"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/btn_back"
-                android:id="@+id/reset"/>
-            <Button
-                android:text="SUBMIT"
-                android:textStyle="bold"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="4dp"
-                android:background="@drawable/btn_back"
-                android:id="@+id/make_entry"/>
-        </LinearLayout>
-    </LinearLayout>
+    <Button
+        android:text="SUBMIT"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_back"
+        android:id="@+id/make_entry"/>
+    <Button
+        android:text="RESET ALL FIELDS"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_back"
+        android:id="@+id/reset"/>
 </LinearLayout>
     </ScrollView>

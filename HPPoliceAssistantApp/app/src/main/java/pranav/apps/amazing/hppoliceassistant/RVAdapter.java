@@ -14,7 +14,7 @@ import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
 
-    private List<ChallanDetails> challan = new ArrayList<>();
+    private List<ChallanDetails> challan;
     private List<ChallanDetails> challanDetails;
     private Activity activity;
 

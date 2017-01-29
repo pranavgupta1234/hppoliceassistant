@@ -2,6 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <item
+        android:id="@+id/action_1"
+        android:orderInCategory="100"
+        android:title="HP Police"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/offline_challan"
         android:orderInCategory="200"
         android:title="Offline Challan Entries"
@@ -15,6 +20,5 @@
         android:id="@+id/logout"
         android:orderInCategory="300"
         android:title="Log Out"
-        android:icon="@drawable/ic_logout"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 </menu>

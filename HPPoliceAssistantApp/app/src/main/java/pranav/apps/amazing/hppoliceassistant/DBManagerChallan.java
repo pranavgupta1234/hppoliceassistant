@@ -17,7 +17,7 @@ public class DBManagerChallan extends SQLiteOpenHelper {
 
 
     public DBManagerChallan(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, "hp_police.db", factory, 7);
+        super(context, "hp_police.db", factory, 6);
         this.context = context;
     }
 

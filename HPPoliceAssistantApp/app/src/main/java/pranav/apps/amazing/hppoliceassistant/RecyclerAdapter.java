@@ -54,6 +54,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         if(vehicleEntry.get(position).getImage().contentEquals("Photo not available")){
          viewHolder.imageView.setBackgroundResource(R.drawable.notavailable);
         }else {
+            //viewHolder.imageView.setPadding(10,10,10,10);
             viewHolder.imageView.setBackgroundResource(R.drawable.loading);
             viewHolder.imageView.setPadding(0,0,0,0);
             viewHolder.setImage(viewHolder.imageView.getContext(), vehicleEntry.get(position).getImage());

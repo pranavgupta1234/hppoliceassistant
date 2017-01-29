@@ -19,7 +19,7 @@ public class DBManagerChallanOnline  extends SQLiteOpenHelper{
 
 
     public DBManagerChallanOnline(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, "hp_police_online_challan.db", factory, 7);
+        super(context, "hp_police_online_challan.db", factory, 6);
         this.context = context;
     }
 

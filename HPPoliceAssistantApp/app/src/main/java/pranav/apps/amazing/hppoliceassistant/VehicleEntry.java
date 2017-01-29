@@ -11,9 +11,6 @@ public class VehicleEntry {
     private String description;
     private String name_of_place;
     private String naka_name;
-    private String district;
-    private String police_station;
-    private String police_post;
     private String date;
     private String time;
     private String officer_name;
@@ -22,33 +19,8 @@ public class VehicleEntry {
     public VehicleEntry(){
 
     }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getPolice_station() {
-        return police_station;
-    }
-
-    public void setPolice_station(String police_station) {
-        this.police_station = police_station;
-    }
-
-    public String getPolice_post() {
-        return police_post;
-    }
-
-    public void setPolice_post(String police_post) {
-        this.police_post = police_post;
-    }
-
     public VehicleEntry(String vehicle_number, String phone_number, String description, String name_of_place,
-                        String naka_name, String date, String time, String officer_name, String Image) {
+                        String naka_name, String date, String time, String officer_name,String Image) {
         this.vehicle_number = vehicle_number;
         this.phone_number = phone_number;
         this.description = description;
@@ -58,7 +30,6 @@ public class VehicleEntry {
         this.time = time;
         this.officer_name = officer_name;
         this.Image=Image;
-
         this.status=0;
     }
     public VehicleEntry(String vehicle_number, String phone_number, String description, String name_of_place,
@@ -73,23 +44,6 @@ public class VehicleEntry {
         this.officer_name = officer_name;
         this.Image=Image;
         this.status=status;
-    }
-    public VehicleEntry(String vehicle_number, String phone_number, String description, String name_of_place,
-                        String naka_name, String date, String time, String officer_name,String Image,String district,String police_station
-                        ,String police_post,int status) {
-        this.vehicle_number = vehicle_number;
-        this.phone_number = phone_number;
-        this.description = description;
-        this.name_of_place = name_of_place;
-        this.naka_name = naka_name;
-        this.date = date;
-        this.time = time;
-        this.officer_name = officer_name;
-        this.Image=Image;
-        this.status=status;
-        this.police_station=police_station;
-        this.police_post= police_post;
-        this.district=district;
     }
 
     public String getVehicle_number() {
