@@ -114,7 +114,6 @@ public class DBManagerChallanOnline  extends SQLiteOpenHelper{
                 cursor.moveToNext();
             }
         }
-        Toast.makeText(context,information.size()+"",Toast.LENGTH_SHORT).show();
         cursor.close();
         return information;
     }

@@ -58,17 +58,15 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerview.getContext(),
                 layoutManager.getOrientation());
         recyclerview.addItemDecoration(dividerItemDecoration);
-
+        dbManagerChallanOnline = new DBManagerChallanOnline(Search.this,null,null,1);
+        offlineList = dbManagerChallanOnline.showChallan();
 
         challanDetails = new ArrayList<>();
         adapter = new RVAdapter(Search.this,challanDetails);
         adapterOffline = new RVAdapter(Search.this,offlineList);
         recyclerview.setAdapter(adapterOffline);
         adapterOffline.notifyDataSetChanged();
-        //Toast.makeText(Search.this,String.valueOf(offlineList.size()),Toast.LENGTH_SHORT).show();
-        dbManagerChallanOnline = new DBManagerChallanOnline(Search.this,null,null,1);
-        offlineList = dbManagerChallanOnline.showChallan();
-        adapterOffline.notifyDataSetChanged();
+        search.setText("");
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -79,7 +77,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                     offlineList.add(challan);
                     adapterOffline.notifyDataSetChanged();
                 }
-                search.setText("");
+
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -200,13 +198,16 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
 
         final List<ChallanDetails> filteredModelList = new ArrayList<>();
         for (ChallanDetails model : models) {
-            final String text1 = model.getVehicle_number().toLowerCase();
-            final String text2 = model.getViolator_name().toLowerCase();
-            final String text3 = model.getLicense_number().toLowerCase();
-            final String text4 = model.getViolator_number().toLowerCase();
-            final String text5 = model.getPolice_officer_name().toLowerCase();
-            if (text1.contains(query)|| text2.contains(query)|| text3.contains(query)|| text4.contains(query)||text5.contains(query)) {
-                filteredModelList.add(model);
+            if(model.getVehicle_number()!= null && model.getViolator_name()!= null&&model.getLicense_number()!=null
+                    &&model.getViolator_number()!=null&&model.getPolice_officer_name()!=null) {
+                final String text1 = model.getVehicle_number().toLowerCase();
+                final String text2 = model.getViolator_name().toLowerCase();
+                final String text3 = model.getLicense_number().toLowerCase();
+                final String text4 = model.getViolator_number().toLowerCase();
+                final String text5 = model.getPolice_officer_name().toLowerCase();
+                if (text1.contains(query) || text2.contains(query) || text3.contains(query) || text4.contains(query) || text5.contains(query)) {
+                    filteredModelList.add(model);
+                }
             }
         }
         return filteredModelList;
