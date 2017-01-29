@@ -148,13 +148,6 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
                 return true;
             case R.id.logout:
                 sessionManager.logoutUser();
-                Intent intent1 = new Intent(Stolen.this,Login.class);
-                intent1.putExtra("finish", true); // if you are checking for this in your other Activities
-                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent1);
-                finish();
                 return true;
         }
 
