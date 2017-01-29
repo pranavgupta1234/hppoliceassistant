@@ -702,22 +702,30 @@
         android:id="@+id/upload_photo"
         android:scaleType="fitXY"
         android:layout_gravity="center"/>
-    <Button
-        android:text="SUBMIT"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/btn_back"
-        android:id="@+id/submit"/>
-        <Button
-            android:text="RESET ALL FIELDS"
-            android:textStyle="bold"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:padding="4dp">
+        <Button
+            android:text="RESET"
+            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/btn_back"
             android:id="@+id/reset"/>
+            <Button
+                android:text="SUBMIT"
+                android:textStyle="bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/btn_back"
+                android:id="@+id/submit"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
     </ScrollView>
