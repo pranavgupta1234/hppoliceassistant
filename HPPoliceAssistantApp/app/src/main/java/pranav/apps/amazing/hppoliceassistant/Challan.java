@@ -101,7 +101,6 @@ public class Challan extends AppCompatActivity {
     private ChallanDetails challanDetails, challanDetailswithoutImage;
     private String[] month = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
     private String ampm = "AM";
-    String off_name;
 
     @Override
 
@@ -123,8 +122,6 @@ public class Challan extends AppCompatActivity {
         //setSupportActionBar(toolbar);
 
 
-
-        off_name = Challan.this.getIntent().getStringExtra("name");
         helmet=(CheckBox)findViewById(R.id.helmet);
         rc=(CheckBox)findViewById(R.id.rc);
         insurance=(CheckBox)findViewById(R.id.insurance);
@@ -220,8 +217,8 @@ public class Challan extends AppCompatActivity {
                                 crime, owner_name.getText().toString(), violator_address.getText().toString(),
                                 veh_number.getText().toString(), place_name.getText().toString(),
                                 offence_section.getText().toString(), challan_amount.getText().toString(),
-                                license_number.getText().toString(), off_name,
-                                "disrict", "policeStation", other.getText().toString(), "null",
+                                license_number.getText().toString(), sessionManager.getIOName(),
+                                sessionManager.getDistrict(),sessionManager.getPoliceStation(), other.getText().toString(), "null",
                                 violator_number.getText().toString(), "will be filled", "will be filled");
 
                         /** CustomDialog is a dialog intended to be used for pre verification before submission either to online
@@ -294,8 +291,8 @@ public class Challan extends AppCompatActivity {
                     crime,owner_name.getText().toString(),violator_address.getText().toString(),
                     veh_number.getText().toString(),place_name.getText().toString(),
                     offence_section.getText().toString(),challan_amount.getText().toString(),
-                    license_number.getText().toString(),off_name,
-                    "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"willbefilled","willbefilled");
+                    license_number.getText().toString(),sessionManager.getIOName(),
+                    sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"willbefilled","willbefilled");
                     //local DB
             challanDetails.setStatus(1);
             Calendar c = Calendar.getInstance();
@@ -351,8 +348,8 @@ public class Challan extends AppCompatActivity {
                             crime,owner_name.getText().toString(),violator_address.getText().toString(),
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
-                            license_number.getText().toString(),off_name,
-                            "disrict","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",1);
+                            license_number.getText().toString(),sessionManager.getIOName(),
+                            sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",1);
                     //local DB
                     Calendar c = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -396,8 +393,8 @@ public class Challan extends AppCompatActivity {
                             crime,owner_name.getText().toString(),violator_address.getText().toString(),
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
-                            license_number.getText().toString(),off_name,
-                            "district","policeStation",other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",0);
+                            license_number.getText().toString(),sessionManager.getIOName(),
+                            sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",0);
                     //local DB
                     Calendar c = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
