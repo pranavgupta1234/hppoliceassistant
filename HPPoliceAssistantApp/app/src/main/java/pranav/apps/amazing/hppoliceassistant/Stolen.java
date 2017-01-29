@@ -67,6 +67,7 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
         mDatabase =FirebaseDatabase.getInstance().getReference("vehicle_entry");
 
         sessionManager = new SessionManager(Stolen.this);
+        setLogoutBroadcastReceiver();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Stolen Items");
@@ -236,7 +237,9 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
 
     @Override
     protected void onDestroy() {
-        unregisterReceiver(logoutBroadcastReceiver);
         super.onDestroy();
+        if(logoutBroadcastReceiver!=null) {
+            unregisterReceiver(logoutBroadcastReceiver);
+        }
     }
 }

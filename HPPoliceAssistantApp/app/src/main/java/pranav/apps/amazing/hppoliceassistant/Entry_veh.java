@@ -83,6 +83,7 @@ public class Entry_veh extends AppCompatActivity {
         setContentView(R.layout.entry);
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         sessionManager = new SessionManager(Entry_veh.this);
+        setLogoutBroadcastReceiver();
 
         mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
         database = FirebaseDatabase.getInstance();

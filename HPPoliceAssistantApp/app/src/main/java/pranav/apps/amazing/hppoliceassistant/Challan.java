@@ -116,6 +116,7 @@ public class Challan extends AppCompatActivity {
         mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/challan");
 
         sessionManager = new SessionManager(Challan.this);
+        setLogoutBroadcastReceiver();
 
         database =FirebaseDatabase.getInstance();
         mRootRef= database.getReference("challan");

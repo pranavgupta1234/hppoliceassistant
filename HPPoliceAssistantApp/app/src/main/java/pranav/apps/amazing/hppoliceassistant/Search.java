@@ -51,6 +51,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         DatabaseReference myRef = database.getReference("challan");              //migrate from tree in other branches
 
         sessionManager = new SessionManager(Search.this);
+        setLogoutBroadcastReceiver();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Search Online Challan");
