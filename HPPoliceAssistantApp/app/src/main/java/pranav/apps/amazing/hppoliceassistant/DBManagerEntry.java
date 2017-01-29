@@ -15,7 +15,7 @@ public class DBManagerEntry extends SQLiteOpenHelper {
     private Context context;
 
     public DBManagerEntry(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, "hp_police_vehicle_entry.db", factory, 6);
+        super(context, "hp_police_vehicle_entry.db", factory, 7);
         this.context=context;
     }
 

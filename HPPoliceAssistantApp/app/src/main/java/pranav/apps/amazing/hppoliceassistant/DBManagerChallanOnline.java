@@ -19,7 +19,7 @@ public class DBManagerChallanOnline  extends SQLiteOpenHelper{
 
 
     public DBManagerChallanOnline(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, "hp_police_online_challan.db", factory, 6);
+        super(context, "hp_police_online_challan.db", factory, 7);
         this.context = context;
     }
 
@@ -114,6 +114,7 @@ public class DBManagerChallanOnline  extends SQLiteOpenHelper{
                 cursor.moveToNext();
             }
         }
+        Toast.makeText(context,information.size()+"",Toast.LENGTH_SHORT).show();
         cursor.close();
         return information;
     }

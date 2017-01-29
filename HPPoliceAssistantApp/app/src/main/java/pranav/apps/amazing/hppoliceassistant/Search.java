@@ -1,13 +1,8 @@
 package pranav.apps.amazing.hppoliceassistant;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,25 +10,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by Pranav Gupta on 12/10/2016.
@@ -49,7 +38,6 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
     private RVAdapter adapterOffline;
     DBManagerChallanOnline dbManagerChallanOnline;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +48,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         sessionManager = new SessionManager(Search.this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Search Online Challan");
         setSupportActionBar(toolbar);
 
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
@@ -75,13 +64,14 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         adapter = new RVAdapter(Search.this,challanDetails);
         adapterOffline = new RVAdapter(Search.this,offlineList);
         recyclerview.setAdapter(adapterOffline);
-        adapter.notifyDataSetChanged();
+        adapterOffline.notifyDataSetChanged();
         //Toast.makeText(Search.this,String.valueOf(offlineList.size()),Toast.LENGTH_SHORT).show();
         dbManagerChallanOnline = new DBManagerChallanOnline(Search.this,null,null,1);
         offlineList = dbManagerChallanOnline.showChallan();
-        myRef.addChildEventListener(new com.google.firebase.database.ChildEventListener() {
+        adapterOffline.notifyDataSetChanged();
+        myRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
                 challanDetails.add(challan);
                 if(!dbManagerChallanOnline.checkIfPresent(challan)){
@@ -92,7 +82,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                 search.setText("");
             }
             @Override
-            public void onChildChanged(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
                 challanDetails.add(challan);
                 adapter.notifyDataSetChanged();
@@ -100,7 +90,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
             }
 
             @Override
-            public void onChildRemoved(com.google.firebase.database.DataSnapshot dataSnapshot) {
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
                 challanDetails.add(challan);
                 adapter.notifyDataSetChanged();
@@ -108,7 +98,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
             }
 
             @Override
-            public void onChildMoved(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
                 challanDetails.add(challan);
                 adapter.notifyDataSetChanged();
@@ -122,11 +112,6 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         });
         //challanDetails.clear();
     }
-
-    /*private void invalidate() {
-        challanDetails=dbManagerChallanOnline.showChallan();
-        adapter.notifyDataSetChanged();
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -186,8 +171,9 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                         return true; // Return true to expand action view
                     }
                 });
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
+
 
     @Override
     public boolean onQueryTextChange(String newText) {
