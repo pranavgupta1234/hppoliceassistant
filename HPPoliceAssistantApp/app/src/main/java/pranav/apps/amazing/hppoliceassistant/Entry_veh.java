@@ -1,8 +1,10 @@
 package pranav.apps.amazing.hppoliceassistant;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -74,6 +76,7 @@ public class Entry_veh extends AppCompatActivity {
     private String ampm = "AM";
     private String off_name;
     private SessionManager sessionManager;
+    private BroadcastReceiver logoutBroadcastReceiver;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -398,5 +401,24 @@ public class Entry_veh extends AppCompatActivity {
         description.setText("");
         place.setText("");
         naka.setText("");
+    }
+
+    /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
+    private void setLogoutBroadcastReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.pranav.apps.amazing.ACTION_LOGOUT");
+        logoutBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        };
+        registerReceiver(logoutBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(logoutBroadcastReceiver);
+        super.onDestroy();
     }
 }
