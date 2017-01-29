@@ -25,7 +25,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login"
+        <activity
+            android:name=".Login"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +35,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Home"
+        <activity
+            android:name=".Home"
             android:label="@string/menu">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.HOME" />
@@ -56,7 +58,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Challan"
+        <activity
+            android:name=".Challan"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.CHALLAN" />
@@ -64,7 +67,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Entry_veh"
+        <activity
+            android:name=".Entry_veh"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.ENTRY_VEH" />
@@ -72,7 +76,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Stolen"
+        <activity
+            android:name=".Stolen"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.STOLEN" />
@@ -80,13 +85,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Search"
+        <activity
+            android:name=".Search"
+            android:label="Search Challan"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
-                <action android:name="pranav.apps.amazing.hppoliceassistant.SEARCH" />
-
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
 
         <service android:name=".ChatHeadService" />
