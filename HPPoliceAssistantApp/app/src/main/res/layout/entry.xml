@@ -4,136 +4,142 @@
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:menu="@menu/popup_menu"/>
-    <TextView
-        android:text="Vehicle Details"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_green_dark"
-        android:layout_gravity="center"
-        android:textSize="25dp"/>
-    <TextView
-        android:text="Vehicle Number"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"/>
-    <EditText
-        android:hint="fill vehicle number here"
-        android:layout_width="match_parent"
-        android:maxLength="16"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_edittext"
-        android:padding="12dp"
-        android:layout_marginTop="3dp"
-        android:id="@+id/vehicle_num"/>
-    <TextView
-        android:text="Phone Number"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:hint="fill phone number here"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:maxLength="10"
-        android:inputType="number"
-        android:background="@drawable/custom_edittext"
-        android:padding="12dp"
-        android:id="@+id/phone_num"/>
-    <TextView
-        android:text="Description"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:layout_marginTop="3dp"
-        android:textSize="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:hint="flll short description here"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLength="60"
-        android:background="@drawable/custom_edittext"
-        android:padding="12dp"
-        android:id="@+id/description"/>
-    <TextView
-        android:text="Name of Place"
-        android:textColor="#000000"
-        android:layout_marginTop="3dp"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:hint="fill name of place here"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLength="16"
-        android:background="@drawable/custom_edittext"
-        android:padding="12dp"
-        android:id="@+id/place"/>
-    <TextView
-        android:text="Naka Name"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:layout_marginTop="3dp"
-        android:textSize="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:hint="fill naka name here"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:maxLength="16"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_edittext"
-        android:padding="12dp"
-        android:id="@+id/naka"/>
-    <ImageButton
-        android:text="UPLOAD PHOTO"
-        android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/upload"
-        android:id="@+id/upload"
-        android:scaleType="fitXY"
-        android:layout_gravity="center_horizontal"/>
-    <Button
-        android:text="SUBMIT"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/btn_back"
-        android:id="@+id/make_entry"/>
-    <Button
-        android:text="RESET ALL FIELDS"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/btn_back"
-        android:id="@+id/reset"/>
-</LinearLayout>
-    </ScrollView>
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            app:menu="@menu/popup_menu"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+            <TextView
+                android:text="Vehicle Number"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"/>
+            <EditText
+                android:hint="fill vehicle number here"
+                android:layout_width="match_parent"
+                android:maxLength="16"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:layout_marginTop="3dp"
+                android:id="@+id/vehicle_num"/>
+            <TextView
+                android:text="Phone Number"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:layout_marginTop="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:hint="fill phone number here"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:maxLength="10"
+                android:inputType="number"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:id="@+id/phone_num"/>
+            <TextView
+                android:text="Description"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:layout_marginTop="3dp"
+                android:textSize="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:hint="flll short description here"
+                android:layout_marginTop="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="60"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:id="@+id/description"/>
+            <TextView
+                android:text="Name of Place"
+                android:textColor="#000000"
+                android:layout_marginTop="3dp"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:hint="fill name of place here"
+                android:layout_marginTop="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="16"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:id="@+id/place"/>
+            <TextView
+                android:text="Naka Name"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:layout_marginTop="3dp"
+                android:textSize="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:hint="fill naka name here"
+                android:layout_marginTop="3dp"
+                android:layout_width="match_parent"
+                android:maxLength="16"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:id="@+id/naka"/>
+            <ImageButton
+                android:text="UPLOAD PHOTO"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@drawable/upload"
+                android:id="@+id/upload"
+                android:scaleType="fitXY"
+                android:layout_gravity="center_horizontal"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <Button
+                    android:text="RESET"
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_back"
+                    android:id="@+id/reset"/>
+                <Button
+                    android:text="SUBMIT"
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/btn_back"
+                    android:id="@+id/make_entry"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
