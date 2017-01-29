@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -18,24 +17,22 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import static android.content.ContentValues.TAG;
 import static pranav.apps.amazing.hppoliceassistant.R.id.police_post;
 import static pranav.apps.amazing.hppoliceassistant.R.id.police_station;
 
 /**
  * Created by Pranav Gupta on 12/10/2016.
- * This Class is for Logging in into app
- * On Successfully logging in it launches ??? Activity
- * This Activity is first activity that is launched
+ * Modified by: Gopal Krishan Aggarwal on 29/01/2017
+ * This Class is for Logging in (Signing in) into app
+ * On Successfully logging in it launches Home Activity
+ * This Activity is first activity that is launched on opening the app
  */
-
 public class Login extends Activity {
 
     private SessionManager sessionManager;
@@ -272,12 +269,10 @@ public class Login extends Activity {
 
                 hideKeyboard();
 
-                /*If user did not enter any detail the exit the function after displaying appropriate message*/
+                /*If user did not enter any detail, then exit this function after displaying appropriate message*/
                 if (!validInput()) {
                     return;
                 }
-
-                displayProgressDialog();
 
                 /*Get the data entered by user*/
                 final String selectedDistrict = getSelectedDistrict();
@@ -297,19 +292,16 @@ public class Login extends Activity {
 
                 if (!realPasswordLocal.equals("")) {
                     /*Indicating the password is stored in local database*/
-                    Log.v(TAG, "Real password in local store is: " + realPasswordLocal);
-                    /*Dismiss progress dialog after fetching the password from server*/
-                    dismissProgressDialog();
                     loginIfTrueCredentials(enteredPassword, realPasswordLocal, selectedDistrict, selectedPoliceStation, selectedPolicePost, iOName);
                 }
                 else {
-
                     if (!isConnectedToInternet()) {
-                        dismissProgressDialog();
                         //Throw toast asking user to connect
                         Toast.makeText(Login.this, "Please connect to Internet to be able to Login first time with this police station", Toast.LENGTH_LONG).show();
                         return;
                     }
+
+                    displayProgressDialog();
 
                     /*Indicating the password is NOT stored in local database*/
                     String passwordLocationInFirebase =
@@ -347,9 +339,11 @@ public class Login extends Activity {
     }
 
 
-    /* This function populates district and IO Name from last successful login if any
-    * As a result of selecting the district, last selected police station and in turn
-    * last selected police post is also automatically selected*/
+    /**
+     * This function populates district and IO Name from last successful login if any
+     * As a result of selecting the district, last selected police station and in turn
+     * last selected police post is also automatically selected
+     */
     private void populateDataFromLastLogin() {
         Spinner districtSpinner = (Spinner) findViewById(R.id.district);
         int position = ((ArrayAdapter)districtSpinner.getAdapter()).getPosition(sessionManager.getDistrict());
@@ -363,9 +357,11 @@ public class Login extends Activity {
         }
     }
 
-    /*This method selects the police station from last successful login, if any, and if police station available in current list of police station spinner*/
+    /**
+     * This method selects the police station from last successful login, if any,
+     * and if police station available in current list of police station spinner
+     */
     private void selectPoliceStationFromLastLogin() {
-        Log.v(TAG, "Police Station retrieved from session manager is" + sessionManager.getPoliceStation());
         Spinner policeStationSpinner = (Spinner) findViewById(R.id.police_station);
         int position = ((ArrayAdapter)policeStationSpinner.getAdapter()).getPosition(sessionManager.getPoliceStation());
         if(position >= 0) {
@@ -373,7 +369,10 @@ public class Login extends Activity {
         }
     }
 
-    /*This method selects the police post from last successful login, if any, and if police post available in current list of police post spinner*/
+    /**
+     * This method selects the police post from last successful login, if any,
+     * and if police post available in current list of police post spinner
+     */
     private void selectPolicePostFromLastLogin() {
         Spinner policePostSpinner = (Spinner) findViewById(R.id.police_post);
         int position = ((ArrayAdapter)policePostSpinner.getAdapter()).getPosition(sessionManager.getPolicePost());
@@ -479,8 +478,6 @@ public class Login extends Activity {
         String selectedPolicePost = getSelectedPolicePost();
         String iOName = getEnteredIOName();
         String enteredPassword = getEnteredPassword();
-        Log.v(TAG, "Entered by user: " +selectedDistrict);
-        Log.v(TAG, "From XML resource: " + R.string.select_district);
         if (selectedDistrict.equals(getResources().getString(R.string.select_district))) {
             Toast.makeText(this, R.string.select_district_toast, Toast.LENGTH_SHORT).show();
             return false;
@@ -504,6 +501,16 @@ public class Login extends Activity {
         return true;
     }
 
+    /**
+     * This method checks if user entered correct password and if yes creates a login session and takes the user to home screen.
+     * If user entered wrong password it just displays a wrong password message to user.
+     * @param enteredPassword Password entered by user
+     * @param realPassword The real correct password
+     * @param selectedDistrict District selected by user
+     * @param selectedPoliceStation The police station selected by user
+     * @param selectedPolicePost The police post selected by user
+     * @param iOName IO Name entered by user
+     */
     private void loginIfTrueCredentials(String enteredPassword, String realPassword, String selectedDistrict, String selectedPoliceStation, String selectedPolicePost, String iOName) {
         if (realPassword.contentEquals(enteredPassword)) {
             sessionManager.createLoginSession(selectedDistrict, selectedPoliceStation, selectedPolicePost, iOName);
