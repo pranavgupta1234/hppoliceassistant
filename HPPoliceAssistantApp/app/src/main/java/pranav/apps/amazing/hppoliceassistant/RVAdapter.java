@@ -34,6 +34,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        holder.challan_id.setText(challan.get(position).getChallanID());
         holder.vehicle_number.setText(challan.get(position).getVehicle_number());
         holder.violator_name.setText(challan.get(position).getViolator_name());
         holder.license_number.setText(challan.get(position).getLicense_number());
@@ -69,7 +70,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-         private TextView vehicle_number,violator_name,license_number,phone_number,date,time,challan_officer;
+         private TextView vehicle_number,violator_name,license_number,phone_number,date,time,challan_officer,challan_id;
          private Button details;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -81,6 +82,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
             time=(TextView)itemView.findViewById(R.id.time);
             challan_officer=(TextView)itemView.findViewById(R.id.officer_name);
             details=(Button)itemView.findViewById(R.id.details);
+            challan_id=(TextView)itemView.findViewById(R.id.challan_id);
         }
     }
 }

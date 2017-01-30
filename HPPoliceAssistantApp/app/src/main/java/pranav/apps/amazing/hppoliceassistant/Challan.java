@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -174,7 +175,7 @@ public class Challan extends AppCompatActivity {
                     } else {
                         /** creating a challan without image section population intended for offline storage
                          */
-                        challanDetailswithoutImage = new ChallanDetails(violator_name.getText().toString(),
+                        challanDetailswithoutImage = new ChallanDetails(populateChallanID(),violator_name.getText().toString(),
                                 crime, owner_name.getText().toString(), violator_address.getText().toString(),
                                 veh_number.getText().toString(), place_name.getText().toString(),
                                 offence_section.getText().toString(), challan_amount.getText().toString(),
@@ -237,6 +238,12 @@ public class Challan extends AppCompatActivity {
 
             }
         });
+    }
+
+    private String populateChallanID(){
+        return sessionManager.getDistrict().substring(0,3).toUpperCase()+sessionManager.getPoliceStation().substring(3,7).toUpperCase().replace("/","")+
+                sessionManager.getPolicePost().substring(3,6).toUpperCase()
+                +String.valueOf(System.currentTimeMillis()).substring(6);
     }
 
     private void populateDataFromCheckBoxes() {
@@ -331,7 +338,7 @@ public class Challan extends AppCompatActivity {
             progressDialog1.setMessage("No Photo Selected, Uploading Data...");
             progressDialog1.show();
             download_url_string ="Photo not available";
-            challanDetails = new ChallanDetails(violator_name.getText().toString(),
+            challanDetails = new ChallanDetails(populateChallanID(),violator_name.getText().toString(),
                     crime,owner_name.getText().toString(),violator_address.getText().toString(),
                     veh_number.getText().toString(),place_name.getText().toString(),
                     offence_section.getText().toString(),challan_amount.getText().toString(),
@@ -388,7 +395,7 @@ public class Challan extends AppCompatActivity {
                      * we will store this url in our database so as to fetch the image later
                      * */
 
-                    challanDetails = new ChallanDetails(violator_name.getText().toString(),
+                    challanDetails = new ChallanDetails(populateChallanID(),violator_name.getText().toString(),
                             crime,owner_name.getText().toString(),violator_address.getText().toString(),
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
@@ -433,7 +440,7 @@ public class Challan extends AppCompatActivity {
                     Toast.makeText(Challan.this, "Upload Failed !", Toast.LENGTH_LONG).show();
                     progressDialog1.dismiss();
                     download_url_string="null";
-                    challanDetails = new ChallanDetails(violator_name.getText().toString(),
+                    challanDetails = new ChallanDetails(populateChallanID(),violator_name.getText().toString(),
                             crime,owner_name.getText().toString(),violator_address.getText().toString(),
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),

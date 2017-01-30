@@ -6,7 +6,7 @@ package pranav.apps.amazing.hppoliceassistant;
 
 public class ChallanDetails {
 
-
+    private String ChallanID;
     private String offences;
     private String violator_name;
     private String violator_number;
@@ -177,12 +177,12 @@ public class ChallanDetails {
     //class holding multiple contructors
 
     //constructor for adding challan details in Challan Fragment
-    public ChallanDetails(String violator_name, String offences, String owner_name,
+    public ChallanDetails(String ChallanID,String violator_name, String offences, String owner_name,
                           String violator_address, String vehicle_number, String name_of_place,
                           String offences_section, String challan_amount, String license_number,
                           String police_officer_name, String district, String police_station,
                           String other_remarks, String Image, String violator_number, String date, String time) {
-
+        this.ChallanID=ChallanID;
         this.violator_name = violator_name;
         this.offences = offences;
         this.owner_name = owner_name;
@@ -203,12 +203,22 @@ public class ChallanDetails {
         this.status=1;
     }
 
+    public String getChallanID() {
+        return ChallanID;
+    }
+
+    public void setChallanID(String challanID) {
+        ChallanID = challanID;
+    }
+
     //constructor to show offline status
-    public ChallanDetails(String violator_name, String offences, String owner_name,
+    public ChallanDetails(String ChallanID,String violator_name, String offences, String owner_name,
                           String violator_address, String vehicle_number, String name_of_place,
                           String offences_section, String challan_amount, String license_number,
                           String police_officer_name, String district, String police_station,
                           String other_remarks, String Image, String violator_number, String date, String time,int status) {
+
+        this.ChallanID =ChallanID;
 
         this.violator_name = violator_name;
         this.offences = offences;

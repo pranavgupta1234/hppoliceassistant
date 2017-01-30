@@ -23,7 +23,7 @@ public class DBManagerChallan extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS challan (id INTEGER PRIMARY KEY AUTOINCREMENT, offences TEXT,violator_name TEXT," +
+        db.execSQL("CREATE TABLE IF NOT EXISTS challan (id INTEGER PRIMARY KEY AUTOINCREMENT, challanID TEXT,offences TEXT,violator_name TEXT," +
                 "vehicle_owner_name TEXT,violator_address TEXT,violator_number TEXT,license_number TEXT,challan_amount TEXT," +
                 "offences_section TEXT,vehicle_number TEXT,date TEXT,time TEXT,name_of_place TEXT,officer_name TEXT,other_remarks TEXT," +
                 "place TEXT,image TEXT,status INTEGER);");
@@ -37,9 +37,9 @@ public class DBManagerChallan extends SQLiteOpenHelper {
     public boolean checkIfPresent(ChallanDetails details){
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM challan WHERE offences = \""+details.getOffences()+"\", violator_name = \""+details.getViolator_name()+
-                "\", vehicle_number=\""+details.getVehicle_number()+"\";",null);
+        Cursor cursor = db.rawQuery("SELECT * FROM challan WHERE challanID = \""+details.getChallanID()+"\";",null);
         if(cursor.getCount()==0){
+            cursor.close();
             return false;
         }
         return true;
@@ -51,7 +51,7 @@ public class DBManagerChallan extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery("SELECT * FROM challan;",null);
 
-        Cursor c =  db.rawQuery("SELECT * FROM challan WHERE time = \""+details.getTime()+"\";", null);
+        Cursor c =  db.rawQuery("SELECT * FROM challan WHERE challanID = \""+details.getChallanID()+"\";", null);
         c.moveToFirst();
         int count = c.getCount();
         if (count>0) {
@@ -59,6 +59,7 @@ public class DBManagerChallan extends SQLiteOpenHelper {
             return false;
         }
         ContentValues contentValues = new ContentValues();
+        contentValues.put("challanID",details.getChallanID());
         contentValues.put("offences",details.getOffences());
         contentValues.put("violator_name",details.getViolator_name());
         contentValues.put("vehicle_owner_name",details.getOwner_name());
@@ -97,7 +98,7 @@ public class DBManagerChallan extends SQLiteOpenHelper {
         //String[] strings = new String[cursor.getCount()];
         if(cursor.getCount()!=0) {
             while (!cursor.isAfterLast()) {
-                information.add(new ChallanDetails(cursor.getString(cursor.getColumnIndex("violator_name")), cursor.getString(cursor.getColumnIndex("offences")),
+                information.add(new ChallanDetails(cursor.getString(cursor.getColumnIndex("challanID")),cursor.getString(cursor.getColumnIndex("violator_name")), cursor.getString(cursor.getColumnIndex("offences")),
                         cursor.getString(cursor.getColumnIndex("vehicle_owner_name")), cursor.getString(cursor.getColumnIndex("violator_address")),
                         cursor.getString(cursor.getColumnIndex("vehicle_number")), cursor.getString(cursor.getColumnIndex("name_of_place")),
                         cursor.getString(cursor.getColumnIndex("offences_section")), cursor.getString(cursor.getColumnIndex("challan_amount")),
@@ -116,10 +117,10 @@ public class DBManagerChallan extends SQLiteOpenHelper {
     public void deleteChallan(ChallanDetails details){
         //DatabaseUtils.sqlEscapeString(list);
         SQLiteDatabase db = getWritableDatabase();
-        Cursor c =  db.rawQuery( "SELECT * FROM challan WHERE time = \""+details.getTime()+"\";", null);
+        Cursor c =  db.rawQuery( "SELECT * FROM challan WHERE challanID = \""+details.getChallanID()+"\";", null);
         c.moveToFirst();
         //int id = c.getInt(c.getColumnIndex("id"));
-        db.execSQL("DELETE FROM challan WHERE time = \""+details.getTime()+"\";");
+        db.execSQL("DELETE FROM challan WHERE challanID = \""+details.getChallanID()+"\";");
         //db.execSQL("DROP TABLE IF EXISTS  todo_lists_"+id+";");
     }
 
@@ -127,7 +128,7 @@ public class DBManagerChallan extends SQLiteOpenHelper {
         int value;
         //DatabaseUtils.sqlEscapeString(list);
         SQLiteDatabase db = getWritableDatabase();
-        Cursor c =  db.rawQuery( "SELECT * FROM challan WHERE time = \""+details.getTime()+"\";", null);
+        Cursor c =  db.rawQuery( "SELECT * FROM challan WHERE challanID = \""+details.getChallanID()+"\";", null);
         c.moveToFirst();
         value = c.getInt(c.getColumnIndex("status"));
         c.close();
@@ -137,12 +138,12 @@ public class DBManagerChallan extends SQLiteOpenHelper {
     public boolean setStatus(ChallanDetails details, int s){
         //DatabaseUtils.sqlEscapeString(list);
         SQLiteDatabase db = getWritableDatabase();
-        Cursor c =  db.rawQuery( "SELECT * FROM challan WHERE time = \""+details.getTime()+"\";", null);
+        Cursor c =  db.rawQuery( "SELECT * FROM challan WHERE challanID = \""+details.getChallanID()+"\";", null);
         c.moveToFirst();
         ContentValues contentValues = new ContentValues();
         //contentValues.put("list", list);
         contentValues.put("status", s);
-        db.update("challan",contentValues,"time = \"" + details.getTime() + "\"",null);
+        db.update("challan",contentValues,"challanID = \"" + details.getChallanID() + "\"",null);
         c.close();
         return true;
     }
