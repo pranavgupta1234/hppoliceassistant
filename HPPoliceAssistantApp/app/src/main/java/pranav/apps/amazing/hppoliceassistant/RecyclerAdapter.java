@@ -41,7 +41,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int position) {
-
         //setting data to view holder elements
         viewHolder.vehicle_no.setText(vehicleEntry.get(position).getVehicle_number());
         viewHolder.phone_no.setText(vehicleEntry.get(position).getPhone_number());
@@ -57,7 +56,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             //viewHolder.imageView.setPadding(10,10,10,10);
             viewHolder.imageView.setBackgroundResource(R.drawable.loading);
             viewHolder.imageView.setPadding(0,0,0,0);
-            viewHolder.setImage(viewHolder.imageView.getContext(), vehicleEntry.get(position).getImage());
+            viewHolder.setImage(activity, vehicleEntry.get(position).getImage());
         }
         //set on click listener for each element
         viewHolder.container.setOnClickListener(onClickListener(position));

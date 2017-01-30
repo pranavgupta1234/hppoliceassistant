@@ -3,11 +3,13 @@ package pranav.apps.amazing.hppoliceassistant;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -147,7 +149,17 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
                 startActivity(intent);
                 return true;
             case R.id.logout:
-                sessionManager.logoutUser();
+
+                new AlertDialog.Builder(this)
+                        .setTitle("LogOut")
+                        .setMessage("Do you really want to logout?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                sessionManager.logoutUser();
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
                 return true;
         }
 
