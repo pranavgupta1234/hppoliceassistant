@@ -216,7 +216,8 @@ public class Challan extends AppCompatActivity {
                     if (!validateFields()) {
                         //violator_number.setError("Invalid Phone Number");
                         AlertDialog.Builder builder = new AlertDialog.Builder(Challan.this);
-                        builder.setMessage("Invalid Entries")
+                        builder.setTitle("Challan Entry")
+                                .setMessage("Invalid Input Captured")
                                 .setCancelable(false)
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {

@@ -516,6 +516,25 @@
             android:orientation="vertical"
             android:padding="6dp">
             <TextView
+                android:text="Vehicle Number"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:layout_marginTop="3dp"
+                android:maxLength="16"
+                android:textSize="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:inputType="text"
+                android:hint="fill vehicle number here"
+                android:layout_marginTop="3dp"
+                android:maxLength="18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:id="@+id/vehicle_number"/>
+            <TextView
                 android:text="Violator Name"
                 android:textColor="#000000"
                 android:textStyle="bold"
@@ -527,7 +546,7 @@
                 android:inputType="textAutoComplete"
                 android:hint="fill name of violator"
                 android:layout_width="match_parent"
-                android:maxLength="16"
+                android:maxLength="18"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
@@ -564,7 +583,7 @@
                 android:hint="fill address of violator here"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="20"
+                android:maxLength="50"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
                 android:layout_marginTop="3dp"
@@ -591,7 +610,7 @@
                 android:text="License Number"
                 android:textColor="#000000"
                 android:textStyle="bold"
-                android:maxLength="16"
+                android:maxLength="25"
                 android:textSize="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -633,7 +652,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <EditText
-                android:inputType="number"
                 android:hint="fill offence section here"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -642,25 +660,6 @@
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
                 android:id="@+id/offence_section"/>
-            <TextView
-                android:text="Vehicle Number"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:layout_marginTop="3dp"
-                android:maxLength="16"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:inputType="text"
-                android:hint="fill vehicle number here"
-                android:layout_marginTop="3dp"
-                android:maxLength="16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:id="@+id/vehicle_number"/>
             <TextView
                 android:text="Name of Place"
                 android:textColor="#000000"
