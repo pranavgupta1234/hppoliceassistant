@@ -149,7 +149,6 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
                 startActivity(intent);
                 return true;
             case R.id.logout:
-
                 new AlertDialog.Builder(this)
                         .setTitle("LogOut")
                         .setMessage("Do you really want to logout?")
