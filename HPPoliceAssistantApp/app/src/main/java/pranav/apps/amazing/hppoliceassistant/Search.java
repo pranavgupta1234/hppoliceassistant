@@ -76,9 +76,11 @@ public class Search extends AppCompatActivity {
     /*By default search is based on VEHICLE*/
     private String searchBasedOn = VEHICLE;
 
-    /*Used to point to reference to tThe search view used in the app bar to input query*/
-    SearchView searchView;
+    /*Used to point to reference to the search view used in the app bar to input query*/
+    private SearchView searchView;
 
+    /*Adapter for the recycler view to display search results
+    * Adapter acts like a link between data and recycler view*/
     private RVAdapter searchResultsRecyclerViewAdapter;
 
     @Override
@@ -104,15 +106,14 @@ public class Search extends AppCompatActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.search_menu, menu);
-
         setUpSearchView(menu);
         return true;
     }
 
     /**
      * This method handles what happens when user clicks on various menu items in the app bar
+     *
      * @param item menu item which the user clicked
      * @return boolean
      */
@@ -146,24 +147,22 @@ public class Search extends AppCompatActivity {
         return true;
     }
 
-    /*This method is used as this activity's launchmode is "singletop"
-    * Refer: https://developer.android.com/training/search/setup.html*/
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
-
 
     /**
      * This method receives intent that this activity receives
-     * It is mainly used to handle ACTION_SEARCH intent which is received by this activity from
+     * As of now, it is only used to handle ACTION_SEARCH intent which is received by this activity from
      * itself when user submits the search query. This intent contains the search query which
      * can then be used to fetch data from server.
-     * @param intent Intent recieved by this activity
+     *
+     * @param intent Intent received by this activity
      */
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            /*Get the query input by user*/
             String query = intent.getStringExtra(SearchManager.QUERY);
+
+            /*Check if query entered by user matches its data type
+            * e.g. if user enters phone then it should only contain 10 digits*/
             if (!validQuery(query, searchBasedOn)) {
                 return;
             }
@@ -171,11 +170,11 @@ public class Search extends AppCompatActivity {
             /*Format the string according to developers' letter casing convention*/
             query = modifyLetterCasing(query, searchBasedOn);
 
-
-            /*Create a list which will store data fetched from server*/
+            /*Create an empty list which will store data fetched from server*/
             List<ChallanDetails> challanList = new ArrayList<>();
 
-            /*Fetch the data from the server according to query into the challanList*/
+            /*Fetch the data from the server according to query into the challanList
+            * It also updates the recycler view when some data is added on server which matches query*/
             fetchDataFromSever(challanList, query, searchBasedOn);
 
             /*display the data*/
@@ -185,81 +184,16 @@ public class Search extends AppCompatActivity {
     }
 
     /**
-     * This method returns whether the string entered by user is a valid string
-     * according to dataType e.g. if dataType is vehicle number then string should not
-     * contain any special character and can be alphanumeric
-     *
-     * @param data     The data whose type is to be checked
-     * @param dataType data type of the data e.g. VEHICLE, LICENSE, PHONE etc.
-     * @return true if data is according to data type else false
+     * Fetch the data from the server according to query into the challanList
+     * It also updates the recycler view when some data is added on server which matches query
+     * causing the display on user screen to update as and when new search results arrive
+     * @param challanList List of Challans associated with recycler view adapter
+     * @param query Query entered by user
+     * @param searchBasedOn Search parameter of user
      */
-    private boolean validQuery(String data, String dataType) {
-        switch (dataType) {
-            case VEHICLE: if(!DataTypeValidator.validateVehicleNumberFormat(data)) {
-                Toast.makeText(this, "Vehicle number can contain only letters and numbers", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-                break;
-            case PHONE: if(!DataTypeValidator.validatePhoneNumberFormat(data)) {
-                Toast.makeText(this, "Please enter valid 10 digit phone number", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-                break;
-            case NAME: if(!DataTypeValidator.validateNameOfPersonFormat(data)) {
-                Toast.makeText(this, "Please enter valid name of person", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-                break;
-            case LICENSE: if(!DataTypeValidator.validateLicenseNumberFormat(data)) {
-                Toast.makeText(this, "License number can contain only letters and numbers", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-                break;
-        }
-        return true;
-    }
-
-    /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
-    private void setLogoutBroadcastReceiver() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.pranav.apps.amazing.ACTION_LOGOUT");
-        logoutBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                finish();
-            }
-        };
-        registerReceiver(logoutBroadcastReceiver, intentFilter);
-    }
-
-    @Override
-    protected void onDestroy() {
-        unregisterReceiver(logoutBroadcastReceiver);
-        super.onDestroy();
-    }
-
-    /* Sets up the search view.
-     * Specifically, it associates searchable configuration with the SearchView*/
-    private void setUpSearchView(Menu menu) {
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-    }
-
-    /*Format the string according to developers' letter casing convention
-    * See: https://docs.google.com/document/d/1jtdNmAWRHgOnX6sBj08DK8MhlnbqV_1o7HL_dji5NIo/edit*/
-    private String modifyLetterCasing(String data, String dataType) {
-        if(dataType == VEHICLE || dataType == NAME || dataType == LICENSE) {
-            return data.toLowerCase();
-        }
-        else return data;
-    }
-
     private void fetchDataFromSever(final List<ChallanDetails> challanList, String query, String searchBasedOn) {
         DatabaseReference challanDatabaseRef = FirebaseDatabase.getInstance().getReference("challan/");
-       Query queryChallanDatabase;
+        Query queryChallanDatabase;
         switch (searchBasedOn) {
             case PHONE:
                 queryChallanDatabase = challanDatabaseRef.orderByChild("violator_number").equalTo(query);
@@ -304,14 +238,13 @@ public class Search extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "postComments:onCancelled", databaseError.toException());
             }
-            // TODO: implement the ChildEventListener methods as documented above
-            // ...
         });
 
     }
 
     /**
      * Refer: https://developer.android.com/training/material/lists-cards.html
+     *
      * @param challanList
      */
     private void setUpRecyclerView(List<ChallanDetails> challanList) {
@@ -333,5 +266,88 @@ public class Search extends AppCompatActivity {
         // specify an adapter
         searchResultsRecyclerViewAdapter = new RVAdapter(Search.this, challanList);
         searchResultsRecyclerView.setAdapter(searchResultsRecyclerViewAdapter);
+    }
+
+    /**
+     * This method returns whether the string entered by user is a valid string
+     * according to dataType e.g. if dataType is vehicle number then string should not
+     * contain any special character and can be alphanumeric
+     *
+     * @param data     The data whose type is to be checked
+     * @param dataType data type of the data e.g. VEHICLE, LICENSE, PHONE etc.
+     * @return true if data is according to data type else false
+     */
+    private boolean validQuery(String data, String dataType) {
+        switch (dataType) {
+            case VEHICLE:
+                if (!DataTypeValidator.validateVehicleNumberFormat(data)) {
+                    Toast.makeText(this, "Vehicle number can contain only letters and numbers", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                break;
+            case PHONE:
+                if (!DataTypeValidator.validatePhoneNumberFormat(data)) {
+                    Toast.makeText(this, "Please enter valid 10 digit phone number", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                break;
+            case NAME:
+                if (!DataTypeValidator.validateNameOfPersonFormat(data)) {
+                    Toast.makeText(this, "Please enter valid name of person", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                break;
+            case LICENSE:
+                if (!DataTypeValidator.validateLicenseNumberFormat(data)) {
+                    Toast.makeText(this, "License number can contain only letters and numbers", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                break;
+        }
+        return true;
+    }
+
+    /* Sets up the search view.
+     * Specifically, it associates searchable configuration with the SearchView*/
+    private void setUpSearchView(Menu menu) {
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+    }
+
+    /*Format the string according to developers' letter casing convention
+    * See: https://docs.google.com/document/d/1jtdNmAWRHgOnX6sBj08DK8MhlnbqV_1o7HL_dji5NIo/edit*/
+    private String modifyLetterCasing(String data, String dataType) {
+        if (dataType == VEHICLE || dataType == NAME || dataType == LICENSE) {
+            return data.toLowerCase();
+        } else return data;
+    }
+
+    /*This method is used because this activity's launchmode is "singletop"
+    * Refer: https://developer.android.com/training/search/setup.html*/
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+
+    /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
+    private void setLogoutBroadcastReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.pranav.apps.amazing.ACTION_LOGOUT");
+        logoutBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        };
+        registerReceiver(logoutBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(logoutBroadcastReceiver);
+        super.onDestroy();
     }
 }
