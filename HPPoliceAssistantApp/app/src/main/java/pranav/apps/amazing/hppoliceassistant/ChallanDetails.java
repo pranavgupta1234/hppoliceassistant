@@ -161,7 +161,8 @@ public class ChallanDetails {
     public void setPolice_station(String police_station) {
         this.police_station = police_station;
     }
-    public ChallanDetails(){
+
+    public ChallanDetails() {
 
     }
 
@@ -196,11 +197,11 @@ public class ChallanDetails {
         this.district = district;
         this.police_station = police_station;
         this.other_remarks = other_remarks;
-        this.Image=Image;
-        this.violator_number=violator_number;
-        this.date=date;
-        this.time=time;
-        this.status=1;
+        this.Image = Image;
+        this.violator_number = violator_number;
+        this.date = date;
+        this.time = time;
+        this.status = 1;
     }
 
     //constructor to show offline status
@@ -208,7 +209,7 @@ public class ChallanDetails {
                           String violator_address, String vehicle_number, String name_of_place,
                           String offences_section, String challan_amount, String license_number,
                           String police_officer_name, String district, String police_station,
-                          String other_remarks, String Image, String violator_number, String date, String time,int status) {
+                          String other_remarks, String Image, String violator_number, String date, String time, int status) {
 
         this.violator_name = violator_name;
         this.offences = offences;
@@ -223,11 +224,11 @@ public class ChallanDetails {
         this.district = district;
         this.police_station = police_station;
         this.other_remarks = other_remarks;
-        this.Image=Image;
-        this.violator_number=violator_number;
-        this.date=date;
-        this.time=time;
-        this.status=status;
+        this.Image = Image;
+        this.violator_number = violator_number;
+        this.date = date;
+        this.time = time;
+        this.status = status;
     }
 
 }

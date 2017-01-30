@@ -18,15 +18,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
     private List<ChallanDetails> challanDetails;
     private Activity activity;
 
-    public RVAdapter(Activity activity,List<ChallanDetails> challanEntry) {
-        this.activity=activity;
-        this.challan=challanEntry;
-        this.challanDetails=challanEntry;
+    public RVAdapter(Activity activity, List<ChallanDetails> challanEntry) {
+        this.activity = activity;
+        this.challan = challanEntry;
+        this.challanDetails = challanEntry;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        LayoutInflater layoutInflater =activity.getLayoutInflater();
+        LayoutInflater layoutInflater = activity.getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.list_row, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
@@ -44,7 +44,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
         holder.details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomDialogInformation customDialog = new CustomDialogInformation(activity,challan.get(position));
+                CustomDialogInformation customDialog = new CustomDialogInformation(activity, challan.get(position));
                 //customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 customDialog.setTitle("Challan Details");
                 customDialog.setCancelable(true);
@@ -58,29 +58,30 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
         return challan.size();
     }
 
-    public void setFilter(List<ChallanDetails> ch){
+    public void setFilter(List<ChallanDetails> ch) {
         challan = new ArrayList<>();
         int size = ch.size();
-        for(int i=0;i<ch.size();i++){
-            challan.add(0,ch.get(size-1));
+        for (int i = 0; i < ch.size(); i++) {
+            challan.add(0, ch.get(size - 1));
             size--;
         }
         notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-         private TextView vehicle_number,violator_name,license_number,phone_number,date,time,challan_officer;
-         private Button details;
+        private TextView vehicle_number, violator_name, license_number, phone_number, date, time, challan_officer;
+        private Button details;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            vehicle_number=(TextView)itemView.findViewById(R.id.vehicle_number);
-            violator_name=(TextView)itemView.findViewById(R.id.name_of_person);
-            license_number=(TextView)itemView.findViewById(R.id.license_number);
-            phone_number=(TextView)itemView.findViewById(R.id.phone_number);
-            date=(TextView)itemView.findViewById(R.id.date_picker);
-            time=(TextView)itemView.findViewById(R.id.time);
-            challan_officer=(TextView)itemView.findViewById(R.id.officer_name);
-            details=(Button)itemView.findViewById(R.id.details);
+            vehicle_number = (TextView) itemView.findViewById(R.id.vehicle_number);
+            violator_name = (TextView) itemView.findViewById(R.id.name_of_person);
+            license_number = (TextView) itemView.findViewById(R.id.license_number);
+            phone_number = (TextView) itemView.findViewById(R.id.phone_number);
+            date = (TextView) itemView.findViewById(R.id.date_picker);
+            time = (TextView) itemView.findViewById(R.id.time);
+            challan_officer = (TextView) itemView.findViewById(R.id.officer_name);
+            details = (Button) itemView.findViewById(R.id.details);
         }
     }
 }
