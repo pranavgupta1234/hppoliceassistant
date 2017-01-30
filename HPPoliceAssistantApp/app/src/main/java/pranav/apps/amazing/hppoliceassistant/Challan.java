@@ -78,7 +78,6 @@ public class Challan extends AppCompatActivity {
             idle_parking,restricted_park;
     private EditText other,offence_section,veh_number,place_name,challan_amount,naka_name,owner_name,violator_name
             ,violator_address,license_number,violator_number;
-    String date_auto,time_auto;
     private Button submit,reset;
     private ImageView upload_photo;
     private TextView nak;
@@ -91,7 +90,6 @@ public class Challan extends AppCompatActivity {
     private ProgressDialog progressDialog1;
     private static final int CAMERA_REQUEST = 1888;
     private Uri imageUri;
-    int FILECHOOSER_RESULTCODE = 1888;
     private File actualImage;
     private Uri fileuri;
     private FirebaseDatabase database;
@@ -215,8 +213,18 @@ public class Challan extends AppCompatActivity {
                     place_name.setError("Field can not be empty");
                 }
                 else {
-                    if (violator_number.getText().toString().length() >= 1 && violator_number.getText().toString().length() < 10) {
-                        violator_number.setError("Invalid Phone Number");
+                    if (!validateFields()) {
+                        //violator_number.setError("Invalid Phone Number");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Challan.this);
+                        builder.setMessage("Invalid Entries")
+                                .setCancelable(false)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
                     } else {
                         /** creating a challan without image section population intended for offline storage
                          */
@@ -283,6 +291,13 @@ public class Challan extends AppCompatActivity {
 
             }
         });
+    }
+
+    private boolean validateFields() {
+        return (DataTypeValidator.validateLicenseNumberFormat(license_number.getText().toString())
+                ||DataTypeValidator.validateNameOfPersonFormat(violator_name.getText().toString())
+                ||DataTypeValidator.validatePhoneNumberFormat(violator_number.getText().toString())
+                || DataTypeValidator.validateVehicleNumberFormat(veh_number.getText().toString()));
     }
 
     public void startPosting(){
