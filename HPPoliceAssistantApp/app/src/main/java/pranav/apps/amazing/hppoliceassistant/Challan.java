@@ -118,48 +118,27 @@ public class Challan extends AppCompatActivity {
         sessionManager = new SessionManager(Challan.this);
         setLogoutBroadcastReceiver();
 
+        /** creating firebase instances
+         * */
         database =FirebaseDatabase.getInstance();
         mRootRef= database.getReference("challan");
+        mStorage = FirebaseStorage.getInstance().getReference();
 
+        /*Initiating toolbar*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("Create a Challan");
-        //setSupportActionBar(toolbar);
 
+        /* initialising all views*/
+        initialiseCheckBoxes();
+        initialiseEditText();
+        initialiseOtherViews();
 
-        helmet=(CheckBox)findViewById(R.id.helmet);
-        rc=(CheckBox)findViewById(R.id.rc);
-        insurance=(CheckBox)findViewById(R.id.insurance);
-        license=(CheckBox)findViewById(R.id.license);
-        rash_drive=(CheckBox)findViewById(R.id.rash_drive);
-        mobile=(CheckBox)findViewById(R.id.mobile);
-        number_plate=(CheckBox)findViewById(R.id.number_plate);
-        seat_belt=(CheckBox)findViewById(R.id.seat_belt);
-        horn=(CheckBox)findViewById(R.id.pressure_horn);
-        triple_riding=(CheckBox)findViewById(R.id.triple_riding);
-        idle_parking=(CheckBox)findViewById(R.id.idle_parking);
-        restricted_park=(CheckBox)findViewById(R.id.restricted);
-
-
-        other=(EditText)findViewById(R.id.other_offence);
-        offence_section=(EditText)findViewById(R.id.offence_section);
-        veh_number=(EditText)findViewById(R.id.vehicle_number);
-        place_name=(EditText)findViewById(R.id.place_name);
-        naka_name=(EditText)findViewById(R.id.naka_name);
-        owner_name=(EditText)findViewById(R.id.vehicle_owner_name);
-        violator_name=(EditText)findViewById(R.id.violator_name);
-        violator_address=(EditText)findViewById(R.id.violator_address);
-        license_number=(EditText)findViewById(R.id.license_number);
-        challan_amount=(EditText)findViewById(R.id.challan_amount);
-        violator_number=(EditText)findViewById(R.id.violator_number);
-
-        upload_photo=(ImageView)findViewById(R.id.upload_photo);
-        reset=(Button)findViewById(R.id.reset);
+        //Initialise dialogs
         progressDialog = new ProgressDialog(Challan.this);
         progressDialog1 = new ProgressDialog(Challan.this);
-        nak=(TextView)findViewById(R.id.nak_name);
-        mStorage = FirebaseStorage.getInstance().getReference();
-        submit=(Button)findViewById(R.id.submit);
+
+
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,43 +149,10 @@ public class Challan extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                crime="";
-                if(helmet.isChecked()){
-                    crime  =  crime + "w/o Helmet," ;
-                }
-                if(insurance.isChecked()){
-                    crime  = crime + "w/o Insurance,";
-                }
-                if(license.isChecked()){
-                    crime  = crime + "w/o License,";
-                }
-                if(rc.isChecked()){
-                    crime = crime+ "w/o RC,";
-                }
-                if(rash_drive.isChecked()){
-                    crime  = crime + "Rash Ans Negligent Driving,";
-                }
-                if(mobile.isChecked()){
-                    crime = crime + "Using Mobile during driving,";
-                }
-                if(number_plate.isChecked()){
-                    crime = crime + "w/o NumberPlate,";
-                }
-                if(horn.isChecked()){
-                    crime = crime + "Using Pressure Horn,";
-                }
-                if(seat_belt.isChecked()){
-                    crime = crime + "w/o SeatBelt,";
-                }
-                if(triple_riding.isChecked()){
-                    crime = crime + "Triple Riding,";
-                }
-                if(idle_parking.isChecked()){
-                    crime = crime + "Idle Parking,";
-                }
-                if(restricted_park.isChecked()){
-                    crime = crime+ "Restricted Area Parking,";
-                }
+                //populate string data from checkboxes
+                populateDataFromCheckBoxes();
+
+                //check that fields should not be empty
                 if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")){
                     Toast.makeText(Challan.this,"Fields are empty",Toast.LENGTH_SHORT).show();
                     veh_number.setError("Field can not be empty");
@@ -214,7 +160,6 @@ public class Challan extends AppCompatActivity {
                 }
                 else {
                     if (!validateFields()) {
-                        //violator_number.setError("Invalid Phone Number");
                         AlertDialog.Builder builder = new AlertDialog.Builder(Challan.this);
                         builder.setTitle("Challan Entry")
                                 .setMessage("Invalid Input Captured")
@@ -292,6 +237,82 @@ public class Challan extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void populateDataFromCheckBoxes() {
+        crime="";
+        if(helmet.isChecked()){
+            crime  =  crime + "w/o Helmet," ;
+        }
+        if(insurance.isChecked()){
+            crime  = crime + "w/o Insurance,";
+        }
+        if(license.isChecked()){
+            crime  = crime + "w/o License,";
+        }
+        if(rc.isChecked()){
+            crime = crime+ "w/o RC,";
+        }
+        if(rash_drive.isChecked()){
+            crime  = crime + "Rash Ans Negligent Driving,";
+        }
+        if(mobile.isChecked()){
+            crime = crime + "Using Mobile during driving,";
+        }
+        if(number_plate.isChecked()){
+            crime = crime + "w/o NumberPlate,";
+        }
+        if(horn.isChecked()){
+            crime = crime + "Using Pressure Horn,";
+        }
+        if(seat_belt.isChecked()){
+            crime = crime + "w/o SeatBelt,";
+        }
+        if(triple_riding.isChecked()){
+            crime = crime + "Triple Riding,";
+        }
+        if(idle_parking.isChecked()){
+            crime = crime + "Idle Parking,";
+        }
+        if(restricted_park.isChecked()){
+            crime = crime+ "Restricted Area Parking,";
+        }
+    }
+
+    private void initialiseOtherViews() {
+        upload_photo=(ImageView)findViewById(R.id.upload_photo);
+        reset=(Button)findViewById(R.id.reset);
+        submit=(Button)findViewById(R.id.submit);
+        nak=(TextView)findViewById(R.id.nak_name);
+    }
+
+    private void initialiseEditText() {
+        other=(EditText)findViewById(R.id.other_offence);
+        offence_section=(EditText)findViewById(R.id.offence_section);
+        veh_number=(EditText)findViewById(R.id.vehicle_number);
+        place_name=(EditText)findViewById(R.id.place_name);
+        naka_name=(EditText)findViewById(R.id.naka_name);
+        owner_name=(EditText)findViewById(R.id.vehicle_owner_name);
+        violator_name=(EditText)findViewById(R.id.violator_name);
+        violator_address=(EditText)findViewById(R.id.violator_address);
+        license_number=(EditText)findViewById(R.id.license_number);
+        challan_amount=(EditText)findViewById(R.id.challan_amount);
+        violator_number=(EditText)findViewById(R.id.violator_number);
+    }
+
+    private void initialiseCheckBoxes() {
+        helmet=(CheckBox)findViewById(R.id.helmet);
+        rc=(CheckBox)findViewById(R.id.rc);
+        insurance=(CheckBox)findViewById(R.id.insurance);
+        license=(CheckBox)findViewById(R.id.license);
+        rash_drive=(CheckBox)findViewById(R.id.rash_drive);
+        mobile=(CheckBox)findViewById(R.id.mobile);
+        number_plate=(CheckBox)findViewById(R.id.number_plate);
+        seat_belt=(CheckBox)findViewById(R.id.seat_belt);
+        horn=(CheckBox)findViewById(R.id.pressure_horn);
+        triple_riding=(CheckBox)findViewById(R.id.triple_riding);
+        idle_parking=(CheckBox)findViewById(R.id.idle_parking);
+        restricted_park=(CheckBox)findViewById(R.id.restricted);
     }
 
     private boolean validateFields() {
@@ -460,30 +481,8 @@ public class Challan extends AppCompatActivity {
 
                     // Compress image in main thread
                     actualImage = Compressor.getDefault(Challan.this).compressToFile(actualImage);
-                    //setCompressedImage();
 
-                    // Compress image to bitmap in main thread
-            /*compressedImageView.setImageBitmap(Compressor.getDefault(this).compressToBitmap(actualImage));*/
-
-                    // Compress image using RxJava in background thread
-                    /*Compressor.getDefault(getActivity())
-                            .compressToFileAsObservable(actualImage)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<File>() {
-                                @Override
-                                public void call(File file) {
-                                    actualImage = file;
-                                   // setCompressedImage();
-                                }
-                            }, new Action1<Throwable>() {
-                                @Override
-                                public void call(Throwable throwable) {
-                                    showError(throwable.getMessage());
-                                }
-                            });*/
                     uri = Uri.fromFile(actualImage);
-                    //uri=Uri.parse(actualImage.getAbsolutePath());
                     upload_photo.setImageURI(uri);
                 }
             } catch (IOException e) {
