@@ -15,7 +15,8 @@ import android.widget.TextView;
 
 public class CustomDialogInformation extends Dialog implements android.view.View.OnClickListener {
 
-    private TextView violator,owner,address,violator_number,vehicle_number,offence_sec,lic_num,challan_am,name_of_place,off_name,offences;
+    private TextView violator,owner,address,violator_number,vehicle_number,offence_sec
+            ,lic_num,challan_am,name_of_place,off_name,offences,challanID;
     private Button ok;
     private ChallanDetails challanDetails;
     private Activity activity;
@@ -29,7 +30,6 @@ public class CustomDialogInformation extends Dialog implements android.view.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.custom_dialog_show);
         setAllTextViews();
         setButtons();
@@ -39,6 +39,7 @@ public class CustomDialogInformation extends Dialog implements android.view.View
     }
 
     private void setAllValues() {
+        challanID.setText(challanDetails.getChallanID());
         violator.setText(challanDetails.getViolator_name());
         owner.setText(challanDetails.getOwner_name());
         address.setText(challanDetails.getViolator_address());
@@ -68,6 +69,7 @@ public class CustomDialogInformation extends Dialog implements android.view.View
         name_of_place=(TextView)findViewById(R.id.name_of_place);
         off_name=(TextView)findViewById(R.id.police_officer_name);
         offences=(TextView)findViewById(R.id.offences);
+        challanID=(TextView)findViewById(R.id.challan_id);
     }
 
     @Override

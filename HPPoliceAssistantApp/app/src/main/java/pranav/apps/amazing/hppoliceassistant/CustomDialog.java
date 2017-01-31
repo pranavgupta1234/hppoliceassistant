@@ -18,7 +18,8 @@ import java.util.Map;
 
 public class CustomDialog extends Dialog implements android.view.View.OnClickListener {
 
-    private TextView violator,owner,address,violator_number,vehicle_number,offence_sec,lic_num,challan_am,name_of_place,off_name,offences;
+    private TextView violator,owner,address,violator_number,vehicle_number,offence_sec
+            ,lic_num,challan_am,name_of_place,off_name,offences,challanID;
     private Button edit,submit,offline;
     private ChallanDetails challanDetails;
     private Activity activity;
@@ -32,7 +33,7 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.challan_dialog);
         setAllTextViews();
         setButtons();
@@ -44,6 +45,7 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
     }
 
     private void setAllValues() {
+        challanID.setText(challanDetails.getChallanID());
         violator.setText(challanDetails.getViolator_name());
         owner.setText(challanDetails.getOwner_name());
         address.setText(challanDetails.getViolator_address());
@@ -75,6 +77,7 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
         name_of_place=(TextView)findViewById(R.id.name_of_place);
         off_name=(TextView)findViewById(R.id.police_officer_name);
         offences=(TextView)findViewById(R.id.offences);
+        challanID=(TextView)findViewById(R.id.challan_id);
     }
 
     @Override

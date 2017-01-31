@@ -175,20 +175,14 @@ public class Challan extends AppCompatActivity {
                     } else {
                         /** creating a challan without image section population intended for offline storage
                          */
-                        challanDetailswithoutImage = new ChallanDetails(populateChallanID(),violator_name.getText().toString(),
-                                crime, owner_name.getText().toString(), violator_address.getText().toString(),
-                                veh_number.getText().toString(), place_name.getText().toString(),
-                                offence_section.getText().toString(), challan_amount.getText().toString(),
-                                license_number.getText().toString(), sessionManager.getIOName(),
-                                sessionManager.getDistrict(),sessionManager.getPoliceStation(), other.getText().toString(), "null",
-                                violator_number.getText().toString(), "will be filled", "will be filled");
+                        challanDetailswithoutImage  = createChallanWithNoImage();
 
                         /** CustomDialog is a dialog intended to be used for pre verification before submission either to online
                          * or offline storage and it contains all details previously filled by user an shows 3 buttons including
                          * edit , online and offline
                          * */
                         customDialog = new CustomDialog(Challan.this, challanDetailswithoutImage);
-                        customDialog.setTitle("Challan Details");
+                        customDialog.setTitle("Confirm Challan Details");
                         customDialog.setCancelable(true);
                         customDialog.show();
                         customDialog.findViewById(R.id.offline).setOnClickListener(new View.OnClickListener() {
@@ -238,6 +232,16 @@ public class Challan extends AppCompatActivity {
 
             }
         });
+    }
+
+    private ChallanDetails createChallanWithNoImage() {
+        return new ChallanDetails(populateChallanID(),violator_name.getText().toString(),
+                crime, owner_name.getText().toString(), violator_address.getText().toString(),
+                veh_number.getText().toString(), place_name.getText().toString(),
+                offence_section.getText().toString(), challan_amount.getText().toString(),
+                license_number.getText().toString(), sessionManager.getIOName(),
+                sessionManager.getDistrict(),sessionManager.getPoliceStation(), other.getText().toString(), "null",
+                violator_number.getText().toString(), "will be filled", "will be filled");
     }
 
     private String populateChallanID(){
@@ -467,11 +471,6 @@ public class Challan extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        /*if(requestCode==GALLERY_INTENT && resultCode==RESULT_OK){
-            uri =data.getData();
-            upload_photo.setBackgroundColor(0);
-            upload_photo.setImageURI(uri);
-        }*/
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
             if (data == null) {
                 showError("Failed to open picture!");
