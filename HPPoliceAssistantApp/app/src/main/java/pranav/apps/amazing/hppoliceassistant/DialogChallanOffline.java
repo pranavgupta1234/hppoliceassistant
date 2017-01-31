@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class DialogChallanOffline extends Dialog implements android.view.View.OnClickListener {
 
     private TextView violator,owner,address,violator_number,vehicle_number,offence_sec,
-            lic_num,challan_am,name_of_place,off_name,offences,challanID;
+            lic_num,challan_am,name_of_place,off_name,offences,challanID,date_and_time;
     private Button send,delete;
     private ChallanDetails challanDetails;
     private Activity activity;
@@ -39,6 +39,7 @@ public class DialogChallanOffline extends Dialog implements android.view.View.On
     }
 
     private void setAllValues() {
+        date_and_time.setText(challanDetails.getDate()+" at "+challanDetails.getTime());
         challanID.setText(challanDetails.getChallanID());
         violator.setText(challanDetails.getViolator_name());
         owner.setText(challanDetails.getOwner_name());
@@ -71,6 +72,7 @@ public class DialogChallanOffline extends Dialog implements android.view.View.On
         off_name=(TextView)findViewById(R.id.police_officer_name);
         offences=(TextView)findViewById(R.id.offences);
         challanID=(TextView)findViewById(R.id.challan_id);
+        date_and_time=(TextView)findViewById(R.id.date_and_time);
     }
 
     @Override

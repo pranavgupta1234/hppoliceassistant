@@ -97,6 +97,7 @@ public class Challan extends AppCompatActivity {
     private DatabaseReference mRootRef;
     private int PICK_IMAGE_REQUEST=1;
     private SessionManager sessionManager;
+    private String date,time;
 
 
     private CustomDialog customDialog;
@@ -154,6 +155,8 @@ public class Challan extends AppCompatActivity {
                 //populate string data from checkboxes
                 populateDataFromCheckBoxes();
                 challanID = populateChallanID();
+                date = generateDateFromSystem();
+                time = generateCurrentTime();
 
                 //check that fields should not be empty
                 if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")){
@@ -197,14 +200,6 @@ public class Challan extends AppCompatActivity {
                                 challanDetailswithoutImage.setStatus(0);
                                 /** Auto population of date and time from android system
                                  * */
-                                Calendar c = Calendar.getInstance();
-                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                                String strDate = sdf.format(c.getTime());
-                                challanDetailswithoutImage.setDate(strDate.substring(0, 2) + ", " + month[Integer.valueOf(strDate.substring(3, 4))] + " " + strDate.substring(6, 10));
-                                if (Integer.valueOf(strDate.substring(11, 13)) > 12) {
-                                    ampm = "PM";
-                                }
-                                challanDetailswithoutImage.setTime(strDate.substring(10, strDate.length()) + " " + ampm);
                                 if (dbManagerChallan.addChallan(challanDetailswithoutImage)) {
                                     Toast.makeText(Challan.this, "Challan Added Offline! Make sure to add it online!", Toast.LENGTH_SHORT).show();
                                     customDialog.dismiss();
@@ -236,6 +231,23 @@ public class Challan extends AppCompatActivity {
         });
     }
 
+    private String generateCurrentTime() {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String strDate = sdf.format(c.getTime());
+        if (Integer.valueOf(strDate.substring(11, 13)) > 12) {
+            ampm = "PM";
+        }
+        return strDate.substring(10, strDate.length()) + " " + ampm;
+    }
+
+    private String generateDateFromSystem() {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String strDate = sdf.format(c.getTime());
+        return strDate.substring(0, 2) + ", " + month[Integer.valueOf(strDate.substring(3, 4))] + " " + strDate.substring(6, 10);
+    }
+
     private ChallanDetails createChallanWithNoImage() {
         return new ChallanDetails(challanID,violator_name.getText().toString(),
                 crime, owner_name.getText().toString(), violator_address.getText().toString(),
@@ -243,7 +255,7 @@ public class Challan extends AppCompatActivity {
                 offence_section.getText().toString(), challan_amount.getText().toString(),
                 license_number.getText().toString(), sessionManager.getIOName(),
                 sessionManager.getDistrict(),sessionManager.getPoliceStation(), other.getText().toString(), "null",
-                violator_number.getText().toString(), "date", "time");
+                violator_number.getText().toString(), date, time);
     }
 
     public void startPosting(){
@@ -260,21 +272,15 @@ public class Challan extends AppCompatActivity {
                     veh_number.getText().toString(),place_name.getText().toString(),
                     offence_section.getText().toString(),challan_amount.getText().toString(),
                     license_number.getText().toString(),sessionManager.getIOName(),
-                    sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"willbefilled","willbefilled");
+                    sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,
+                    violator_number.getText().toString(),date,time);
             //local DB
             challanDetails.setStatus(1);
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String strDate = sdf.format(c.getTime());
-            challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
-            if(Integer.valueOf(strDate.substring(11,13))>12){
-                ampm = "PM";
-            }
             /** even if the officer is sending challan to the server we are keeping a copy of it locally so that officer can go to
              * his offline section and see the challan he has made and he can easily differentiate from other offline challan as
              * this will be shown in green color details box indicating that it is already sent
              * */
-            challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
+
             final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
             dbManagerChallan.addChallan(challanDetails);
             /**If you are using completion callback listener of Database reference then the instance for Firebase should also be
@@ -317,16 +323,8 @@ public class Challan extends AppCompatActivity {
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
                             license_number.getText().toString(),sessionManager.getIOName(),
-                            sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",1);
-                    //local DB
-                    Calendar c = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    String strDate = sdf.format(c.getTime());
-                    challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
-                    if(Integer.valueOf(strDate.substring(11,13))>12){
-                        ampm = "PM";
-                    }
-                    challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
+                            sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),
+                            download_url_string,violator_number.getText().toString(),date,time,1);
 
                     /** even if challan is stored online we will keep a local copy of it with green marker
                      * */
@@ -363,16 +361,9 @@ public class Challan extends AppCompatActivity {
                             veh_number.getText().toString(),place_name.getText().toString(),
                             offence_section.getText().toString(),challan_amount.getText().toString(),
                             license_number.getText().toString(),sessionManager.getIOName(),
-                            sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",0);
-                    //local DB
-                    Calendar c = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    String strDate = sdf.format(c.getTime());
-                    challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
-                    if(Integer.valueOf(strDate.substring(11,13))>12){
-                        ampm = "PM";
-                    }
-                    challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
+                            sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),
+                            download_url_string,violator_number.getText().toString(),date,time,0);
+
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
                     if(dbManagerChallan.addChallan(challanDetails)){
                         Toast.makeText(Challan.this,"Challan Added Offline!",Toast.LENGTH_SHORT).show();
