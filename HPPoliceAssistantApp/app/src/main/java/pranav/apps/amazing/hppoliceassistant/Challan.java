@@ -575,7 +575,7 @@ public class Challan extends AppCompatActivity {
         violator_address.setText("");
         license_number.setText("");
         violator_number.setText("");
-        upload_photo.setBackgroundResource(R.drawable.upload);
+        upload_photo.setImageResource(R.drawable.upload);
         helmet.setChecked(false);
         rc.setChecked(false);
         insurance.setChecked(false);

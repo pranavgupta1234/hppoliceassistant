@@ -44,6 +44,7 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        holder.challanID.setText(challan.get(position).getChallanID());
         holder.vehicle_number.setText(challan.get(position).getVehicle_number());
         holder.violator_name.setText(challan.get(position).getViolator_name());
         holder.license_number.setText(challan.get(position).getLicense_number());
@@ -123,7 +124,7 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView vehicle_number,violator_name,license_number,phone_number,date,time,challan_officer;
+        private TextView vehicle_number,violator_name,license_number,phone_number,date,time,challan_officer,challanID;
         private Button details;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -135,6 +136,7 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
             time=(TextView)itemView.findViewById(R.id.time);
             challan_officer=(TextView)itemView.findViewById(R.id.officer_name);
             details=(Button)itemView.findViewById(R.id.details);
+            challanID=(TextView)itemView.findViewById(R.id.challan_id);
         }
     }
 }

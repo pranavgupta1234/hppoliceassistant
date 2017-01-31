@@ -625,7 +625,7 @@
                 android:layout_marginTop="3dp"
                 android:id="@+id/license_number"/>
             <TextView
-                android:text="Challan Amount"
+                android:text="Challan Amount (in Rs)"
                 android:textColor="#000000"
                 android:textStyle="bold"
                 android:textSize="16dp"
@@ -633,8 +633,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"/>
             <EditText
-                android:inputType="textAutoComplete"
-                android:hint="fill challan amount here"
+                android:inputType="number"
+                android:hint="fill challan amount here(in Rs)"
                 android:layout_width="match_parent"
                 android:maxLength="10"
                 android:layout_height="wrap_content"
