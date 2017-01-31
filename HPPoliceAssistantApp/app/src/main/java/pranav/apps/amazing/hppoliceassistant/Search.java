@@ -216,7 +216,9 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                 final String text3 = model.getLicense_number().toLowerCase();
                 final String text4 = model.getViolator_number().toLowerCase();
                 final String text5 = model.getPolice_officer_name().toLowerCase();
-                if (text1.contains(query) || text2.contains(query) || text3.contains(query) || text4.contains(query) || text5.contains(query)) {
+                final String text6 = model.getChallanID().toLowerCase();
+                if (text1.contains(query) || text2.contains(query) || text3.contains(query) || text4.contains(query) || text5.contains(query)
+                        ||text6.contains(query)) {
                     filteredModelList.add(model);
                 }
             }
