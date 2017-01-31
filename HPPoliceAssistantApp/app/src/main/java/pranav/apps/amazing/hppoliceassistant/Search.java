@@ -1,6 +1,7 @@
 package pranav.apps.amazing.hppoliceassistant;
 
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -82,7 +83,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                 challanDetails.add(challan);
                 if(!dbManagerChallanOnline.checkIfPresent(challan)){
                     dbManagerChallanOnline.addChallan(challan);
-                    offlineList.add(challan);
+                    offlineList.add(0,challan);
                     adapterOffline.notifyDataSetChanged();
                 }
 
@@ -90,7 +91,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
-                challanDetails.add(challan);
+                offlineList.add(0,challan);
                 adapter.notifyDataSetChanged();
                 search.setText("");
             }
@@ -98,7 +99,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
-                challanDetails.add(challan);
+                offlineList.add(0,challan);
                 adapter.notifyDataSetChanged();
                 search.setText("");
             }
@@ -106,7 +107,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
-                challanDetails.add(challan);
+                offlineList.add(0,challan);
                 adapter.notifyDataSetChanged();
                 search.setText("");
             }
@@ -193,8 +194,11 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        ProgressDialog pg = ProgressDialog.show(Search.this,"Searching Challan","Searching...");
         final List<ChallanDetails> filteredChallan = filter(offlineList, query);
         adapterOffline.setFilter(filteredChallan);
+        adapterOffline.notifyDataSetChanged();
+        pg.dismiss();
         return true;
     }
 
