@@ -48,7 +48,7 @@ import id.zelory.compressor.FileUtil;
 public class Entry extends AppCompatActivity {
     private Firebase mrootRef;
     private EditText veh,phone,description,place,naka;
-    private Button submit_det,reset;
+    private Button submit_det;
     private ImageButton upload;
     private String path;
     private StorageReference mStorage,filepath;
@@ -100,13 +100,6 @@ public class Entry extends AppCompatActivity {
 
         upload=(ImageButton)findViewById(R.id.upload);
         submit_det=(Button)findViewById(R.id.make_entry);
-        reset=(Button)findViewById(R.id.reset);
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resetAll();
-            }
-        });
 
         mStorage = FirebaseStorage.getInstance().getReference();
         submit_det.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +133,7 @@ public class Entry extends AppCompatActivity {
                                 if (dbManagerEntry.addEntry(newEntrywithoutImage)) {
                                     Toast.makeText(Entry.this, "Entry Added Offline!", Toast.LENGTH_SHORT).show();
                                     vehicleEntryDialog.dismiss();
+                                    resetAll();
                                 }
                             }
                         });
@@ -192,10 +186,12 @@ public class Entry extends AppCompatActivity {
                     if(databaseError== null){
                         progressDialog1.dismiss();
                         Toast.makeText(Entry.this,"Upload Done ",Toast.LENGTH_SHORT).show();
+                        resetAll();
                     }
                     else {
                         progressDialog1.dismiss();
                         Toast.makeText(Entry.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                        resetAll();
                     }
                 }
             });
@@ -227,10 +223,12 @@ public class Entry extends AppCompatActivity {
                             if(databaseError== null){
                                 progressDialog1.dismiss();
                                 Toast.makeText(Entry.this,"Upload Done ",Toast.LENGTH_SHORT).show();
+                                resetAll();
                             }
                             else {
                                 progressDialog1.dismiss();
                                 Toast.makeText(Entry.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                                resetAll();
                             }
                         }
                     });
@@ -244,6 +242,7 @@ public class Entry extends AppCompatActivity {
                     DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
                     if(dbManagerEntry.addEntry(newEntry)){
                         Toast.makeText(Entry.this,"Entry Added Offline!",Toast.LENGTH_SHORT).show();
+                        resetAll();
                     }
                 }
             });
@@ -389,6 +388,7 @@ public class Entry extends AppCompatActivity {
         description.setText("");
         place.setText("");
         naka.setText("");
+        upload.setImageResource(R.drawable.upload);
     }
 
     /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/

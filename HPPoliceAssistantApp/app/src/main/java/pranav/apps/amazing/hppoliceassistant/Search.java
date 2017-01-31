@@ -85,6 +85,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                     dbManagerChallanOnline.addChallan(challan);
                     offlineList.add(0,challan);
                     adapterOffline.notifyDataSetChanged();
+                    Toast.makeText(Search.this,"New Challans Added , List is Updated",Toast.LENGTH_SHORT).show();
                 }
 
             }

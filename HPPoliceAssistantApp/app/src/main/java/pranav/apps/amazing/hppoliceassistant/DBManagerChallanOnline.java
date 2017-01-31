@@ -28,7 +28,7 @@ public class DBManagerChallanOnline  extends SQLiteOpenHelper{
         db.execSQL("CREATE TABLE IF NOT EXISTS challanOnline (id INTEGER PRIMARY KEY AUTOINCREMENT,challanID TEXT, offences TEXT,violator_name TEXT," +
                 "vehicle_owner_name TEXT,violator_address TEXT,violator_number TEXT,license_number TEXT,challan_amount TEXT," +
                 "offences_section TEXT,vehicle_number TEXT,date TEXT,time TEXT,name_of_place TEXT,officer_name TEXT,other_remarks TEXT," +
-                "place TEXT,image TEXT,status INTEGER);");
+                "district TEXT,police_station TEXT,image TEXT,status INTEGER);");
     }
 
     @Override
@@ -78,7 +78,8 @@ public class DBManagerChallanOnline  extends SQLiteOpenHelper{
         contentValues.put("name_of_place",details.getName_of_place());
         contentValues.put("officer_name",details.getPolice_officer_name());
         contentValues.put("other_remarks",details.getOther_remarks());
-        contentValues.put("place",details.getDistrict());
+        contentValues.put("district",details.getDistrict());
+        contentValues.put("police_station",details.getPolice_station());
         contentValues.put("image","image");
         contentValues.put("status", 0);
         db.insert("challanOnline", null, contentValues);
@@ -107,7 +108,7 @@ public class DBManagerChallanOnline  extends SQLiteOpenHelper{
                         cursor.getString(cursor.getColumnIndex("vehicle_number")), cursor.getString(cursor.getColumnIndex("name_of_place")),
                         cursor.getString(cursor.getColumnIndex("offences_section")), cursor.getString(cursor.getColumnIndex("challan_amount")),
                         cursor.getString(cursor.getColumnIndex("license_number")), cursor.getString(cursor.getColumnIndex("officer_name")),
-                        "district","policeStation", cursor.getString(cursor.getColumnIndex("other_remarks")),
+                        cursor.getString(cursor.getColumnIndex("district")),cursor.getString(cursor.getColumnIndex("police_station")), cursor.getString(cursor.getColumnIndex("other_remarks")),
                         cursor.getString(cursor.getColumnIndex("image")), cursor.getString(cursor.getColumnIndex("violator_number")),
                         cursor.getString(cursor.getColumnIndex("date")), cursor.getString(cursor.getColumnIndex("time")),cursor.getInt(cursor.getColumnIndex("status")));
                 information.add(0,challanDetails);

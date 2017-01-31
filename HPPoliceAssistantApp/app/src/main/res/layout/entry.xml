@@ -123,14 +123,6 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="6dp">
                 <Button
-                    android:text="RESET"
-                    android:textStyle="bold"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/btn_back"
-                    android:id="@+id/reset"/>
-                <Button
                     android:text="SUBMIT"
                     android:textStyle="bold"
                     android:layout_width="0dp"

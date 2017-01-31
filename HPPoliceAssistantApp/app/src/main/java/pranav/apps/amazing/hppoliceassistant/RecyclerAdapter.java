@@ -42,6 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int position) {
         //setting data to view holder elements
+        viewHolder.id.setText(vehicleEntry.get(position).getEntryID());
         viewHolder.vehicle_no.setText(vehicleEntry.get(position).getVehicle_number());
         viewHolder.phone_no.setText(vehicleEntry.get(position).getPhone_number());
         viewHolder.place.setText(vehicleEntry.get(position).getName_of_place());
@@ -68,8 +69,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    private void setDataToView(TextView a, TextView b, TextView c, TextView d, TextView e, ImageView genderIcon, TextView date,
+    private void setDataToView(TextView id,TextView a, TextView b, TextView c, TextView d, TextView e, ImageView genderIcon, TextView date,
                                TextView time, int position) {
+        id.setText(vehicleEntry.get(position).getEntryID());
         a.setText(vehicleEntry.get(position).getVehicle_number());
         b.setText(vehicleEntry.get(position).getPhone_number());
         c.setText(vehicleEntry.get(position).getName_of_place());
@@ -105,7 +107,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 TextView date=(TextView)dialog.findViewById(R.id.date_picker);
                 TextView time =(TextView)dialog.findViewById(R.id.time);
                 ImageView icon = (ImageView) dialog.findViewById(R.id.image);
-                setDataToView(vh,phn,pla,nka,descrip,icon,date,time,position);
+                TextView id = (TextView)dialog.findViewById(R.id.entry_id);
+                setDataToView(id,vh,phn,pla,nka,descrip,icon,date,time,position);
                 viewHolder.setImageDialog(dialog.getContext(),vehicleEntry.get(position).getImage(),icon);
                 dialog.show();
             }
@@ -141,6 +144,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private View container;
         private TextView date;
         private TextView time;
+        private TextView id;
 
         public ViewHolder(View view) {
             super(view);
@@ -153,6 +157,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             container = view.findViewById(R.id.card_view);
             date=(TextView)view.findViewById(R.id.date_picker);
             time=(TextView)view.findViewById(R.id.time);
+            id = (TextView)view.findViewById(R.id.entry_id);
         }
         public void setImage(Context ctx,String image){
             Picasso.with(ctx).load(image).resize(120,180).centerCrop().into(imageView);
