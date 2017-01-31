@@ -21,7 +21,7 @@ public class DBManagerEntry extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS entry (id INTEGER PRIMARY KEY AUTOINCREMENT, vehicle_number TEXT,phone_number TEXT," +
+        db.execSQL("CREATE TABLE IF NOT EXISTS entry (id INTEGER PRIMARY KEY AUTOINCREMENT, EntryID TEXT,vehicle_number TEXT,phone_number TEXT," +
                 "description TEXT,date TEXT,time TEXT,name_of_place TEXT,officer_name TEXT,naka_name TEXT,image TEXT,status INTEGER);");
     }
 
@@ -34,7 +34,7 @@ public class DBManagerEntry extends SQLiteOpenHelper {
     public boolean addEntry(VehicleEntry newEntry){
         //DatabaseUtils.sqlEscapeString(newEntry);
         SQLiteDatabase db = getWritableDatabase();
-        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE time = \""+newEntry.getTime()+"\";", null);
+        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE EntryID = \""+newEntry.getEntryID()+"\";", null);
         c.moveToFirst();
         int count = c.getCount();
         if (count>0) {
@@ -42,6 +42,7 @@ public class DBManagerEntry extends SQLiteOpenHelper {
             return false;
         }
         ContentValues contentValues = new ContentValues();
+        contentValues.put("EntryID",newEntry.getEntryID());
         contentValues.put("vehicle_number",newEntry.getVehicle_number());
         contentValues.put("phone_number",newEntry.getPhone_number());
         contentValues.put("description",newEntry.getDescription());
@@ -71,7 +72,7 @@ public class DBManagerEntry extends SQLiteOpenHelper {
         //String[] strings = new String[cursor.getCount()];
         while(!cursor.isAfterLast()){
             //strings[i] = cursor.getString(cursor.getColumnIndex("list"));
-            VehicleEntry vehicleEntry = new VehicleEntry(cursor.getString(cursor.getColumnIndex("vehicle_number")),cursor.getString(cursor.getColumnIndex("phone_number")),
+            VehicleEntry vehicleEntry = new VehicleEntry(cursor.getString(cursor.getColumnIndex("EntryID")),cursor.getString(cursor.getColumnIndex("vehicle_number")),cursor.getString(cursor.getColumnIndex("phone_number")),
                     cursor.getString(cursor.getColumnIndex("description")),cursor.getString(cursor.getColumnIndex("name_of_place")),
                     cursor.getString(cursor.getColumnIndex("naka_name")),cursor.getString(cursor.getColumnIndex("date")),
                     cursor.getString(cursor.getColumnIndex("time")),cursor.getString(cursor.getColumnIndex("officer_name")),
@@ -86,10 +87,10 @@ public class DBManagerEntry extends SQLiteOpenHelper {
     public void deleteEntry(VehicleEntry entry){
         //DatabaseUtils.sqlEscapeString(list);
         SQLiteDatabase db = getWritableDatabase();
-        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE time = \""+entry.getTime()+"\";", null);
+        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE EntryID = \""+entry.getEntryID()+"\";", null);
         c.moveToFirst();
         //int id = c.getInt(c.getColumnIndex("id"));
-        db.execSQL("DELETE FROM entry WHERE time = \""+entry.getTime()+"\";");
+        db.execSQL("DELETE FROM entry WHERE EntryID = \""+entry.getEntryID()+"\";");
         //db.execSQL("DROP TABLE IF EXISTS  todo_lists_"+id+";");
     }
 
@@ -97,7 +98,7 @@ public class DBManagerEntry extends SQLiteOpenHelper {
         int value;
         //DatabaseUtils.sqlEscapeString(list);
         SQLiteDatabase db = getWritableDatabase();
-        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE time = \""+vehicleEntry.getTime()+"\";", null);
+        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE EntryID = \""+vehicleEntry.getEntryID()+"\";", null);
         c.moveToFirst();
         value = c.getInt(c.getColumnIndex("status"));
         c.close();
@@ -107,12 +108,12 @@ public class DBManagerEntry extends SQLiteOpenHelper {
     public boolean setStatus(VehicleEntry list, int p){
         //DatabaseUtils.sqlEscapeString(list);
         SQLiteDatabase db = getWritableDatabase();
-        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE time = \""+list.getTime()+"\";", null);
+        Cursor c =  db.rawQuery( "SELECT * FROM entry WHERE EntryID = \""+list.getEntryID()+"\";", null);
         c.moveToFirst();
         ContentValues contentValues = new ContentValues();
         //contentValues.put("list", list);
         contentValues.put("status", p);
-        db.update("entry",contentValues,"time = \"" + list.getTime() + "\"",null);
+        db.update("entry",contentValues,"EntryID = \"" + list.getEntryID() + "\"",null);
         c.close();
         return true;
     }

@@ -65,7 +65,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Entry_veh"
+        <activity android:name=".Entry"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.ENTRY_VEH" />

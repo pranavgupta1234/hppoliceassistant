@@ -86,7 +86,7 @@ public class Home extends AppCompatActivity{
     }
 
     public void openNakaEntryActivity(View v) {
-        Intent i = new Intent(Home.this, Entry_veh.class);
+        Intent i = new Intent(Home.this, Entry.class);
         startActivity(i);
     }
 

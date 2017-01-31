@@ -6,6 +6,16 @@ package pranav.apps.amazing.hppoliceassistant;
 
 public class VehicleEntry {
 
+    private String EntryID;
+
+    public String getEntryID() {
+        return EntryID;
+    }
+
+    public void setEntryID(String entryID) {
+        EntryID = entryID;
+    }
+
     private String vehicle_number;
     private String phone_number;
     private String description;
@@ -47,8 +57,9 @@ public class VehicleEntry {
         this.police_post = police_post;
     }
 
-    public VehicleEntry(String vehicle_number, String phone_number, String description, String name_of_place,
+    public VehicleEntry(String EntryID,String vehicle_number, String phone_number, String description, String name_of_place,
                         String naka_name, String date, String time, String officer_name, String Image) {
+        this.EntryID = EntryID;
         this.vehicle_number = vehicle_number;
         this.phone_number = phone_number;
         this.description = description;
@@ -61,8 +72,9 @@ public class VehicleEntry {
 
         this.status=0;
     }
-    public VehicleEntry(String vehicle_number, String phone_number, String description, String name_of_place,
+    public VehicleEntry(String EntryId,String vehicle_number, String phone_number, String description, String name_of_place,
                         String naka_name, String date, String time, String officer_name,String Image,int status) {
+        this.EntryID = EntryId;
         this.vehicle_number = vehicle_number;
         this.phone_number = phone_number;
         this.description = description;
@@ -74,9 +86,10 @@ public class VehicleEntry {
         this.Image=Image;
         this.status=status;
     }
-    public VehicleEntry(String vehicle_number, String phone_number, String description, String name_of_place,
+    public VehicleEntry(String EntryID,String vehicle_number, String phone_number, String description, String name_of_place,
                         String naka_name, String date, String time, String officer_name,String Image,String district,String police_station
             ,String police_post,int status) {
+        this.EntryID = EntryID;
         this.vehicle_number = vehicle_number;
         this.phone_number = phone_number;
         this.description = description;
