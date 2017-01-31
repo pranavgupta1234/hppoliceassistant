@@ -106,6 +106,7 @@ public class Challan extends AppCompatActivity {
     private String[] month = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
     private String ampm = "AM";
     private BroadcastReceiver logoutBroadcastReceiver;
+    private String challanID;
 
     @Override
 
@@ -152,6 +153,7 @@ public class Challan extends AppCompatActivity {
             public void onClick(View view) {
                 //populate string data from checkboxes
                 populateDataFromCheckBoxes();
+                challanID = populateChallanID();
 
                 //check that fields should not be empty
                 if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")){
@@ -235,13 +237,180 @@ public class Challan extends AppCompatActivity {
     }
 
     private ChallanDetails createChallanWithNoImage() {
-        return new ChallanDetails(populateChallanID(),violator_name.getText().toString(),
+        return new ChallanDetails(challanID,violator_name.getText().toString(),
                 crime, owner_name.getText().toString(), violator_address.getText().toString(),
                 veh_number.getText().toString(), place_name.getText().toString(),
                 offence_section.getText().toString(), challan_amount.getText().toString(),
                 license_number.getText().toString(), sessionManager.getIOName(),
                 sessionManager.getDistrict(),sessionManager.getPoliceStation(), other.getText().toString(), "null",
-                violator_number.getText().toString(), "will be filled", "will be filled");
+                violator_number.getText().toString(), "date", "time");
+    }
+
+    public void startPosting(){
+        final DatabaseReference idChild = mRootRef.push();
+        /** in case user does not select an image(as uri is initially kept null) then create a challan with Photo not available and then send data
+         * to server
+         * */
+        if(uri == null){
+            progressDialog1.setMessage("No Photo Selected, Uploading Data...");
+            progressDialog1.show();
+            download_url_string ="Photo not available";
+            challanDetails = new ChallanDetails(challanID,violator_name.getText().toString(),
+                    crime,owner_name.getText().toString(),violator_address.getText().toString(),
+                    veh_number.getText().toString(),place_name.getText().toString(),
+                    offence_section.getText().toString(),challan_amount.getText().toString(),
+                    license_number.getText().toString(),sessionManager.getIOName(),
+                    sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"willbefilled","willbefilled");
+            //local DB
+            challanDetails.setStatus(1);
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String strDate = sdf.format(c.getTime());
+            challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
+            if(Integer.valueOf(strDate.substring(11,13))>12){
+                ampm = "PM";
+            }
+            /** even if the officer is sending challan to the server we are keeping a copy of it locally so that officer can go to
+             * his offline section and see the challan he has made and he can easily differentiate from other offline challan as
+             * this will be shown in green color details box indicating that it is already sent
+             * */
+            challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
+            final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
+            dbManagerChallan.addChallan(challanDetails);
+            /**If you are using completion callback listener of Database reference then the instance for Firebase should also be
+             * of DatabaseReference and not of Firebase(the one which is initialised through url)
+             */
+            idChild.setValue(challanDetails, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    if(databaseError== null){
+                        progressDialog1.dismiss();
+                        Toast.makeText(Challan.this,"Upload Done ",Toast.LENGTH_SHORT).show();
+                        resetAll();
+                    }
+                    else {
+                        progressDialog1.dismiss();
+                        Toast.makeText(Challan.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+        /** if the user has already selected an image then this will be executed
+         * */
+        if(uri!=null) {
+            progressDialog1.setMessage("Uploading Image and Data....");
+            progressDialog1.show();
+            filepath = mStorage.child("PhotosChallan").child(idChild.getKey());
+            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    downloadUrl = taskSnapshot.getDownloadUrl();
+                    if(downloadUrl!=null) {
+                        download_url_string = downloadUrl.toString();
+                    }
+                    /** download url is the url of the firebase location at which image is stored
+                     * we will store this url in our database so as to fetch the image later
+                     * */
+
+                    challanDetails = new ChallanDetails(challanID,violator_name.getText().toString(),
+                            crime,owner_name.getText().toString(),violator_address.getText().toString(),
+                            veh_number.getText().toString(),place_name.getText().toString(),
+                            offence_section.getText().toString(),challan_amount.getText().toString(),
+                            license_number.getText().toString(),sessionManager.getIOName(),
+                            sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",1);
+                    //local DB
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    String strDate = sdf.format(c.getTime());
+                    challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
+                    if(Integer.valueOf(strDate.substring(11,13))>12){
+                        ampm = "PM";
+                    }
+                    challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
+
+                    /** even if challan is stored online we will keep a local copy of it with green marker
+                     * */
+                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
+                    challanDetails.setStatus(1);
+                    dbManagerChallan.addChallan(challanDetails);
+                    idChild.setValue(challanDetails, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError== null){
+                                progressDialog1.dismiss();
+                                Toast.makeText(Challan.this,"Upload Done ",Toast.LENGTH_SHORT).show();
+                                resetAll();
+                            }
+                            else {
+                                progressDialog1.dismiss();
+                                Toast.makeText(Challan.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+
+                /** this failure listener is for problem that occur during image upload so that in such case we will store
+                 * the rest data into database online and we will also add a challan online
+                 * */
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(Challan.this, "Upload Failed !", Toast.LENGTH_LONG).show();
+                    progressDialog1.dismiss();
+                    download_url_string="null";
+                    challanDetails = new ChallanDetails(challanID,violator_name.getText().toString(),
+                            crime,owner_name.getText().toString(),violator_address.getText().toString(),
+                            veh_number.getText().toString(),place_name.getText().toString(),
+                            offence_section.getText().toString(),challan_amount.getText().toString(),
+                            license_number.getText().toString(),sessionManager.getIOName(),
+                            sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",0);
+                    //local DB
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    String strDate = sdf.format(c.getTime());
+                    challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
+                    if(Integer.valueOf(strDate.substring(11,13))>12){
+                        ampm = "PM";
+                    }
+                    challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
+                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
+                    if(dbManagerChallan.addChallan(challanDetails)){
+                        Toast.makeText(Challan.this,"Challan Added Offline!",Toast.LENGTH_SHORT).show();
+                        resetAll();
+                    }
+                }
+            });
+        }
+        progressDialog.dismiss();
+    }
+    @Override
+    public void onActivityResult(int requestCode,int resultCode,Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            if (data == null) {
+                showError("Failed to open picture!");
+                return;
+            }
+            try {
+                actualImage = FileUtil.from(Challan.this, data.getData());
+                upload_photo.setImageBitmap(BitmapFactory.decodeFile(actualImage.getAbsolutePath()));
+                //actualSizeTextView.setText(String.format("Size : %s", getReadableFileSize(actualImage.length())));
+                //clearImage();
+                if (actualImage == null) {
+                    showError("Please choose an image!");
+                } else {
+
+                    // Compress image in main thread
+                    actualImage = Compressor.getDefault(Challan.this).compressToFile(actualImage);
+
+                    uri = Uri.fromFile(actualImage);
+                    upload_photo.setImageURI(uri);
+                }
+            } catch (IOException e) {
+                showError("Failed to read picture data!");
+                e.printStackTrace();
+            }
+        }
     }
 
     private String populateChallanID(){
@@ -333,170 +502,6 @@ public class Challan extends AppCompatActivity {
                 || DataTypeValidator.validateVehicleNumberFormat(veh_number.getText().toString()));
     }
 
-    public void startPosting(){
-        final DatabaseReference idChild = mRootRef.push();
-        /** in case user does not select an image(as uri is initially kept null) then create a challan with Photo not available and then send data
-         * to server
-         * */
-        if(uri == null){
-            progressDialog1.setMessage("No Photo Selected, Uploading Data...");
-            progressDialog1.show();
-            download_url_string ="Photo not available";
-            challanDetails = new ChallanDetails(populateChallanID(),violator_name.getText().toString(),
-                    crime,owner_name.getText().toString(),violator_address.getText().toString(),
-                    veh_number.getText().toString(),place_name.getText().toString(),
-                    offence_section.getText().toString(),challan_amount.getText().toString(),
-                    license_number.getText().toString(),sessionManager.getIOName(),
-                    sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"willbefilled","willbefilled");
-            //local DB
-            challanDetails.setStatus(1);
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String strDate = sdf.format(c.getTime());
-            challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
-            if(Integer.valueOf(strDate.substring(11,13))>12){
-                ampm = "PM";
-            }
-            /** even if the officer is sending challan to the server we are keeping a copy of it locally so that officer can go to
-             * his offline section and see the challan he has made and he can easily differentiate from other offline challan as
-             * this will be shown in green color details box indicating that it is already sent
-             * */
-            challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
-            final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
-            dbManagerChallan.addChallan(challanDetails);
-            /**If you are using completion callback listener of Database reference then the instance for Firebase should also be
-             * of DatabaseReference and not of Firebase(the one which is initialised through url)
-             */
-            idChild.setValue(challanDetails, new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                    if(databaseError== null){
-                        progressDialog1.dismiss();
-                        Toast.makeText(Challan.this,"Upload Done ",Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        progressDialog1.dismiss();
-                        Toast.makeText(Challan.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }
-        /** if the user has already selected an image then this will be executed
-         * */
-        if(uri!=null) {
-            progressDialog1.setMessage("Uploading Image and Data....");
-            progressDialog1.show();
-            filepath = mStorage.child("PhotosChallan").child(idChild.getKey());
-            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(Challan.this, "Upload Done !", Toast.LENGTH_LONG).show();
-                    downloadUrl = taskSnapshot.getDownloadUrl();
-                    if(downloadUrl!=null) {
-                        download_url_string = downloadUrl.toString();
-                    }
-                    /** download url is the url of the firebase location at which image is stored
-                     * we will store this url in our database so as to fetch the image later
-                     * */
-
-                    challanDetails = new ChallanDetails(populateChallanID(),violator_name.getText().toString(),
-                            crime,owner_name.getText().toString(),violator_address.getText().toString(),
-                            veh_number.getText().toString(),place_name.getText().toString(),
-                            offence_section.getText().toString(),challan_amount.getText().toString(),
-                            license_number.getText().toString(),sessionManager.getIOName(),
-                            sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",1);
-                    //local DB
-                    Calendar c = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    String strDate = sdf.format(c.getTime());
-                    challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
-                    if(Integer.valueOf(strDate.substring(11,13))>12){
-                        ampm = "PM";
-                    }
-                    challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
-
-                    /** even if challan is stored online we will keep a local copy of it with green marker
-                     * */
-                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
-                    challanDetails.setStatus(1);
-                    dbManagerChallan.addChallan(challanDetails);
-                    idChild.setValue(challanDetails, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                            if(databaseError== null){
-                                progressDialog1.dismiss();
-                                Toast.makeText(Challan.this,"Upload Done ",Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                progressDialog1.dismiss();
-                                Toast.makeText(Challan.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-
-                /** this failure listener is for problem that occur during image upload so that in such case we will store
-                 * the rest data into database online and we will also add a challan online
-                 * */
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(Challan.this, "Upload Failed !", Toast.LENGTH_LONG).show();
-                    progressDialog1.dismiss();
-                    download_url_string="null";
-                    challanDetails = new ChallanDetails(populateChallanID(),violator_name.getText().toString(),
-                            crime,owner_name.getText().toString(),violator_address.getText().toString(),
-                            veh_number.getText().toString(),place_name.getText().toString(),
-                            offence_section.getText().toString(),challan_amount.getText().toString(),
-                            license_number.getText().toString(),sessionManager.getIOName(),
-                            sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),download_url_string,violator_number.getText().toString(),"","",0);
-                    //local DB
-                    Calendar c = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    String strDate = sdf.format(c.getTime());
-                    challanDetails.setDate(strDate.substring(0,2)+", "+ month[Integer.valueOf(strDate.substring(3,4))]+" "+strDate.substring(6,10));
-                    if(Integer.valueOf(strDate.substring(11,13))>12){
-                        ampm = "PM";
-                    }
-                    challanDetails.setTime(strDate.substring(10,strDate.length())+" "+ampm);
-                    final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
-                    if(dbManagerChallan.addChallan(challanDetails)){
-                        Toast.makeText(Challan.this,"Challan Added Offline!",Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-        progressDialog.dismiss();
-    }
-    @Override
-    public void onActivityResult(int requestCode,int resultCode,Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            if (data == null) {
-                showError("Failed to open picture!");
-                return;
-            }
-            try {
-                actualImage = FileUtil.from(Challan.this, data.getData());
-                upload_photo.setImageBitmap(BitmapFactory.decodeFile(actualImage.getAbsolutePath()));
-                //actualSizeTextView.setText(String.format("Size : %s", getReadableFileSize(actualImage.length())));
-                //clearImage();
-                if (actualImage == null) {
-                    showError("Please choose an image!");
-                } else {
-
-                    // Compress image in main thread
-                    actualImage = Compressor.getDefault(Challan.this).compressToFile(actualImage);
-
-                    uri = Uri.fromFile(actualImage);
-                    upload_photo.setImageURI(uri);
-                }
-            } catch (IOException e) {
-                showError("Failed to read picture data!");
-                e.printStackTrace();
-            }
-        }
-    }
     public void showError(String errorMessage) {
         Toast.makeText(Challan.this, errorMessage, Toast.LENGTH_SHORT).show();
     }
@@ -570,6 +575,7 @@ public class Challan extends AppCompatActivity {
         violator_address.setText("");
         license_number.setText("");
         violator_number.setText("");
+        upload_photo.setBackgroundResource(R.drawable.upload);
         helmet.setChecked(false);
         rc.setChecked(false);
         insurance.setChecked(false);
