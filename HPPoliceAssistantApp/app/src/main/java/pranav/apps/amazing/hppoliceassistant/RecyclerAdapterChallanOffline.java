@@ -1,6 +1,7 @@
 package pranav.apps.amazing.hppoliceassistant;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,14 +103,25 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
                 dialogChallanOffline.findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        final ProgressDialog pg = ProgressDialog.show(activity,"Challan","Uploading Challan...");
                         DBManagerChallan dbManagerChallan = new DBManagerChallan(activity,null,null,1);
                         dbManagerChallan.setStatus(challan.get(position),1);
                         Firebase mRootRef;
                         mRootRef = new Firebase("https://hppoliceassistant.firebaseio.com/challan");
                         Firebase idChild = mRootRef.push();
                         try {
-                            idChild.setValue(challan.get(position));
-                            Toast.makeText(activity,"Upload Done !",Toast.LENGTH_SHORT).show();
+                            idChild.setValue(challan.get(position), new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                    if(databaseError==null){
+                                        pg.dismiss();
+                                        Toast.makeText(activity,"Upload Done !",Toast.LENGTH_SHORT).show();
+                                    }
+                                    else {
+                                        Toast.makeText(activity,"Upload Failed !",Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(activity,"Upload Failed !",Toast.LENGTH_SHORT).show();
