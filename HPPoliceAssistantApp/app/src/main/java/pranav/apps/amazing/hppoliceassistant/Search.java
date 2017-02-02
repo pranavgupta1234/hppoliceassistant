@@ -103,7 +103,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
                 offlineList.remove(challan);
                 dbManagerChallanOnline.deleteChallan(challan);
-                adapter.notifyDataSetChanged();
+                adapterOffline.notifyDataSetChanged();
                 search.setText("");
             }
 
