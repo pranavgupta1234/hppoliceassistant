@@ -140,6 +140,9 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                 Intent intent = new Intent(Search.this,OfflineEntry.class);
                 startActivity(intent);
                 return true;
+            case R.id.developers_activity:
+                startActivity(new Intent(Search.this,DevelopersActivity.class));
+                return true;
             case R.id.logout:
 
                 new AlertDialog.Builder(this)

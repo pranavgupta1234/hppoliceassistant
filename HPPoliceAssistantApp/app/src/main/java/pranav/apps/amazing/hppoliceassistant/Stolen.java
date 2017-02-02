@@ -148,6 +148,9 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
                 Intent intent = new Intent(Stolen.this,OfflineEntry.class);
                 startActivity(intent);
                 return true;
+            case R.id.developers_activity:
+                startActivity(new Intent(Stolen.this,DevelopersActivity.class));
+                return true;
             case R.id.logout:
                 new AlertDialog.Builder(this)
                         .setTitle("LogOut")

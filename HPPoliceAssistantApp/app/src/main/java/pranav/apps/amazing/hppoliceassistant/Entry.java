@@ -292,6 +292,9 @@ public class Entry extends AppCompatActivity {
                 Intent intent = new Intent(Entry.this,OfflineEntry.class);
                 startActivity(intent);
                 return true;
+            case R.id.developers_activity:
+                startActivity(new Intent(Entry.this,DevelopersActivity.class));
+                return true;
             case R.id.logout:
                 new AlertDialog.Builder(this)
                         .setTitle("LogOut")

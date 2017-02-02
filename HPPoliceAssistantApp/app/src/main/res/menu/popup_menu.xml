@@ -17,4 +17,8 @@
         android:title="Log Out"
         android:icon="@drawable/ic_logout"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/developers_activity"
+        android:title="Developers"
+        app:showAsAction="never" />
 </menu>

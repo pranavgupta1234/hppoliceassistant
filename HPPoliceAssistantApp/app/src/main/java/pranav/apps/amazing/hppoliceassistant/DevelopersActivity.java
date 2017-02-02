@@ -13,7 +13,7 @@ public class DevelopersActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.developer_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("App Developers");
+        toolbar.setTitle("Developers");
         setSupportActionBar(toolbar);
     }
 }

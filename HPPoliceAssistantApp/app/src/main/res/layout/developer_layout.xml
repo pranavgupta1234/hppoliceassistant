@@ -32,7 +32,7 @@
             android:elevation="4dp">
 
             <ImageView
-                android:id="@+id/cardview_image"
+                android:id="@+id/cardview_image1"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignParentTop="true"
@@ -41,11 +41,11 @@
                 android:src="@drawable/pranav" />
 
             <TextView
-                android:id="@+id/cardview_list_title"
+                android:id="@+id/cardview_list_title1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/cardview_image"
+                android:layout_toRightOf="@+id/cardview_image1"
                 android:paddingBottom="5dp"
                 android:paddingTop="20dp"
                 android:textColor="#4e4d4c"
@@ -56,8 +56,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardview_list_title"
-                android:layout_toRightOf="@+id/cardview_image"
+                android:layout_below="@+id/cardview_list_title1"
+                android:layout_toRightOf="@+id/cardview_image1"
                 android:text="B.Tech 2015 Batch\nIIT Mandi"
                 android:textColor="#4e4c4d" />
 
@@ -79,7 +79,7 @@
             android:elevation="4dp">
 
             <ImageView
-                android:id="@+id/cardview_image"
+                android:id="@+id/cardview_image2"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignParentTop="true"
@@ -88,11 +88,11 @@
                 android:src="@drawable/gopal" />
 
             <TextView
-                android:id="@+id/cardview_list_title"
+                android:id="@+id/cardview_list_title2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/cardview_image"
+                android:layout_toRightOf="@+id/cardview_image2"
                 android:paddingBottom="5dp"
                 android:paddingTop="20dp"
                 android:textColor="#4e4d4c"
@@ -103,8 +103,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardview_list_title"
-                android:layout_toRightOf="@+id/cardview_image"
+                android:layout_below="@+id/cardview_list_title2"
+                android:layout_toRightOf="@+id/cardview_image2"
                 android:text="B.Tech 2013 Batch\nIIT Mandi"
                 android:textColor="#4e4c4d" />
 
@@ -126,7 +126,7 @@
             android:elevation="4dp">
 
             <ImageView
-                android:id="@+id/cardview_image"
+                android:id="@+id/cardview_image3"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignParentTop="true"
@@ -135,11 +135,11 @@
                 android:src="@drawable/naman" />
 
             <TextView
-                android:id="@+id/cardview_list_title"
+                android:id="@+id/cardview_list_title3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/cardview_image"
+                android:layout_toRightOf="@+id/cardview_image3"
                 android:paddingBottom="5dp"
                 android:paddingTop="20dp"
                 android:textColor="#4e4d4c"
@@ -150,8 +150,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardview_list_title"
-                android:layout_toRightOf="@+id/cardview_image"
+                android:layout_below="@+id/cardview_list_title3"
+                android:layout_toRightOf="@+id/cardview_image3"
                 android:text="B.Tech 2013 Batch\nIIT Mandi"
                 android:textColor="#4e4c4d" />
 
@@ -173,7 +173,7 @@
             android:elevation="4dp">
 
             <ImageView
-                android:id="@+id/cardview_image"
+                android:id="@+id/cardview_image4"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignParentTop="true"
@@ -182,11 +182,11 @@
                 android:src="@drawable/paresh" />
 
             <TextView
-                android:id="@+id/cardview_list_title"
+                android:id="@+id/cardview_list_title4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/cardview_image"
+                android:layout_toRightOf="@+id/cardview_image4"
                 android:paddingBottom="5dp"
                 android:paddingTop="20dp"
                 android:textColor="#4e4d4c"
@@ -197,8 +197,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardview_list_title"
-                android:layout_toRightOf="@+id/cardview_image"
+                android:layout_below="@+id/cardview_list_title4"
+                android:layout_toRightOf="@+id/cardview_image4"
                 android:text="B.Tech 2016 Batch\nIIT Mandi"
                 android:textColor="#4e4c4d" />
 
@@ -220,7 +220,7 @@
             android:elevation="4dp">
 
             <ImageView
-                android:id="@+id/cardview_image"
+                android:id="@+id/cardview_image5"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignParentTop="true"
@@ -229,11 +229,11 @@
                 android:src="@drawable/shubham" />
 
             <TextView
-                android:id="@+id/cardview_list_title"
+                android:id="@+id/cardview_list_title5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/cardview_image"
+                android:layout_toRightOf="@+id/cardview_image5"
                 android:paddingBottom="5dp"
                 android:paddingTop="20dp"
                 android:textColor="#4e4d4c"
@@ -244,8 +244,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardview_list_title"
-                android:layout_toRightOf="@+id/cardview_image"
+                android:layout_below="@+id/cardview_list_title5"
+                android:layout_toRightOf="@+id/cardview_image5"
                 android:text="B.Tech 2013 Batch\nIIT Mandi"
                 android:textColor="#4e4c4d" />
 
