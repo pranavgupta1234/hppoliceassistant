@@ -167,7 +167,21 @@ public class Challan extends AppCompatActivity {
                     place_name.setError("Field can not be empty");
                 }
                 else {
-                    if (!validateFields()) {
+                    if(!DataTypeValidator.validatePhoneNumberFormat(violator_number.getText().toString())){
+                        violator_number.setError("Invalid Phone Number");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Challan.this);
+                        builder.setTitle("Mobile Number")
+                                .setMessage("Invalid Mobile Number Captured")
+                                .setCancelable(false)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                    else if (!validateFields()) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Challan.this);
                         builder.setTitle("Challan Entry")
                                 .setMessage("Invalid Input Captured")
@@ -495,9 +509,9 @@ public class Challan extends AppCompatActivity {
 
     private boolean validateFields() {
         return (DataTypeValidator.validateLicenseNumberFormat(license_number.getText().toString())
-                ||DataTypeValidator.validateNameOfPersonFormat(violator_name.getText().toString())
-                ||DataTypeValidator.validatePhoneNumberFormat(violator_number.getText().toString())
-                || DataTypeValidator.validateVehicleNumberFormat(veh_number.getText().toString()));
+                &&DataTypeValidator.validateNameOfPersonFormat(violator_name.getText().toString())
+                &&DataTypeValidator.validatePhoneNumberFormat(violator_number.getText().toString())
+                && DataTypeValidator.validateVehicleNumberFormat(veh_number.getText().toString()));
     }
 
     public void showError(String errorMessage) {
