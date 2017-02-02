@@ -37,13 +37,14 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = activity.getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.list_row,parent,false);
+        View view = layoutInflater.inflate(R.layout.list_row_offlinentry,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder,int position) {
+        holder.entry_id.setText(vehicle_entry.get(position).getEntryID());
         holder.vehicle_number.setText(vehicleEntries.get(position).getVehicle_number());
         holder.violator_name.setText(vehicleEntries.get(position).getName_of_place());
         holder.license_number.setText(vehicleEntries.get(position).getDescription());
@@ -127,7 +128,7 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView vehicle_number,violator_name,license_number,phone_number,date,time,challan_officer;
+        private TextView vehicle_number,violator_name,license_number,phone_number,date,time,challan_officer,entry_id;
         private Button details;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -139,6 +140,7 @@ public class RecyclerAdapterEntryOffline extends RecyclerView.Adapter<RecyclerAd
             time=(TextView)itemView.findViewById(R.id.time);
             challan_officer=(TextView)itemView.findViewById(R.id.officer_name);
             details=(Button)itemView.findViewById(R.id.details);
+            entry_id=(TextView)itemView.findViewById(R.id.entry_id);
         }
     }
 }
