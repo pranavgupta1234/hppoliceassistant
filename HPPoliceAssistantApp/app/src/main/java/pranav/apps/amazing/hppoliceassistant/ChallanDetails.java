@@ -25,6 +25,15 @@ public class ChallanDetails {
     private String date;
     private String time;
     private int status;
+    private long epoch;
+
+    public long getEpoch() {
+        return epoch;
+    }
+
+    public void setEpoch(long epoch) {
+        this.epoch = epoch;
+    }
 
     public String getDate() {
         return date;

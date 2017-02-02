@@ -97,6 +97,7 @@ public class Challan extends AppCompatActivity {
     private int PICK_IMAGE_REQUEST=1;
     private SessionManager sessionManager;
     private String date,time;
+    private long epoch;
 
 
     private CustomDialog customDialog;
@@ -153,9 +154,11 @@ public class Challan extends AppCompatActivity {
             public void onClick(View view) {
                 //populate string data from checkboxes
                 populateDataFromCheckBoxes();
+                epoch=System.currentTimeMillis();
                 challanID = populateChallanID();
                 date = generateDateFromSystem();
                 time = generateCurrentTime();
+
 
                 //check that fields should not be empty
                 if(veh_number.getText().toString().trim().contentEquals("")||place_name.getText().toString().trim().contentEquals("")){
@@ -194,6 +197,7 @@ public class Challan extends AppCompatActivity {
                         /** creating a challan without image section population intended for offline storage
                          */
                         challanDetailswithoutImage  = createChallanWithNoImage();
+                        challanDetailswithoutImage.setEpoch(epoch);
 
                         /** CustomDialog is a dialog intended to be used for pre verification before submission either to online
                          * or offline storage and it contains all details previously filled by user an shows 3 buttons including
@@ -294,6 +298,7 @@ public class Challan extends AppCompatActivity {
                     violator_number.getText().toString(),date,time);
             //local DB
             challanDetails.setStatus(1);
+            challanDetails.setEpoch(epoch);
             /** even if the officer is sending challan to the server we are keeping a copy of it locally so that officer can go to
              * his offline section and see the challan he has made and he can easily differentiate from other offline challan as
              * this will be shown in green color details box indicating that it is already sent
@@ -348,6 +353,7 @@ public class Challan extends AppCompatActivity {
                      * */
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
                     challanDetails.setStatus(1);
+                    challanDetails.setEpoch(epoch);
                     dbManagerChallan.addChallan(challanDetails);
                     idChild.setValue(challanDetails, new DatabaseReference.CompletionListener() {
                         @Override
@@ -381,7 +387,7 @@ public class Challan extends AppCompatActivity {
                             license_number.getText().toString(),sessionManager.getIOName(),
                             sessionManager.getDistrict(),sessionManager.getPoliceStation(),other.getText().toString(),
                             download_url_string,violator_number.getText().toString(),date,time,0);
-
+                    challanDetails.setEpoch(epoch);
                     final DBManagerChallan dbManagerChallan = new DBManagerChallan(Challan.this,null,null,1);
                     if(dbManagerChallan.addChallan(challanDetails)){
                         Toast.makeText(Challan.this,"Challan Added Offline!",Toast.LENGTH_SHORT).show();
@@ -424,7 +430,7 @@ public class Challan extends AppCompatActivity {
 
     private String populateChallanID(){
         return "C"+sessionManager.getDistrict().substring(0,3).toUpperCase()+sessionManager.getPoliceStation().substring(3,7).toUpperCase().replace("/","")
-                +String.valueOf(System.currentTimeMillis()).substring(4);
+                +String.valueOf(epoch).substring(4);
     }
 
     private void populateDataFromCheckBoxes() {
