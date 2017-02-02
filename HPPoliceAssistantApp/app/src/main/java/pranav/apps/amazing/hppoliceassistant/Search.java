@@ -101,7 +101,8 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
-                offlineList.add(0,challan);
+                offlineList.remove(challan);
+                dbManagerChallanOnline.deleteChallan(challan);
                 adapter.notifyDataSetChanged();
                 search.setText("");
             }
