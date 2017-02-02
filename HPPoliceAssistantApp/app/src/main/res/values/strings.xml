@@ -92,4 +92,6 @@
     <string name="select_police_post_toast">Please select some police post</string>
     <string name="enter_io_name_toast">Please enter IO Name</string>
     <string name="enter_password_toast">Please enter password</string>
+
+    <string name="app_developer"><b><u>App Developers</u></b></string>
 </resources>

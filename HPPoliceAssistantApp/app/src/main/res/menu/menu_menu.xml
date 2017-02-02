@@ -15,5 +15,9 @@
         android:id="@+id/offline_entry"
         android:title="Offline Vehicle Entries"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/developers_activity"
+        android:title="App Developers"
+        app:showAsAction="never" />
 
 </menu>

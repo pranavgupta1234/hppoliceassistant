@@ -57,6 +57,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".DevelopersActivity">
+            <intent-filter>
+                <action android:name="pranav.apps.amazing.hppoliceassistant.DEVELOPERSACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Challan"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
