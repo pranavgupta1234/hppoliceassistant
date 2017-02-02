@@ -34,9 +34,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //inflate your layout and pass it to view holder
         LayoutInflater inflater = activity.getLayoutInflater();
         View view = inflater.inflate(R.layout.item_recycler, viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder(view);
 
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -46,7 +45,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         viewHolder.vehicle_no.setText(vehicleEntry.get(position).getVehicle_number());
         viewHolder.phone_no.setText(vehicleEntry.get(position).getPhone_number());
         viewHolder.place.setText(vehicleEntry.get(position).getName_of_place());
-        viewHolder.naka_name.setText(vehicleEntry.get(position).getNaka_name());
         viewHolder.desc.setText(vehicleEntry.get(position).getDescription());
         viewHolder.date.setText(vehicleEntry.get(position).getDate());
         viewHolder.time.setText(vehicleEntry.get(position).getTime());
@@ -69,13 +67,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    private void setDataToView(TextView id,TextView a, TextView b, TextView c, TextView d, TextView e, ImageView genderIcon, TextView date,
+    private void setDataToView(TextView id,TextView a, TextView b, TextView c, TextView e, ImageView genderIcon, TextView date,
                                TextView time, int position) {
         id.setText(vehicleEntry.get(position).getEntryID());
         a.setText(vehicleEntry.get(position).getVehicle_number());
         b.setText(vehicleEntry.get(position).getPhone_number());
         c.setText(vehicleEntry.get(position).getName_of_place());
-        d.setText(vehicleEntry.get(position).getNaka_name());
         e.setText(vehicleEntry.get(position).getDescription());
         date.setText(vehicleEntry.get(position).getDate());
         time.setText(vehicleEntry.get(position).getTime());
@@ -102,13 +99,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 TextView vh = (TextView) dialog.findViewById(R.id.vehno);
                 TextView phn = (TextView) dialog.findViewById(R.id.phno);
                 TextView pla = (TextView) dialog.findViewById(R.id.name_of_place);
-                TextView nka = (TextView) dialog.findViewById(R.id.name_of_naka);
                 TextView descrip = (TextView) dialog.findViewById(R.id.desc);
                 TextView date=(TextView)dialog.findViewById(R.id.date_picker);
                 TextView time =(TextView)dialog.findViewById(R.id.time);
                 ImageView icon = (ImageView) dialog.findViewById(R.id.image);
                 TextView id = (TextView)dialog.findViewById(R.id.entry_id);
-                setDataToView(id,vh,phn,pla,nka,descrip,icon,date,time,position);
+                setDataToView(id,vh,phn,pla,descrip,icon,date,time,position);
                 viewHolder.setImageDialog(dialog.getContext(),vehicleEntry.get(position).getImage(),icon);
                 dialog.show();
             }
@@ -139,7 +135,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private TextView vehicle_no;
         private TextView phone_no;
         private TextView place;
-        private TextView naka_name;
         private TextView desc;
         private View container;
         private TextView date;
@@ -152,7 +147,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             vehicle_no = (TextView) view.findViewById(R.id.vehno);
             phone_no = (TextView) view.findViewById(R.id.phno);
             place = (TextView) view.findViewById(R.id.name_of_place);
-            naka_name = (TextView) view.findViewById(R.id.name_of_naka);
             desc = (TextView) view.findViewById(R.id.desc);
             container = view.findViewById(R.id.card_view);
             date=(TextView)view.findViewById(R.id.date_picker);

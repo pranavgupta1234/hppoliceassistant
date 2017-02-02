@@ -525,7 +525,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <EditText
-                android:inputType="text"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\"
                 android:hint="fill vehicle number here"
                 android:layout_marginTop="3dp"
                 android:maxLength="18"
@@ -543,7 +543,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"/>
             <EditText
-                android:inputType="textAutoComplete"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+                android:inputType="textFilter"
                 android:hint="fill name of violator"
                 android:layout_width="match_parent"
                 android:maxLength="18"
@@ -561,7 +562,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"/>
             <EditText
-                android:inputType="textAutoComplete"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+                android:inputType="textFilter"
                 android:hint="fill vehicle owner name here"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -579,7 +581,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"/>
             <EditText
-                android:inputType="textAutoComplete"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\"
+                android:inputType="textFilter"
                 android:hint="fill address of violator here"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -615,7 +618,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"/>
             <EditText
-                android:inputType="textAutoComplete"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\"
                 android:hint="fill license number here"
                 android:layout_width="match_parent"
                 android:maxLength="25"
@@ -651,6 +654,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <EditText
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+                android:inputType="textFilter"
                 android:hint="fill offence section here"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -668,6 +673,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <EditText
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+                android:inputType="textFilter"
                 android:hint="fill name of place here"
                 android:layout_marginTop="3dp"
                 android:layout_width="match_parent"
@@ -675,23 +682,6 @@
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
                 android:id="@+id/place_name"/>
-            <TextView
-                android:text="Naka Name"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:layout_marginTop="3dp"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/nak_name"/>
-            <EditText
-                android:hint="fill name of naka here"
-                android:layout_marginTop="3dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:id="@+id/naka_name"/>
             <ImageView
                 android:text="UPLOAD PHOTO"
                 android:textStyle="bold"

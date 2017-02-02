@@ -20,7 +20,6 @@ public class VehicleEntry {
     private String phone_number;
     private String description;
     private String name_of_place;
-    private String naka_name;
     private String district;
     private String police_station;
     private String police_post;
@@ -57,14 +56,12 @@ public class VehicleEntry {
         this.police_post = police_post;
     }
 
-    public VehicleEntry(String EntryID,String vehicle_number, String phone_number, String description, String name_of_place,
-                        String naka_name, String date, String time, String officer_name, String Image) {
+    public VehicleEntry(String EntryID,String vehicle_number, String phone_number, String description, String name_of_place, String date, String time, String officer_name, String Image) {
         this.EntryID = EntryID;
         this.vehicle_number = vehicle_number;
         this.phone_number = phone_number;
         this.description = description;
         this.name_of_place = name_of_place;
-        this.naka_name = naka_name;
         this.date = date;
         this.time = time;
         this.officer_name = officer_name;
@@ -72,29 +69,25 @@ public class VehicleEntry {
 
         this.status=0;
     }
-    public VehicleEntry(String EntryId,String vehicle_number, String phone_number, String description, String name_of_place,
-                        String naka_name, String date, String time, String officer_name,String Image,int status) {
+    public VehicleEntry(String EntryId,String vehicle_number, String phone_number, String description, String name_of_place, String date, String time, String officer_name,String Image,int status) {
         this.EntryID = EntryId;
         this.vehicle_number = vehicle_number;
         this.phone_number = phone_number;
         this.description = description;
         this.name_of_place = name_of_place;
-        this.naka_name = naka_name;
         this.date = date;
         this.time = time;
         this.officer_name = officer_name;
         this.Image=Image;
         this.status=status;
     }
-    public VehicleEntry(String EntryID,String vehicle_number, String phone_number, String description, String name_of_place,
-                        String naka_name, String date, String time, String officer_name,String Image,String district,String police_station
+    public VehicleEntry(String EntryID,String vehicle_number, String phone_number, String description, String name_of_place, String date, String time, String officer_name,String Image,String district,String police_station
             ,String police_post,int status) {
         this.EntryID = EntryID;
         this.vehicle_number = vehicle_number;
         this.phone_number = phone_number;
         this.description = description;
         this.name_of_place = name_of_place;
-        this.naka_name = naka_name;
         this.date = date;
         this.time = time;
         this.officer_name = officer_name;
@@ -151,14 +144,6 @@ public class VehicleEntry {
 
     public void setName_of_place(String name_of_place) {
         this.name_of_place = name_of_place;
-    }
-
-    public String getNaka_name() {
-        return naka_name;
-    }
-
-    public void setNaka_name(String naka_name) {
-        this.naka_name = naka_name;
     }
 
     public String getTime() {

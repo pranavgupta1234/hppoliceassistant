@@ -102,26 +102,6 @@
                     android:textStyle="bold"
                     android:layout_toRightOf="@id/plname_text"/>
                 <TextView
-                    android:text="Naka Name : "
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_carditem"
-                    android:textColor="#000000"
-                    android:layout_marginLeft="4dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/plname_text"
-                    android:id="@+id/naka_nm"/>
-                <TextView
-                    android:id="@+id/name_of_naka"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/name_of_place"
-                    android:text=""
-                    android:textSize="@dimen/text_carditem"
-                    android:textColor="@android:color/holo_green_dark"
-                    android:textStyle="bold"
-                    android:layout_toRightOf="@id/naka_nm"/>
-                <TextView
                     android:text="Description(below) : "
                     android:textStyle="bold"
                     android:textSize="@dimen/text_carditem"
@@ -129,7 +109,7 @@
                     android:textColor="#000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/naka_nm"
+                    android:layout_below="@id/plname_text"
                     android:id="@+id/des"
                     android:gravity="center"/>
                 <TextView

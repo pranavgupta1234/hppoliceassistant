@@ -22,7 +22,7 @@ public class DBManagerEntry extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS entry (id INTEGER PRIMARY KEY AUTOINCREMENT, EntryID TEXT,vehicle_number TEXT,phone_number TEXT," +
-                "description TEXT,date TEXT,time TEXT,name_of_place TEXT,officer_name TEXT,naka_name TEXT,image TEXT,status INTEGER);");
+                "description TEXT,date TEXT,time TEXT,name_of_place TEXT,officer_name TEXT,image TEXT,status INTEGER);");
     }
 
     @Override
@@ -50,7 +50,6 @@ public class DBManagerEntry extends SQLiteOpenHelper {
         contentValues.put("time",newEntry.getTime());
         contentValues.put("name_of_place",newEntry.getName_of_place());
         contentValues.put("officer_name",newEntry.getOfficer_name());
-        contentValues.put("naka_name",newEntry.getNaka_name());
         contentValues.put("image",newEntry.getImage());
         contentValues.put("status", newEntry.getStatus());
         db.insert("entry", null, contentValues);
@@ -73,8 +72,8 @@ public class DBManagerEntry extends SQLiteOpenHelper {
         while(!cursor.isAfterLast()){
             //strings[i] = cursor.getString(cursor.getColumnIndex("list"));
             VehicleEntry vehicleEntry = new VehicleEntry(cursor.getString(cursor.getColumnIndex("EntryID")),cursor.getString(cursor.getColumnIndex("vehicle_number")),cursor.getString(cursor.getColumnIndex("phone_number")),
-                    cursor.getString(cursor.getColumnIndex("description")),cursor.getString(cursor.getColumnIndex("name_of_place")),
-                    cursor.getString(cursor.getColumnIndex("naka_name")),cursor.getString(cursor.getColumnIndex("date")),
+                    cursor.getString(cursor.getColumnIndex("description")),cursor.getString(cursor.getColumnIndex("name_of_place"))
+                    ,cursor.getString(cursor.getColumnIndex("date")),
                     cursor.getString(cursor.getColumnIndex("time")),cursor.getString(cursor.getColumnIndex("officer_name")),
                     cursor.getString(cursor.getColumnIndex("image")),cursor.getInt(cursor.getColumnIndex("status")));
             entries.add(0,vehicleEntry);

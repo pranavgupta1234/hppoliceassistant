@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class DialogEntryOffline extends Dialog implements android.view.View.OnClickListener{
 
     private TextView vehicle_number,phone_number,date,time,
-            place_name,officer_name,naka_name,description,date_and_time;
+            place_name,officer_name,description,date_and_time;
     private Button send,delete;
     private Activity activity;
     private VehicleEntry vehicleEntry;
@@ -44,7 +44,6 @@ public class DialogEntryOffline extends Dialog implements android.view.View.OnCl
         time.setText(vehicleEntry.getTime());
         place_name.setText(vehicleEntry.getName_of_place());
         officer_name.setText(vehicleEntry.getOfficer_name());
-        naka_name.setText(vehicleEntry.getNaka_name());
         description.setText(vehicleEntry.getDescription());
 
     }
@@ -56,7 +55,6 @@ public class DialogEntryOffline extends Dialog implements android.view.View.OnCl
         time=(TextView)findViewById(R.id.time);
         place_name=(TextView)findViewById(R.id.place_name);
         officer_name=(TextView)findViewById(R.id.officer_name);
-        naka_name=(TextView)findViewById(R.id.naka_name);
         description=(TextView)findViewById(R.id.description);
         send=(Button)findViewById(R.id.send);
         delete=(Button)findViewById(R.id.delete);

@@ -47,7 +47,7 @@ import id.zelory.compressor.FileUtil;
  */
 public class Entry extends AppCompatActivity {
     private Firebase mrootRef;
-    private EditText veh,phone,description,place,naka;
+    private EditText veh,phone,description,place;
     private Button submit_det;
     private ImageButton upload;
     private String path;
@@ -95,7 +95,6 @@ public class Entry extends AppCompatActivity {
         phone=(EditText)findViewById(R.id.phone_num);
         description=(EditText)findViewById(R.id.description);
         place=(EditText)findViewById(R.id.place);
-        naka=(EditText)findViewById(R.id.naka);
 
 
         upload=(ImageButton)findViewById(R.id.upload);
@@ -143,8 +142,7 @@ public class Entry extends AppCompatActivity {
                         time = generateCurrentTime();
 
                         newEntrywithoutImage = new VehicleEntry(EntryID,veh.getText().toString(), phone.getText().toString(),
-                                description.getText().toString(), place.getText().toString(),
-                                naka.getText().toString(),date,time,sessionManager.getIOName(), "null",sessionManager.getDistrict(),sessionManager.getPoliceStation(),
+                                description.getText().toString(), place.getText().toString(),date,time,sessionManager.getIOName(), "null",sessionManager.getDistrict(),sessionManager.getPoliceStation(),
                                 sessionManager.getPolicePost(),0);
                         vehicleEntryDialog = new VehicleEntryDialog(Entry.this, newEntrywithoutImage);
                         vehicleEntryDialog.setTitle("Entry Details");
@@ -198,8 +196,7 @@ public class Entry extends AppCompatActivity {
             download_url_string ="Photo not available";
 
             newEntry = new VehicleEntry(EntryID,veh.getText().toString(),phone.getText().toString(),
-                    description.getText().toString(),place.getText().toString(),
-                    naka.getText().toString(),date,time,
+                    description.getText().toString(),place.getText().toString(),date,time,
                     sessionManager.getIOName(),download_url_string,sessionManager.getDistrict(),sessionManager.getPoliceStation()
                     ,sessionManager.getPolicePost(),1);
             DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
@@ -235,8 +232,7 @@ public class Entry extends AppCompatActivity {
                     }
 
                     newEntry = new VehicleEntry(EntryID,veh.getText().toString(),phone.getText().toString(),
-                            description.getText().toString(),place.getText().toString(),
-                            naka.getText().toString(),date,time,
+                            description.getText().toString(),place.getText().toString(),date,time,
                             sessionManager.getIOName(),download_url_string,sessionManager.getDistrict(),sessionManager.getPoliceStation(),
                             sessionManager.getPolicePost(),1);
                     DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
@@ -399,7 +395,6 @@ public class Entry extends AppCompatActivity {
     }
     private boolean validateFields() {
         return (DataTypeValidator.validateVehicleNumberFormat(place.getText().toString())
-                &&DataTypeValidator.validateVehicleNumberFormat(naka.getText().toString())
                 &&DataTypeValidator.validatePhoneNumberFormat(phone.getText().toString())
                 && DataTypeValidator.validateVehicleNumberFormat(veh.getText().toString()));
     }
@@ -421,7 +416,6 @@ public class Entry extends AppCompatActivity {
         phone.setText("");
         description.setText("");
         place.setText("");
-        naka.setText("");
         upload.setImageResource(R.drawable.upload);
     }
 

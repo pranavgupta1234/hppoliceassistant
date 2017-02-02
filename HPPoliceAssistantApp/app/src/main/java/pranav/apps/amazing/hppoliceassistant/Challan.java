@@ -79,11 +79,10 @@ public class Challan extends AppCompatActivity {
     private Firebase mrootRef;
     private CheckBox helmet,rc,insurance,license,rash_drive,mobile,number_plate,horn,seat_belt,triple_riding,
             idle_parking,restricted_park;
-    private EditText other,offence_section,veh_number,place_name,challan_amount,naka_name,owner_name,violator_name
+    private EditText other,offence_section,veh_number,place_name,challan_amount,owner_name,violator_name
             ,violator_address,license_number,violator_number;
     private Button submit,reset;
     private ImageView upload_photo;
-    private TextView nak;
     private Uri uri=null,downloadUrl=null;
     private String download_url_string="";
     private String crime="";
@@ -92,9 +91,7 @@ public class Challan extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ProgressDialog progressDialog1;
     private static final int CAMERA_REQUEST = 1888;
-    private Uri imageUri;
     private File actualImage;
-    private Uri fileuri;
     private FirebaseDatabase database;
     private DatabaseReference mRootRef;
     private int PICK_IMAGE_REQUEST=1;
@@ -106,7 +103,7 @@ public class Challan extends AppCompatActivity {
 
     //object to store challan details
     private ChallanDetails challanDetails, challanDetailswithoutImage;
-    private String[] month = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
+    private String[] month = new String[]{"","January","February","March","April","May","June","July","August","September","October","November","December"};
     private String ampm = "AM";
     private BroadcastReceiver logoutBroadcastReceiver;
     private String challanID;
@@ -266,7 +263,7 @@ public class Challan extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String strDate = sdf.format(c.getTime());
-        return strDate.substring(0, 2) + ", " + month[Integer.valueOf(strDate.substring(3, 4))] + " " + strDate.substring(6, 10);
+        return strDate.substring(0, 2) + ", " + month[Integer.valueOf(strDate.substring(3, 5))] + " " + strDate.substring(6, 10);
     }
 
     private ChallanDetails createChallanWithNoImage() {
@@ -475,7 +472,6 @@ public class Challan extends AppCompatActivity {
         upload_photo=(ImageView)findViewById(R.id.upload_photo);
         reset=(Button)findViewById(R.id.reset);
         submit=(Button)findViewById(R.id.submit);
-        nak=(TextView)findViewById(R.id.nak_name);
     }
 
     private void initialiseEditText() {
@@ -483,7 +479,6 @@ public class Challan extends AppCompatActivity {
         offence_section=(EditText)findViewById(R.id.offence_section);
         veh_number=(EditText)findViewById(R.id.vehicle_number);
         place_name=(EditText)findViewById(R.id.place_name);
-        naka_name=(EditText)findViewById(R.id.naka_name);
         owner_name=(EditText)findViewById(R.id.vehicle_owner_name);
         violator_name=(EditText)findViewById(R.id.violator_name);
         violator_address=(EditText)findViewById(R.id.violator_address);
@@ -581,7 +576,6 @@ public class Challan extends AppCompatActivity {
         veh_number.setText("");
         place_name.setText("");
         challan_amount.setText("");
-        naka_name.setText("");
         owner_name.setText("");
         violator_name.setText("");
         violator_address.setText("");
