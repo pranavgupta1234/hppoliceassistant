@@ -67,6 +67,9 @@ public class Home extends AppCompatActivity{
                 Intent intent = new Intent(Home.this,OfflineEntry.class);
                 startActivity(intent);
                 return true;
+            case R.id.developers_activity:
+                Intent intent1 = new Intent(Home.this,DevelopersActivity.class);
+                startActivity(intent1);
             case R.id.action_logout:
 
                 new AlertDialog.Builder(this)
