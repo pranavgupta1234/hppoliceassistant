@@ -28,6 +28,16 @@ public class VehicleEntry {
     private String officer_name;
     private String Image;
     private int status;
+    private long epoch;
+
+    public long getEpoch() {
+        return epoch;
+    }
+
+    public void setEpoch(long epoch) {
+        this.epoch = epoch;
+    }
+
     public VehicleEntry(){
 
     }

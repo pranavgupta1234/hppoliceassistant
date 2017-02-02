@@ -68,6 +68,7 @@ public class Entry extends AppCompatActivity {
     private BroadcastReceiver logoutBroadcastReceiver;
     private String EntryID;
     private String date,time;
+    private long epoch;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -137,6 +138,7 @@ public class Entry extends AppCompatActivity {
                         alert.show();
                     }
                     else {
+                        epoch=System.currentTimeMillis();
                         EntryID = populateEntryID();
                         date = generateDateFromSystem();
                         time = generateCurrentTime();
@@ -144,6 +146,7 @@ public class Entry extends AppCompatActivity {
                         newEntrywithoutImage = new VehicleEntry(EntryID,veh.getText().toString(), phone.getText().toString(),
                                 description.getText().toString(), place.getText().toString(),date,time,sessionManager.getIOName(), "null",sessionManager.getDistrict(),sessionManager.getPoliceStation(),
                                 sessionManager.getPolicePost(),0);
+                        newEntrywithoutImage.setEpoch(epoch);
                         vehicleEntryDialog = new VehicleEntryDialog(Entry.this, newEntrywithoutImage);
                         vehicleEntryDialog.setTitle("Entry Details");
                         vehicleEntryDialog.setCancelable(true);
@@ -192,7 +195,7 @@ public class Entry extends AppCompatActivity {
         if(uri == null){
             progressDialog1.setMessage("Uploading data....");
             progressDialog1.show();
-            Toast.makeText(Entry.this,"No Photo Selected, uploading data...",Toast.LENGTH_LONG).show();
+            Toast.makeText(Entry.this,"No Photo Selected, uploading data...",Toast.LENGTH_SHORT).show();
             download_url_string ="Photo not available";
 
             newEntry = new VehicleEntry(EntryID,veh.getText().toString(),phone.getText().toString(),
@@ -201,6 +204,7 @@ public class Entry extends AppCompatActivity {
                     ,sessionManager.getPolicePost(),1);
             DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
             newEntry.setStatus(1);
+            newEntry.setEpoch(epoch);
             dbManagerEntry.addEntry(newEntry);
             idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                 @Override
@@ -237,6 +241,7 @@ public class Entry extends AppCompatActivity {
                             sessionManager.getPolicePost(),1);
                     DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
                     newEntry.setStatus(1);
+                    newEntry.setEpoch(epoch);
                     dbManagerEntry.addEntry(newEntry);
                     idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                         @Override
@@ -400,7 +405,7 @@ public class Entry extends AppCompatActivity {
     }
     private String populateEntryID(){
         return "V"+sessionManager.getDistrict().substring(0,3).toUpperCase()+sessionManager.getPoliceStation().substring(3,7).toUpperCase().replace("/","")
-                +String.valueOf(System.currentTimeMillis()).substring(4);
+                +String.valueOf(epoch).substring(4);
     }
 
 
