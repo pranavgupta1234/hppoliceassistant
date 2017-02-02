@@ -23,7 +23,10 @@ public class DataTypeValidator {
      * @return true if correct format else false
      */
     static public boolean validatePhoneNumberFormat(String phoneNumber) {
-        return phoneNumber.matches("[0-9]+") && phoneNumber.length() == 10;
+        if(!phoneNumber.contentEquals(""))
+            return phoneNumber.matches("[0-9]+") && phoneNumber.length() == 10;
+        else
+            return true;
     }
 
     /**
@@ -33,7 +36,10 @@ public class DataTypeValidator {
      * @return true if correct format else false
      */
     static public boolean validateNameOfPersonFormat(String nameOfPerson) {
-        return nameOfPerson.matches("[a-zA-Z ]+");
+        if(!nameOfPerson.contentEquals(""))
+            return nameOfPerson.matches("[a-zA-Z ]+");
+        else
+            return true;
     }
 
     /**
@@ -43,7 +49,10 @@ public class DataTypeValidator {
      * @return true if correct format else false
      */
     static public boolean validateLicenseNumberFormat(String licenseNumber) {
-        return licenseNumber.matches("[A-Za-z0-9]+");
+        if(!licenseNumber.contentEquals(""))
+            return licenseNumber.matches("[A-Za-z0-9]+");
+        else
+            return true;
     }
 
 }
