@@ -399,9 +399,8 @@ public class Entry extends AppCompatActivity {
                 && DataTypeValidator.validateVehicleNumberFormat(veh.getText().toString()));
     }
     private String populateEntryID(){
-        return "VE"+sessionManager.getDistrict().substring(0,3).toUpperCase()+sessionManager.getPoliceStation().substring(3,7).toUpperCase().replace("/","")+
-                sessionManager.getPolicePost().substring(3,6).toUpperCase()
-                +String.valueOf(System.currentTimeMillis()).substring(6);
+        return "V"+sessionManager.getDistrict().substring(0,3).toUpperCase()+sessionManager.getPoliceStation().substring(3,7).toUpperCase().replace("/","")
+                +String.valueOf(System.currentTimeMillis()).substring(4);
     }
 
 

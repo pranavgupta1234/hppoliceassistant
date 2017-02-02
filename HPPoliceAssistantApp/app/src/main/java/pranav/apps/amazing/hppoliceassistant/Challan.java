@@ -423,9 +423,8 @@ public class Challan extends AppCompatActivity {
     }
 
     private String populateChallanID(){
-        return sessionManager.getDistrict().substring(0,3).toUpperCase()+sessionManager.getPoliceStation().substring(3,7).toUpperCase().replace("/","")+
-                sessionManager.getPolicePost().substring(3,6).toUpperCase()
-                +String.valueOf(System.currentTimeMillis()).substring(6);
+        return "C"+sessionManager.getDistrict().substring(0,3).toUpperCase()+sessionManager.getPoliceStation().substring(3,7).toUpperCase().replace("/","")
+                +String.valueOf(System.currentTimeMillis()).substring(4);
     }
 
     private void populateDataFromCheckBoxes() {
