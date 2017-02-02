@@ -1,5 +1,6 @@
 package pranav.apps.amazing.hppoliceassistant;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
@@ -223,8 +225,13 @@ public class Challan extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+/*
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+*/
+
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
+                intent.setType("image*//*");
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
 
             }
@@ -377,7 +384,7 @@ public class Challan extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             if (data == null) {
                 showError("Failed to open picture!");
                 return;

@@ -46,9 +46,23 @@ public class RecyclerAdapterChallanOffline extends RecyclerView.Adapter<Recycler
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.challanID.setText(challan.get(position).getChallanID());
         holder.vehicle_number.setText(challan.get(position).getVehicle_number());
-        holder.violator_name.setText(challan.get(position).getViolator_name());
-        holder.license_number.setText(challan.get(position).getLicense_number());
-        holder.phone_number.setText(challan.get(position).getViolator_number());
+        if(!challan.get(position).getViolator_name().contentEquals("")){
+            holder.violator_name.setText(challan.get(position).getViolator_name());
+        }
+        else {
+            holder.violator_name.setText("- - - - -");
+        }
+        if(!challan.get(position).getLicense_number().contentEquals("")){
+            holder.license_number.setText(challan.get(position).getLicense_number());
+        }
+        else{
+            holder.license_number.setText("- - - - -");
+        }
+        if(!challan.get(position).getViolator_number().contentEquals("")){
+            holder.phone_number.setText(challan.get(position).getViolator_number());
+        }else {
+            holder.phone_number.setText("- - - - -");
+        }
         holder.time.setText(challan.get(position).getTime());
         holder.date.setText(challan.get(position).getDate());
         holder.challan_officer.setText(challan.get(position).getPolice_officer_name());
