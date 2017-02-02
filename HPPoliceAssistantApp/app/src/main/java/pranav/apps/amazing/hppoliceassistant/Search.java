@@ -45,13 +45,15 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
     private RVAdapter adapterOffline;
     private DBManagerChallanOnline dbManagerChallanOnline;
     private BroadcastReceiver logoutBroadcastReceiver;
+    private DatabaseReference myRef;
+    private ChildEventListener childEventListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
         FirebaseDatabase database =FirebaseDatabase.getInstance();              //it return root url
-        DatabaseReference myRef = database.getReference("challan");              //migrate from tree in other branches
+        myRef = database.getReference("challan");              //migrate from tree in other branches
 
         sessionManager = new SessionManager(Search.this);
         setLogoutBroadcastReceiver();
@@ -76,7 +78,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         recyclerview.setAdapter(adapterOffline);
         adapterOffline.notifyDataSetChanged();
         search.setText("");
-        myRef.addChildEventListener(new ChildEventListener() {
+        myRef.addChildEventListener(childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
@@ -87,7 +89,6 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                     adapterOffline.notifyDataSetChanged();
                     Toast.makeText(Search.this,"New Challans Added , List is Updated",Toast.LENGTH_SHORT).show();
                 }
-
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -250,6 +251,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
     @Override
     protected void onDestroy() {
         unregisterReceiver(logoutBroadcastReceiver);
+        myRef.removeEventListener(childEventListener);
         super.onDestroy();
     }
 }

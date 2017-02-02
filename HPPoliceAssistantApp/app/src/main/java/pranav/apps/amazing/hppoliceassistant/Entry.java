@@ -110,9 +110,34 @@ public class Entry extends AppCompatActivity {
                     veh.setError("Field can not be empty");
                     place.setError("Field can not be empty");
                 } else {
-                    if (phone.getText().toString().length() >= 1 && phone.getText().toString().length() < 10) {
+                    if (!DataTypeValidator.validatePhoneNumberFormat(phone.getText().toString())) {
                         phone.setError("Invalid Phone Number");
-                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Entry.this);
+                        builder.setTitle("Mobile Number")
+                                .setMessage("Invalid Mobile Number Captured")
+                                .setCancelable(false)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                    else if(!validateFields()){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Entry.this);
+                        builder.setTitle("Challan Entry")
+                                .setMessage("Invalid Input Captured")
+                                .setCancelable(false)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                    else {
                         EntryID = populateEntryID();
                         date = generateDateFromSystem();
                         time = generateCurrentTime();
@@ -372,6 +397,12 @@ public class Entry extends AppCompatActivity {
             }
         }
     }
+    private boolean validateFields() {
+        return (DataTypeValidator.validateVehicleNumberFormat(place.getText().toString())
+                &&DataTypeValidator.validateVehicleNumberFormat(naka.getText().toString())
+                &&DataTypeValidator.validatePhoneNumberFormat(phone.getText().toString())
+                && DataTypeValidator.validateVehicleNumberFormat(veh.getText().toString()));
+    }
     private String populateEntryID(){
         return "VE"+sessionManager.getDistrict().substring(0,3).toUpperCase()+sessionManager.getPoliceStation().substring(3,7).toUpperCase().replace("/","")+
                 sessionManager.getPolicePost().substring(3,6).toUpperCase()
@@ -410,6 +441,7 @@ public class Entry extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         unregisterReceiver(logoutBroadcastReceiver);
+
         super.onDestroy();
     }
 }
