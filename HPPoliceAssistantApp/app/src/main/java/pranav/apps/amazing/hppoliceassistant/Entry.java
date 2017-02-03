@@ -80,10 +80,10 @@ public class Entry extends AppCompatActivity {
     private String EntryID;
     private String date, time;
     private long epoch;
-    private Map<String, Double> locationCoordinates;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private Location location;
+    private Location currentBestLocation = null;
+    private Location fixedLocationAfterButtonClick;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,11 +97,15 @@ public class Entry extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         mRootRef = database.getReference("vehicle_entry");
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener(Entry.this, locationCoordinates);
-        if(location!=null)
-        Toast.makeText(Entry.this,""+location.getLatitude(),Toast.LENGTH_SHORT).show();
-
-
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_WRITE_STORAGE);
+        }
+        locationListener = new MyLocationListener(Entry.this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        if(currentBestLocation==null){
+            currentBestLocation = getLastBestLocation();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Create a Vehicle Entry");
@@ -164,11 +168,14 @@ public class Entry extends AppCompatActivity {
                         EntryID = populateEntryID();
                         date = generateDateFromSystem();
                         time = generateCurrentTime();
+                        fixedLocationAfterButtonClick=currentBestLocation;
 
                         newEntrywithoutImage = new VehicleEntry(EntryID,veh.getText().toString(), phone.getText().toString(),
                                 description.getText().toString(), place.getText().toString(),date,time,sessionManager.getIOName(), "null",sessionManager.getDistrict(),sessionManager.getPoliceStation(),
                                 sessionManager.getPolicePost(),0);
                         newEntrywithoutImage.setEpoch(epoch);
+                        newEntrywithoutImage.setLatitude(fixedLocationAfterButtonClick.getLatitude());
+                        newEntrywithoutImage.setLongitude(fixedLocationAfterButtonClick.getLongitude());
                         vehicleEntryDialog = new VehicleEntryDialog(Entry.this, newEntrywithoutImage);
                         vehicleEntryDialog.setTitle("Entry Details");
                         vehicleEntryDialog.setCancelable(true);
@@ -227,6 +234,8 @@ public class Entry extends AppCompatActivity {
             DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
             newEntry.setStatus(1);
             newEntry.setEpoch(epoch);
+            newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
+            newEntry.setLatitude(fixedLocationAfterButtonClick.getLongitude());
             dbManagerEntry.addEntry(newEntry);
             idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                 @Override
@@ -251,7 +260,6 @@ public class Entry extends AppCompatActivity {
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(Entry.this, "Upload Done !", Toast.LENGTH_LONG).show();
                     downloadUrl = taskSnapshot.getDownloadUrl();
                     if(downloadUrl!=null) {
                         download_url_string = downloadUrl.toString();
@@ -264,6 +272,8 @@ public class Entry extends AppCompatActivity {
                     DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
                     newEntry.setStatus(1);
                     newEntry.setEpoch(epoch);
+                    newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
+                    newEntry.setLatitude(fixedLocationAfterButtonClick.getLongitude());
                     dbManagerEntry.addEntry(newEntry);
                     idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                         @Override
@@ -463,7 +473,6 @@ public class Entry extends AppCompatActivity {
         }
         Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 10, locationListener);
 
         long GPSLocationTime = 0;
         if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
@@ -509,4 +518,108 @@ public class Entry extends AppCompatActivity {
 
         super.onDestroy();
     }
+
+    private class MyLocationListener implements LocationListener {
+
+        private Context context;
+        private static final int TWO_MINUTES = 1000 * 60 * 2;
+
+
+        public MyLocationListener(Context context){
+            this.context = context;
+        }
+
+        @Override
+        public void onLocationChanged(Location location) {
+            makeUseOfNewLocation(location);
+
+            if(currentBestLocation == null){
+                currentBestLocation = location;
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+            Toast.makeText(context,"GPS Enabled", Toast.LENGTH_SHORT ).show();
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+            Toast.makeText(context,"GPS Disabled", Toast.LENGTH_SHORT ).show();
+        }
+        /**
+         * This method modify the last know good location according to the arguments.
+         *
+         * @param location The possible new location.
+         */
+        void makeUseOfNewLocation(Location location) {
+            if ( isBetterLocation(location, currentBestLocation) ) {
+                currentBestLocation = location;
+            }
+        }
+
+        /** Determines whether one location reading is better than the current location fix
+         * @param location  The new location that you want to evaluate
+         * @param currentBestLocation  The current location fix, to which you want to compare the new one.
+         */
+        protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+            if (currentBestLocation == null) {
+                // A new location is always better than no location
+                return true;
+            }
+
+            // Check whether the new location fix is newer or older
+            long timeDelta = location.getTime() - currentBestLocation.getTime();
+            boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
+            boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
+            boolean isNewer = timeDelta > 0;
+
+            // If it's been more than two minutes since the current location, use the new location,
+            // because the user has likely moved.
+            if (isSignificantlyNewer) {
+                return true;
+                // If the new location is more than two minutes older, it must be worse.
+            } else if (isSignificantlyOlder) {
+                return false;
+            }
+
+            // Check whether the new location fix is more or less accurate
+            int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+            boolean isLessAccurate = accuracyDelta > 0;
+            boolean isMoreAccurate = accuracyDelta < 0;
+            boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+            // Check if the old and new location are from the same provider
+            boolean isFromSameProvider = isSameProvider(location.getProvider(),
+                    currentBestLocation.getProvider());
+
+            // Determine location quality using a combination of timeliness and accuracy
+            if (isMoreAccurate) {
+                return true;
+            } else if (isNewer && !isLessAccurate) {
+                return true;
+            } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+                return true;
+            }
+            return false;
+        }
+
+        /** Checks whether two providers are the same */
+        private boolean isSameProvider(String provider1, String provider2) {
+            if (provider1 == null) {
+                return provider2 == null;
+            }
+            return provider1.equals(provider2);
+        }
+        public Location getBestLocation(){
+            return currentBestLocation;
+        }
+
+    }
+
 }

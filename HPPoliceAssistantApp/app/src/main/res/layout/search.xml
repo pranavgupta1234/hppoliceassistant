@@ -9,7 +9,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:menu="@menu/popup_menu"/>
+        app:menu="@menu/popup_menu"
+        android:elevation="4dp"/>
     <TextView
         android:text="Loading..."
         android:textStyle="bold"
