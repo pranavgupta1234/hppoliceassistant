@@ -170,12 +170,19 @@ public class Entry extends AppCompatActivity {
                         time = generateCurrentTime();
                         fixedLocationAfterButtonClick=currentBestLocation;
 
+
+
                         newEntrywithoutImage = new VehicleEntry(EntryID,veh.getText().toString(), phone.getText().toString(),
                                 description.getText().toString(), place.getText().toString(),date,time,sessionManager.getIOName(), "null",sessionManager.getDistrict(),sessionManager.getPoliceStation(),
                                 sessionManager.getPolicePost(),0);
                         newEntrywithoutImage.setEpoch(epoch);
-                        newEntrywithoutImage.setLatitude(fixedLocationAfterButtonClick.getLatitude());
-                        newEntrywithoutImage.setLongitude(fixedLocationAfterButtonClick.getLongitude());
+                        if(fixedLocationAfterButtonClick!=null){
+                            newEntrywithoutImage.setLatitude(fixedLocationAfterButtonClick.getLatitude());
+                            newEntrywithoutImage.setLongitude(fixedLocationAfterButtonClick.getLongitude());
+                        }
+                        else {
+                            Toast.makeText(Entry.this,"  Current Location is unknown\nPlease turn Data Connection or GPS ON",Toast.LENGTH_LONG).show();
+                        }
                         vehicleEntryDialog = new VehicleEntryDialog(Entry.this, newEntrywithoutImage);
                         vehicleEntryDialog.setTitle("Entry Details");
                         vehicleEntryDialog.setCancelable(true);
@@ -234,8 +241,14 @@ public class Entry extends AppCompatActivity {
             DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
             newEntry.setStatus(1);
             newEntry.setEpoch(epoch);
-            newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
-            newEntry.setLatitude(fixedLocationAfterButtonClick.getLongitude());
+            if(fixedLocationAfterButtonClick!=null){
+                newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
+                newEntry.setLatitude(fixedLocationAfterButtonClick.getLongitude());
+            }
+            else {
+                Toast.makeText(Entry.this,"Current Location is unknown\nPlease turn Data Connection or GPS ON",Toast.LENGTH_LONG).show();
+            }
+
             dbManagerEntry.addEntry(newEntry);
             idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                 @Override
@@ -272,8 +285,14 @@ public class Entry extends AppCompatActivity {
                     DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
                     newEntry.setStatus(1);
                     newEntry.setEpoch(epoch);
-                    newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
-                    newEntry.setLongitude(fixedLocationAfterButtonClick.getLongitude());
+                    if(fixedLocationAfterButtonClick!=null){
+                        newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
+                        newEntry.setLongitude(fixedLocationAfterButtonClick.getLongitude());
+                    }
+                    else {
+                        Toast.makeText(Entry.this,"Current Location is unknown\nPlease turn Data Connection or GPS ON",Toast.LENGTH_LONG).show();
+                    }
+
                     dbManagerEntry.addEntry(newEntry);
                     idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                         @Override
@@ -546,11 +565,15 @@ public class Entry extends AppCompatActivity {
         @Override
         public void onProviderEnabled(String s) {
             Toast.makeText(context,"GPS Enabled", Toast.LENGTH_SHORT ).show();
+            currentBestLocation = getLastBestLocation();
+            fixedLocationAfterButtonClick=getLastBestLocation();
         }
 
         @Override
         public void onProviderDisabled(String s) {
-            Toast.makeText(context,"GPS Disabled", Toast.LENGTH_SHORT ).show();
+            Toast.makeText(context,"GPS Disabled Please Turn It ON", Toast.LENGTH_SHORT ).show();
+            currentBestLocation = getLastBestLocation();
+            fixedLocationAfterButtonClick=getLastBestLocation();
         }
         /**
          * This method modify the last know good location according to the arguments.
@@ -560,6 +583,9 @@ public class Entry extends AppCompatActivity {
         void makeUseOfNewLocation(Location location) {
             if ( isBetterLocation(location, currentBestLocation) ) {
                 currentBestLocation = location;
+            }
+            else {
+                currentBestLocation = getLastBestLocation();
             }
         }
 
