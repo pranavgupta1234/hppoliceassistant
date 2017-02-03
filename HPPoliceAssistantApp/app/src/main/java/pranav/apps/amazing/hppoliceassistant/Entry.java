@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -79,7 +80,10 @@ public class Entry extends AppCompatActivity {
     private String EntryID;
     private String date, time;
     private long epoch;
-    private Map<String, Double> locationCoordinates = new HashMap<>();
+    private Map<String, Double> locationCoordinates;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private Location location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,20 +96,18 @@ public class Entry extends AppCompatActivity {
         mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
         database = FirebaseDatabase.getInstance();
         mRootRef = database.getReference("vehicle_entry");
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new MyLocationListener(Entry.this, locationCoordinates);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_WRITE_STORAGE);
-            Toast.makeText(Entry.this,"Entered here",Toast.LENGTH_SHORT).show();
-        }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new MyLocationListener(Entry.this, locationCoordinates);
+        if(location!=null)
+        Toast.makeText(Entry.this,""+location.getLatitude(),Toast.LENGTH_SHORT).show();
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Create a Vehicle Entry");
         setSupportActionBar(toolbar);
 
-        Toast.makeText(Entry.this,""+locationCoordinates.get("Latitude"),Toast.LENGTH_SHORT).show();
+
 
 
 
@@ -449,6 +451,34 @@ public class Entry extends AppCompatActivity {
                 }
             }
 
+        }
+    }
+    /**
+     * @return the last know best location
+     */
+    private Location getLastBestLocation() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_WRITE_STORAGE);
+        }
+        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 10, locationListener);
+
+        long GPSLocationTime = 0;
+        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+
+        long NetLocationTime = 0;
+
+        if (null != locationNet) {
+            NetLocationTime = locationNet.getTime();
+        }
+
+        if ( 0 < GPSLocationTime - NetLocationTime ) {
+            return locationGPS;
+        }
+        else {
+            return locationNet;
         }
     }
 
