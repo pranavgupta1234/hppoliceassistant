@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class VehicleEntryDialog extends Dialog implements android.view.View.OnClickListener{
 
     private TextView vehicle_number,phone_number,date,time,place_name
-            ,officer_name,description,date_and_time,EntryID;
+            ,officer_name,description,date_and_time,EntryID,location;
     private Button edit,submit,offline;
     private Activity activity;
     private VehicleEntry vehicleEntry;
@@ -39,6 +39,7 @@ public class VehicleEntryDialog extends Dialog implements android.view.View.OnCl
 
     private void setData() {
         EntryID.setText(vehicleEntry.getEntryID());
+        location.setText("Latitude : "+vehicleEntry.getLatitude()+"\n Longitude : "+vehicleEntry.getLongitude());
         date_and_time.setText(vehicleEntry.getDate()+" at "+vehicleEntry.getTime());
         vehicle_number.setText(vehicleEntry.getVehicle_number());
         phone_number.setText(vehicleEntry.getPhone_number());
@@ -63,6 +64,7 @@ public class VehicleEntryDialog extends Dialog implements android.view.View.OnCl
         offline=(Button)findViewById(R.id.offline);
         EntryID=(TextView)findViewById(R.id.entry_id);
         date_and_time=(TextView)findViewById(R.id.date_and_time);
+        location=(TextView)findViewById(R.id.location);
     }
 
     @Override

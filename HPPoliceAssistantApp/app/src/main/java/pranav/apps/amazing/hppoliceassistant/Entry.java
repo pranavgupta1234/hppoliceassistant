@@ -273,7 +273,7 @@ public class Entry extends AppCompatActivity {
                     newEntry.setStatus(1);
                     newEntry.setEpoch(epoch);
                     newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
-                    newEntry.setLatitude(fixedLocationAfterButtonClick.getLongitude());
+                    newEntry.setLongitude(fixedLocationAfterButtonClick.getLongitude());
                     dbManagerEntry.addEntry(newEntry);
                     idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                         @Override
