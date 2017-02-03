@@ -524,7 +524,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\"
                 android:hint="fill vehicle number here"
                 android:layout_marginTop="3dp"
                 android:maxLength="18"
@@ -542,7 +542,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"/>
             <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
                 android:inputType="textFilter"
                 android:hint="fill name of violator"
                 android:layout_width="match_parent"
@@ -561,7 +561,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"/>
             <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
                 android:inputType="textFilter"
                 android:hint="fill vehicle owner name here"
                 android:layout_width="match_parent"
@@ -580,7 +580,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"/>
             <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\"
                 android:inputType="textFilter"
                 android:hint="fill address of violator here"
                 android:layout_width="match_parent"
@@ -609,7 +608,7 @@
                 android:layout_marginTop="3dp"
                 android:id="@+id/violator_number"/>
             <TextView
-                android:text="License Number"
+                android:text="License Number (No Special Characters)"
                 android:textColor="#000000"
                 android:textStyle="bold"
                 android:textSize="16dp"
@@ -653,7 +652,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 , "
                 android:inputType="textFilter"
                 android:hint="fill offence section here"
                 android:layout_width="match_parent"
@@ -672,7 +671,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
                 android:inputType="textFilter"
                 android:hint="fill name of place here"
                 android:layout_marginTop="3dp"

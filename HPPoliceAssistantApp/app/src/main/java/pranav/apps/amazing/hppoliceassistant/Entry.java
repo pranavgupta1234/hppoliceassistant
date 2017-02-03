@@ -1,17 +1,24 @@
 package pranav.apps.amazing.hppoliceassistant;
 
+import android.*;
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,6 +45,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import id.zelory.compressor.Compressor;
 import id.zelory.compressor.FileUtil;
@@ -46,31 +55,34 @@ import id.zelory.compressor.FileUtil;
  * Created by Pranav Gupta on 12/10/2016.
  */
 public class Entry extends AppCompatActivity {
+    private static final int REQUEST_WRITE_STORAGE = 133;
     private Firebase mrootRef;
-    private EditText veh,phone,description,place;
+    private EditText veh, phone, description, place;
     private Button submit_det;
     private ImageButton upload;
     private String path;
-    private StorageReference mStorage,filepath;
-    private ProgressDialog progressDialog,progressDialog1;
-    private Uri uri=null,downloadUrl=null;
-    private String download_url_string="";
-    private VehicleEntry newEntry,newEntrywithoutImage;
+    private StorageReference mStorage, filepath;
+    private ProgressDialog progressDialog, progressDialog1;
+    private Uri uri = null, downloadUrl = null;
+    private String download_url_string = "";
+    private VehicleEntry newEntry, newEntrywithoutImage;
     private VehicleEntryDialog vehicleEntryDialog;
     private File actualImage;
     private FirebaseDatabase database;
-    private DatabaseReference mRootRef ;
-    private int PICK_IMAGE_REQUEST=1;
-    private String[] month = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
+    private DatabaseReference mRootRef;
+    private int PICK_IMAGE_REQUEST = 1;
+    private String[] month = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     private String ampm = "AM";
     private String off_name;
     private SessionManager sessionManager;
     private BroadcastReceiver logoutBroadcastReceiver;
     private String EntryID;
-    private String date,time;
+    private String date, time;
     private long epoch;
+    private Map<String, Double> locationCoordinates = new HashMap<>();
+
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry);
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -80,12 +92,20 @@ public class Entry extends AppCompatActivity {
         mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
         database = FirebaseDatabase.getInstance();
         mRootRef = database.getReference("vehicle_entry");
-
-        off_name = getIntent().getStringExtra("name");
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new MyLocationListener(Entry.this, locationCoordinates);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_WRITE_STORAGE);
+            Toast.makeText(Entry.this,"Entered here",Toast.LENGTH_SHORT).show();
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Create a Vehicle Entry");
         setSupportActionBar(toolbar);
+
+        Toast.makeText(Entry.this,""+locationCoordinates.get("Latitude"),Toast.LENGTH_SHORT).show();
 
 
 
@@ -415,6 +435,23 @@ public class Entry extends AppCompatActivity {
         path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_WRITE_STORAGE:{
+                if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(Entry.this,"GPS Access Permission Granted",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(Entry.this,"GPS Access Permission Denied",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+    }
+
     private void resetAll() {
         veh.setText("");
         phone.setText("");

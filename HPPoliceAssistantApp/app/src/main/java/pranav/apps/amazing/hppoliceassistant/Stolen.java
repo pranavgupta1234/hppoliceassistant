@@ -114,7 +114,7 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
             @Override
             public void onChildRemoved(com.google.firebase.database.DataSnapshot dataSnapshot) {
                 newEntry  = dataSnapshot.getValue(VehicleEntry.class);
-                vehicleEntries.add(0,newEntry);
+                vehicleEntries.remove(newEntry);
                 adapter.notifyDataSetChanged();
                 loading.setText("");
             }
