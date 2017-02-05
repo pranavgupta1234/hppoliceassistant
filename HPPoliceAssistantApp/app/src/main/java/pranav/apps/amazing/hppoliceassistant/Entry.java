@@ -84,6 +84,7 @@ public class Entry extends AppCompatActivity {
     private LocationListener locationListener;
     private Location currentBestLocation = null;
     private Location fixedLocationAfterButtonClick;
+    private int flag=0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,13 +97,14 @@ public class Entry extends AppCompatActivity {
         mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
         database = FirebaseDatabase.getInstance();
         mRootRef = database.getReference("vehicle_entry");
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+        {
             ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_WRITE_STORAGE);
         }
-        locationListener = new MyLocationListener(Entry.this);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
         if(currentBestLocation==null){
             currentBestLocation = getLastBestLocation();
         }
@@ -474,6 +476,9 @@ public class Entry extends AppCompatActivity {
             case REQUEST_WRITE_STORAGE:{
                 if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                     Toast.makeText(Entry.this,"GPS Access Permission Granted",Toast.LENGTH_SHORT).show();
+                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    locationListener = new MyLocationListener(Entry.this);
+                    flag=1;
                 }
                 else {
                     Toast.makeText(Entry.this,"GPS Access Permission Denied",Toast.LENGTH_SHORT).show();
@@ -490,24 +495,31 @@ public class Entry extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_WRITE_STORAGE);
         }
-        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if(flag==1){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        long GPSLocationTime = 0;
-        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+            long GPSLocationTime = 0;
+            if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
 
-        long NetLocationTime = 0;
+            long NetLocationTime = 0;
 
-        if (null != locationNet) {
-            NetLocationTime = locationNet.getTime();
-        }
+            if (null != locationNet) {
+                NetLocationTime = locationNet.getTime();
+            }
 
-        if ( 0 < GPSLocationTime - NetLocationTime ) {
-            return locationGPS;
+            if ( 0 < GPSLocationTime - NetLocationTime ) {
+                return locationGPS;
+            }
+            else {
+                return locationNet;
+            }
         }
         else {
-            return locationNet;
+            return null;
         }
+
     }
 
     private void resetAll() {
