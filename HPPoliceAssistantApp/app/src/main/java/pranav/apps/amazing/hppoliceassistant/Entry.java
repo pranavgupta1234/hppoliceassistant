@@ -15,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -579,6 +580,22 @@ public class Entry extends AppCompatActivity {
         @Override
         public void onProviderEnabled(String s) {
             Toast.makeText(context,"GPS Enabled", Toast.LENGTH_SHORT ).show();
+            Handler handler = new Handler();
+            final ProgressDialog pg = ProgressDialog.show(Entry.this,"GPS Location","Updating location...");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    pg.dismiss();
+                }
+            },5000);
+            Handler handler1 = new Handler();
+            handler1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    recreate();
+                }
+            },2000);
+
         }
 
         @Override
