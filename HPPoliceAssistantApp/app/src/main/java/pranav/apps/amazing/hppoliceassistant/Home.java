@@ -75,15 +75,16 @@ public class Home extends AppCompatActivity{
         challanDetails = dbManagerChallan.showChallan();
         for (int i=0;i<challanDetails.size();i++){
             if (challanDetails.get(i).getStatus()==0){
-                final ProgressDialog pg = ProgressDialog.show(Home.this,"Automatic Data Update","Sending offline entries to server...");
                 DatabaseReference child  = rootRef.push();
                 final int no = i;
+                challanDetails.get(i).setStatus(1);
                 child.setValue(challanDetails.get(i), new DatabaseReference.CompletionListener() {
+                    final ProgressDialog pg = ProgressDialog.show(Home.this,"Automatic Data Update","Sending offline entries to server...");
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                         if(databaseError== null){
                             pg.dismiss();
-                            Toast.makeText(Home.this,"Upload Done ",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Home.this,"Data Sent to Server ",Toast.LENGTH_SHORT).show();
                             dbManagerChallan.setStatus(challanDetails.get(no),1);
                         }
                         else {
