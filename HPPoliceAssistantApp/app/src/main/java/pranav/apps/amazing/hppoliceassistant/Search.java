@@ -47,6 +47,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
     private BroadcastReceiver logoutBroadcastReceiver;
     private DatabaseReference myRef;
     private ChildEventListener childEventListener;
+    boolean isNewEntryAdded = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                     dbManagerChallanOnline.addChallan(challan);
                     offlineList.add(0,challan);
                     adapterOffline.notifyDataSetChanged();
-                    Toast.makeText(Search.this,"New Challans Added , List is Updated",Toast.LENGTH_SHORT).show();
+                    isNewEntryAdded = true;
                 }
             }
             @Override
@@ -120,6 +121,9 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                 Toast.makeText(Search.this,"Something Went Wrong",Toast.LENGTH_SHORT).show();
             }
         });
+        if(isNewEntryAdded){
+            Toast.makeText(Search.this,"New Challans Added , List is Updated",Toast.LENGTH_SHORT).show();
+        }
         //challanDetails.clear();
     }
 

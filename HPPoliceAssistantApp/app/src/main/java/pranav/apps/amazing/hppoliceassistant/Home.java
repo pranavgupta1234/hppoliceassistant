@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -67,34 +69,39 @@ public class Home extends AppCompatActivity{
     }
 
     private void sendAllChallans() {
+        if(isConnectedToInternet()){
+            //setting up database manager to automatically send data to server each time user comes to home
+            dbManagerChallan = new DBManagerChallan(Home.this,null,null,1);
 
-        //setting up database manager to automatically send data to server each time user comes to home
-        dbManagerChallan = new DBManagerChallan(Home.this,null,null,1);
-
-        challanDetails = new ArrayList<>();
-        challanDetails = dbManagerChallan.showChallan();
-        for (int i=0;i<challanDetails.size();i++){
-            if (challanDetails.get(i).getStatus()==0){
-                DatabaseReference child  = rootRef.push();
-                final int no = i;
-                challanDetails.get(i).setStatus(1);
-                child.setValue(challanDetails.get(i), new DatabaseReference.CompletionListener() {
-                    final ProgressDialog pg = ProgressDialog.show(Home.this,"Automatic Data Update","Sending offline entries to server...");
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if(databaseError== null){
-                            pg.dismiss();
-                            Toast.makeText(Home.this,"Data Sent to Server ",Toast.LENGTH_SHORT).show();
-                            dbManagerChallan.setStatus(challanDetails.get(no),1);
+            challanDetails = new ArrayList<>();
+            challanDetails = dbManagerChallan.showChallan();
+            for (int i=0;i<challanDetails.size();i++){
+                if (challanDetails.get(i).getStatus()==0){
+                    DatabaseReference child  = rootRef.push();
+                    final int no = i;
+                    challanDetails.get(i).setStatus(1);
+                    child.setValue(challanDetails.get(i), new DatabaseReference.CompletionListener() {
+                        final ProgressDialog pg = ProgressDialog.show(Home.this,"Automatic Data Update","Sending offline entries to server...");
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError== null){
+                                pg.dismiss();
+                                dbManagerChallan.setStatus(challanDetails.get(no),1);
+                            }
+                            else {
+                                pg.dismiss();
+                                Toast.makeText(Home.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                            }
                         }
-                        else {
-                            pg.dismiss();
-                            Toast.makeText(Home.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                    });
+                }
             }
+            Toast.makeText(Home.this,"Data is in Sync with Server",Toast.LENGTH_SHORT).show();
         }
+        else {
+            Toast.makeText(Home.this,"You are not connected to Internet Unable to Sync Data ",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -202,5 +209,13 @@ public class Home extends AppCompatActivity{
     protected void onDestroy() {
         unregisterReceiver(logoutBroadcastReceiver);
         super.onDestroy();
+    }
+    public boolean isConnectedToInternet() {
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&      //isConnected tells if Connected
+                activeNetwork.isConnectedOrConnecting();
     }
 }
