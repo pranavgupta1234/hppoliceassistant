@@ -80,6 +80,7 @@ public class Entry extends AppCompatActivity {
     private LocationListener locationListener;
     private Location currentBestLocation = null;
     private Location fixedLocationAfterButtonClick;
+    //flag is 1 when our app has gps permission
     private int flag=0;
 
     @Override
@@ -96,9 +97,11 @@ public class Entry extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED)
-        {
+                != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS_FINE_LOCATION);
+        }
+        else {
+            flag=1;
         }
 
         if(currentBestLocation==null && flag==1){
@@ -150,7 +153,7 @@ public class Entry extends AppCompatActivity {
                     }
                     else if(!validateFields()){
                         AlertDialog.Builder builder = new AlertDialog.Builder(Entry.this);
-                        builder.setTitle("Challan Entry")
+                        builder.setTitle("Vehicle Entry")
                                 .setMessage("Invalid Input Captured")
                                 .setCancelable(false)
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -166,7 +169,8 @@ public class Entry extends AppCompatActivity {
                         EntryID = populateEntryID();
                         date = generateDateFromSystem();
                         time = generateCurrentTime();
-                        fixedLocationAfterButtonClick=getLastBestLocation();
+                        currentBestLocation = getLastBestLocation();
+                        fixedLocationAfterButtonClick=currentBestLocation;
 
 
 
@@ -448,8 +452,7 @@ public class Entry extends AppCompatActivity {
         }
     }
     private boolean validateFields() {
-        return (DataTypeValidator.validateVehicleNumberFormat(place.getText().toString())
-                &&DataTypeValidator.validatePhoneNumberFormat(phone.getText().toString())
+        return (DataTypeValidator.validatePhoneNumberFormat(phone.getText().toString())
                 && DataTypeValidator.validateVehicleNumberFormat(veh.getText().toString()));
     }
     private String populateEntryID(){
@@ -472,8 +475,6 @@ public class Entry extends AppCompatActivity {
             case REQUEST_ACCESS_FINE_LOCATION:{
                 if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                     Toast.makeText(Entry.this,"GPS Access Permission Granted",Toast.LENGTH_SHORT).show();
-                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    locationListener = new MyLocationListener(Entry.this);
                     flag=1;
                 }
                 else {
@@ -491,7 +492,12 @@ public class Entry extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_ACCESS_FINE_LOCATION);
         }
+        else {
+            flag=1;
+        }
         if(flag==1){
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationListener = new MyLocationListener(Entry.this);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -578,6 +584,7 @@ public class Entry extends AppCompatActivity {
         @Override
         public void onProviderDisabled(String s) {
             Toast.makeText(context,"GPS Disabled Please Turn It ON", Toast.LENGTH_SHORT ).show();
+
         }
         /**
          * This method modify the last know good location according to the arguments.
