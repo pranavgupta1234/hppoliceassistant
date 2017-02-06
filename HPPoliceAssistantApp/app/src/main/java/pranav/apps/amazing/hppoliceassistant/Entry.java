@@ -169,7 +169,7 @@ public class Entry extends AppCompatActivity {
                         EntryID = populateEntryID();
                         date = generateDateFromSystem();
                         time = generateCurrentTime();
-                        currentBestLocation = getLastBestLocation();
+                        //currentBestLocation = getLastBestLocation();
                         fixedLocationAfterButtonClick=currentBestLocation;
 
 
