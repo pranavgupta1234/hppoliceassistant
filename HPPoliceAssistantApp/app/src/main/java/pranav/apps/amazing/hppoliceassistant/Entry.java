@@ -1,8 +1,6 @@
 package pranav.apps.amazing.hppoliceassistant;
 
-import android.*;
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -46,8 +44,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import id.zelory.compressor.Compressor;
 import id.zelory.compressor.FileUtil;
@@ -56,7 +52,7 @@ import id.zelory.compressor.FileUtil;
  * Created by Pranav Gupta on 12/10/2016.
  */
 public class Entry extends AppCompatActivity {
-    private static final int REQUEST_WRITE_STORAGE = 133;
+    private static final int REQUEST_ACCESS_FINE_LOCATION = 133;
     private Firebase mrootRef;
     private EditText veh, phone, description, place;
     private Button submit_det;
@@ -102,10 +98,10 @@ public class Entry extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED)
         {
-            ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_WRITE_STORAGE);
+            ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS_FINE_LOCATION);
         }
 
-        if(currentBestLocation==null){
+        if(currentBestLocation==null && flag==1){
             currentBestLocation = getLastBestLocation();
         }
 
@@ -170,7 +166,7 @@ public class Entry extends AppCompatActivity {
                         EntryID = populateEntryID();
                         date = generateDateFromSystem();
                         time = generateCurrentTime();
-                        fixedLocationAfterButtonClick=currentBestLocation;
+                        fixedLocationAfterButtonClick=getLastBestLocation();
 
 
 
@@ -473,7 +469,7 @@ public class Entry extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode){
-            case REQUEST_WRITE_STORAGE:{
+            case REQUEST_ACCESS_FINE_LOCATION:{
                 if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                     Toast.makeText(Entry.this,"GPS Access Permission Granted",Toast.LENGTH_SHORT).show();
                     locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -493,7 +489,7 @@ public class Entry extends AppCompatActivity {
     private Location getLastBestLocation() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_WRITE_STORAGE);
+            ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_ACCESS_FINE_LOCATION);
         }
         if(flag==1){
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -577,15 +573,11 @@ public class Entry extends AppCompatActivity {
         @Override
         public void onProviderEnabled(String s) {
             Toast.makeText(context,"GPS Enabled", Toast.LENGTH_SHORT ).show();
-            currentBestLocation = getLastBestLocation();
-            fixedLocationAfterButtonClick=getLastBestLocation();
         }
 
         @Override
         public void onProviderDisabled(String s) {
             Toast.makeText(context,"GPS Disabled Please Turn It ON", Toast.LENGTH_SHORT ).show();
-            currentBestLocation = getLastBestLocation();
-            fixedLocationAfterButtonClick=getLastBestLocation();
         }
         /**
          * This method modify the last know good location according to the arguments.
@@ -654,10 +646,5 @@ public class Entry extends AppCompatActivity {
             }
             return provider1.equals(provider2);
         }
-        public Location getBestLocation(){
-            return currentBestLocation;
-        }
-
     }
-
 }
