@@ -508,10 +508,8 @@ public class Challan extends AppCompatActivity {
     }
 
     private boolean validateFields() {
-        return (DataTypeValidator.validateLicenseNumberFormat(license_number.getText().toString())
-                &&DataTypeValidator.validateNameOfPersonFormat(violator_name.getText().toString())
-                &&DataTypeValidator.validatePhoneNumberFormat(violator_number.getText().toString())
-                && DataTypeValidator.validateVehicleNumberFormat(veh_number.getText().toString()));
+        return (DataTypeValidator.validateNameOfPersonFormat(violator_name.getText().toString())
+                &&DataTypeValidator.validatePhoneNumberFormat(violator_number.getText().toString()));
     }
 
     public void showError(String errorMessage) {

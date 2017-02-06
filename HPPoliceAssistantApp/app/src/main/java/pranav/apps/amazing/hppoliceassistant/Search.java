@@ -221,12 +221,13 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         for (ChallanDetails model : models) {
             if(model.getVehicle_number()!= null && model.getViolator_name()!= null&&model.getLicense_number()!=null
                     &&model.getViolator_number()!=null&&model.getPolice_officer_name()!=null) {
-                final String text1 = model.getVehicle_number().toLowerCase();
+                final String text1 = model.getVehicle_number().replace("/","").replace("-","").toLowerCase();
                 final String text2 = model.getViolator_name().toLowerCase();
-                final String text3 = model.getLicense_number().toLowerCase();
+                final String text3 = model.getLicense_number().replace("/","").replace("-","").toLowerCase();
                 final String text4 = model.getViolator_number().toLowerCase();
                 final String text5 = model.getPolice_officer_name().toLowerCase();
                 final String text6 = model.getChallanID().toLowerCase();
+
                 if (text1.contains(query) || text2.contains(query) || text3.contains(query) || text4.contains(query) || text5.contains(query)
                         ||text6.contains(query)) {
                     filteredModelList.add(model);
