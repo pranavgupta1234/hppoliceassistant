@@ -506,6 +506,7 @@
             android:background="@drawable/custom_edittext"
             android:padding="12dp"
             android:maxLength="50"
+            android:singleLine="true"
             android:layout_marginTop="3dp"
             android:id="@+id/other_offence"/>
         <TextView
@@ -535,6 +536,7 @@
                 android:hint="fill vehicle number here"
                 android:layout_marginTop="3dp"
                 android:maxLength="18"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edittext"
@@ -553,10 +555,11 @@
                 android:inputType="textFilter"
                 android:hint="fill name of violator"
                 android:layout_width="match_parent"
-                android:maxLength="18"
+                android:maxLength="30"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
+                android:singleLine="true"
                 android:layout_marginTop="3dp"
                 android:id="@+id/violator_name"/>
             <TextView
@@ -575,7 +578,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
-                android:maxLength="20"
+                android:maxLength="30"
+                android:singleLine="true"
                 android:layout_marginTop="3dp"
                 android:id="@+id/vehicle_owner_name"/>
             <TextView
@@ -594,6 +598,7 @@
                 android:maxLength="50"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
+                android:singleLine="true"
                 android:layout_marginTop="3dp"
                 android:id="@+id/violator_address"/>
             <TextView
@@ -612,6 +617,7 @@
                 android:maxLength="10"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
+                android:singleLine="true"
                 android:layout_marginTop="3dp"
                 android:id="@+id/violator_number"/>
             <TextView
@@ -630,6 +636,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
+                android:singleLine="true"
                 android:layout_marginTop="3dp"
                 android:id="@+id/license_number"/>
             <TextView
@@ -648,6 +655,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
+                android:singleLine="true"
                 android:layout_marginTop="3dp"
                 android:id="@+id/challan_amount"/>
             <TextView
@@ -666,6 +674,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:maxLength="10"
+                android:singleLine="true"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
                 android:id="@+id/offence_section"/>
@@ -686,6 +695,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
+                android:singleLine="true"
                 android:id="@+id/place_name"/>
             <ImageView
                 android:text="UPLOAD PHOTO"

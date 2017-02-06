@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
+                android:singleLine="true"
                 android:layout_marginTop="3dp"
                 android:id="@+id/vehicle_num"/>
             <TextView
@@ -56,28 +57,10 @@
                 android:layout_marginTop="3dp"
                 android:maxLength="10"
                 android:inputType="number"
+                android:singleLine="true"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
                 android:id="@+id/phone_num"/>
-            <TextView
-                android:text="Description"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:layout_marginTop="3dp"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\  ,"
-                android:inputType="textFilter"
-                android:hint="flll short description here"
-                android:layout_marginTop="3dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="60"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:id="@+id/description"/>
             <TextView
                 android:text="Name of Place *"
                 android:textColor="#000000"
@@ -93,10 +76,30 @@
                 android:layout_marginTop="3dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="25"
+                android:maxLength="30"
                 android:background="@drawable/custom_edittext"
                 android:padding="12dp"
+                android:singleLine="true"
                 android:id="@+id/place"/>
+            <TextView
+                android:text="Description"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:layout_marginTop="3dp"
+                android:textSize="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\  ,"
+                android:inputType="textFilter"
+                android:hint="flll short description here"
+                android:layout_marginTop="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="100"
+                android:background="@drawable/custom_edittext"
+                android:padding="12dp"
+                android:id="@+id/description"/>
             <ImageButton
                 android:text="UPLOAD PHOTO"
                 android:textStyle="bold"
