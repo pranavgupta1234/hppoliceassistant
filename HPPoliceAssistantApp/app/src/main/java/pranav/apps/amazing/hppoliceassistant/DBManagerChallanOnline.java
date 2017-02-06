@@ -13,6 +13,9 @@ import java.util.ArrayList;
  * Created by Pranav Gupta on 1/5/2017.
  */
 
+/** this class contains a local copy of all data of challan that is present on server and updates the data each time internet is available
+ * and entries are added into local database
+ * */
 public class DBManagerChallanOnline  extends SQLiteOpenHelper{
 
     private Context context;

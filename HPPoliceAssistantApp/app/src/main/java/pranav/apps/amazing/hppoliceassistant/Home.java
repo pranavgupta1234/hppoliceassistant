@@ -1,5 +1,6 @@
 package pranav.apps.amazing.hppoliceassistant;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+
 /**
  * Created by Pranav Gupta on 12/18/2016.
  */
@@ -27,6 +34,13 @@ public class Home extends AppCompatActivity{
 
     /*Used for logging purposes*/
     private String TAG = "Home.java";
+
+    private DBManagerChallan dbManagerChallan;
+    private ArrayList<ChallanDetails> challanDetails;
+
+    private FirebaseDatabase database;
+    private DatabaseReference rootRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +52,48 @@ public class Home extends AppCompatActivity{
 
         sessionManager = new SessionManager(Home.this);
 
+        //setting up firebase instances
+        database = FirebaseDatabase.getInstance();
+        rootRef = database.getReference("challan");
+
+
         /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
         setLogoutBroadcastReceiver();
+
+        sendAllChallans();
+
+
+
+    }
+
+    private void sendAllChallans() {
+
+        //setting up database manager to automatically send data to server each time user comes to home
+        dbManagerChallan = new DBManagerChallan(Home.this,null,null,1);
+
+        challanDetails = new ArrayList<>();
+        challanDetails = dbManagerChallan.showChallan();
+        for (int i=0;i<challanDetails.size();i++){
+            if (challanDetails.get(i).getStatus()==0){
+                final ProgressDialog pg = ProgressDialog.show(Home.this,"Automatic Data Update","Sending offline entries to server...");
+                DatabaseReference child  = rootRef.push();
+                final int no = i;
+                child.setValue(challanDetails.get(i), new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if(databaseError== null){
+                            pg.dismiss();
+                            Toast.makeText(Home.this,"Upload Done ",Toast.LENGTH_SHORT).show();
+                            dbManagerChallan.setStatus(challanDetails.get(no),1);
+                        }
+                        else {
+                            pg.dismiss();
+                            Toast.makeText(Home.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+        }
     }
 
     @Override
