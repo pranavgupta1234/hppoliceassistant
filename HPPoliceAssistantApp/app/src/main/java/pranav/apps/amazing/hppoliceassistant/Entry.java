@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -81,6 +82,8 @@ public class Entry extends AppCompatActivity {
     private LocationListener locationListener;
     private Location currentBestLocation = null;
     private Location fixedLocationAfterButtonClick;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+
     //flag is 1 when our app has gps permission
     private int flag=0;
 
@@ -217,15 +220,19 @@ public class Entry extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-/*
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image*//**//*");
-                startActivityForResult(intent,GALLERY_INTENT);*/
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+                dispatchTakePictureIntent();
+/*                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image*//*");
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);*/
             }
         });
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     private void startPosting() {
@@ -272,6 +279,7 @@ public class Entry extends AppCompatActivity {
         if(uri!=null) {
             progressDialog1.setMessage("Uploading Image and data....");
             progressDialog1.show();
+            progressDialog1.setCancelable(false);
             filepath = mStorage.child("PhotosVehicleEntry").child(uri.getLastPathSegment());
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -392,15 +400,9 @@ public class Entry extends AppCompatActivity {
         }
     }
 
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode,int resultCode,Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-
-        /*if(requestCode==GALLERY_INTENT && resultCode==RESULT_OK){
-            uri =data.getData();
-            upload.setBackgroundColor(0);
-            upload.setImageURI(uri);
-        }*/
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
             if (data == null) {
                 Toast.makeText(Entry.this,"Error Loading File ",Toast.LENGTH_SHORT).show();
@@ -409,8 +411,6 @@ public class Entry extends AppCompatActivity {
             try {
                 actualImage = FileUtil.from(Entry.this, data.getData());
                 upload.setImageBitmap(BitmapFactory.decodeFile(actualImage.getAbsolutePath()));
-                //actualSizeTextView.setText(String.format("Size : %s", getReadableFileSize(actualImage.length())));
-                //clearImage();
                 if (actualImage == null) {
                     Toast.makeText(Entry.this,"Please Choose an image",Toast.LENGTH_SHORT).show();
                 } else {
@@ -419,28 +419,6 @@ public class Entry extends AppCompatActivity {
 
                     // Compress image in main thread
                     actualImage = Compressor.getDefault(Entry.this).compressToFile(actualImage);
-                    //setCompressedImage();
-
-                    // Compress image to bitmap in main thread
-            /*compressedImageView.setImageBitmap(Compressor.getDefault(this).compressToBitmap(actualImage));*/
-
-                    // Compress image using RxJava in background thread using rx java
-                    /*Compressor.getDefault(getActivity())
-                            .compressToFileAsObservable(actualImage)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<File>() {
-                                @Override
-                                public void call(File file) {
-                                    actualImage = file;
-                                   // setCompressedImage();
-                                }
-                            }, new Action1<Throwable>() {
-                                @Override
-                                public void call(Throwable throwable) {
-                                    showError(throwable.getMessage());
-                                }
-                            });*/
                     uri = Uri.fromFile(actualImage);
                     //uri=Uri.parse(actualImage.getAbsolutePath());
                     upload.setImageURI(uri);
@@ -451,6 +429,50 @@ public class Entry extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }*/
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            if (data == null) {
+                Toast.makeText(Entry.this,"Error Loading File ",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+                Uri tempUri = getImageUri(getApplicationContext(), photo);
+
+                // CALL THIS METHOD TO GET THE ACTUAL PATH
+                //File finalFile = new File(getRealPathFromURI(tempUri));
+                actualImage = FileUtil.from(Entry.this, tempUri);
+                //upload.setImageBitmap(BitmapFactory.decodeFile(actualImage.getAbsolutePath()));
+                progressDialog.setMessage("Compressing Image");
+                progressDialog.show();
+
+                // Compress image in main thread
+                //actualImage = Compressor.getDefault(Entry.this).compressToFile(actualImage);
+                uri = Uri.fromFile(actualImage);
+
+                upload.setImageURI(uri);
+                progressDialog.dismiss();
+            } catch (IOException e) {
+                Toast.makeText(Entry.this,"Failed to read picture data",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, veh.getText().toString(), null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
     }
     private boolean validateFields() {
         return (DataTypeValidator.validatePhoneNumberFormat(phone.getText().toString())
@@ -459,14 +481,6 @@ public class Entry extends AppCompatActivity {
     private String populateEntryID(){
         return "V"+sessionManager.getDistrict().substring(0,3).toUpperCase()+sessionManager.getPoliceStation().substring(3,7).toUpperCase().replace("/","")
                 +String.valueOf(epoch).substring(4);
-    }
-
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
     }
 
     @Override
