@@ -280,7 +280,7 @@ public class Entry extends AppCompatActivity {
             progressDialog1.setMessage("Uploading Image and data....");
             progressDialog1.show();
             progressDialog1.setCancelable(false);
-            filepath = mStorage.child("PhotosVehicleEntry").child(uri.getLastPathSegment());
+            filepath = mStorage.child("PhotosVehicleEntry").child(idChild.getKey());
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
