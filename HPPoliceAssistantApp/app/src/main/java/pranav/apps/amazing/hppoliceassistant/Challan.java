@@ -52,6 +52,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -98,6 +99,7 @@ public class Challan extends AppCompatActivity {
     private SessionManager sessionManager;
     private String date,time;
     private long epoch;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
 
     private CustomDialog customDialog;
@@ -240,17 +242,20 @@ public class Challan extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-/*
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-*/
-
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image*//*");
-                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+                dispatchTakePictureIntent();
+                //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                //intent.setType("image/*");
+                //startActivityForResult(intent, PICK_IMAGE_REQUEST);
 
             }
         });
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     private String generateCurrentTime() {
@@ -398,7 +403,7 @@ public class Challan extends AppCompatActivity {
         }
         progressDialog.dismiss();
     }
-    @Override
+/*    @Override
     public void onActivityResult(int requestCode,int resultCode,Intent data){
         super.onActivityResult(requestCode,resultCode,data);
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
@@ -409,8 +414,6 @@ public class Challan extends AppCompatActivity {
             try {
                 actualImage = FileUtil.from(Challan.this, data.getData());
                 upload_photo.setImageBitmap(BitmapFactory.decodeFile(actualImage.getAbsolutePath()));
-                //actualSizeTextView.setText(String.format("Size : %s", getReadableFileSize(actualImage.length())));
-                //clearImage();
                 if (actualImage == null) {
                     showError("Please choose an image!");
                 } else {
@@ -426,6 +429,43 @@ public class Challan extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }*/
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (data == null) {
+            Toast.makeText(Challan.this,"Error Loading File ",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+            Uri tempUri = getImageUri(getApplicationContext(), photo);
+
+            // CALL THIS METHOD TO GET THE ACTUAL PATH
+            //File finalFile = new File(getRealPathFromURI(tempUri));
+            actualImage = FileUtil.from(Challan.this, tempUri);
+            //upload.setImageBitmap(BitmapFactory.decodeFile(actualImage.getAbsolutePath()));
+            progressDialog.setMessage("Compressing Image");
+            progressDialog.show();
+
+            // Compress image in main thread
+            actualImage = Compressor.getDefault(Challan.this).compressToFile(actualImage);
+            uri = Uri.fromFile(actualImage);
+
+            upload_photo.setImageURI(uri);
+            progressDialog.dismiss();
+        } catch (IOException e) {
+            Toast.makeText(Challan.this,"Failed to read picture data",Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+}
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, veh_number.getText().toString(), null);
+        return Uri.parse(path);
     }
 
     private String populateChallanID(){

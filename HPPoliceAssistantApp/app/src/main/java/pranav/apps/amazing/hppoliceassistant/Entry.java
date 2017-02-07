@@ -449,7 +449,7 @@ public class Entry extends AppCompatActivity {
                 progressDialog.show();
 
                 // Compress image in main thread
-                //actualImage = Compressor.getDefault(Entry.this).compressToFile(actualImage);
+                actualImage = Compressor.getDefault(Entry.this).compressToFile(actualImage);
                 uri = Uri.fromFile(actualImage);
 
                 upload.setImageURI(uri);
