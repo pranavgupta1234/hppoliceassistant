@@ -47,6 +47,7 @@
             android:layout_marginTop="10dp"
             android:background="@android:color/white"
             android:hint="I/O Name"
+            android:imeOptions="actionNext"
             android:inputType="textPersonName"
             android:padding="12dp" />
 
@@ -57,6 +58,8 @@
             android:layout_marginTop="10dp"
             android:background="@android:color/white"
             android:hint="Password"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:padding="12dp" />
 

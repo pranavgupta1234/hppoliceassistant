@@ -8,13 +8,16 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -82,6 +85,11 @@ public class Login extends Activity {
         * last selected police post is also automatically selected*/
         populateDataFromLastLogin();
 
+        /**
+         * When user presses enter after input password this function will cause Login button
+         * to automatically be clicked thus saving user time to click on Login button
+         */
+        setLoginOnEnterPassword();
 
     }
 
@@ -278,7 +286,7 @@ public class Login extends Activity {
                 final String selectedDistrict = getSelectedDistrict();
                 final String selectedPoliceStation = getSelectedPoliceStation();
                 final String selectedPolicePost = getSelectedPolicePost();
-                final String iOName = getEnteredIOName();
+                final String iOName = getEnteredIOName().trim(); //Trim spaces at the end and beginning of string
                 final String enteredPassword = getEnteredPassword();
 
                 /*Check if password exists in local store
@@ -542,5 +550,26 @@ public class Login extends Activity {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null &&      //isConnected tells if Connected
                 activeNetwork.isConnectedOrConnecting();
+    }
+
+    /**
+     * When user presses enter after input password this function will cause Login button
+     * to automatically be clicked thus saving user time to click on Login button
+     */
+    private void setLoginOnEnterPassword(){
+        EditText passwordEditText = (EditText) findViewById(R.id.password);
+
+        passwordEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    Button loginButton = (Button) findViewById(R.id.login);
+                    loginButton.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 }
