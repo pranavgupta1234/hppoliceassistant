@@ -278,7 +278,7 @@ public class Login extends Activity {
                 final String selectedDistrict = getSelectedDistrict();
                 final String selectedPoliceStation = getSelectedPoliceStation();
                 final String selectedPolicePost = getSelectedPolicePost();
-                final String iOName = getEnteredIOName();
+                final String iOName = getEnteredIOName().trim(); //Trim spaces at the end and beginning of string
                 final String enteredPassword = getEnteredPassword();
 
                 /*Check if password exists in local store
