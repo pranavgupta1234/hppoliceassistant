@@ -60,7 +60,6 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         setLogoutBroadcastReceiver();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Search Online Challan");
         setSupportActionBar(toolbar);
 
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
