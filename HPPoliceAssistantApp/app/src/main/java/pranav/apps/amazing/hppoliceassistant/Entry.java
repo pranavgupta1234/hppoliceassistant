@@ -596,19 +596,19 @@ public class Entry extends AppCompatActivity {
             Toast.makeText(context,"GPS Enabled", Toast.LENGTH_SHORT ).show();
             Handler handler = new Handler();
             final ProgressDialog pg = ProgressDialog.show(Entry.this,"GPS Location","Updating location...");
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    pg.dismiss();
-                }
-            },5000);
             Handler handler1 = new Handler();
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     recreate();
                 }
-            },2000);
+            },4000);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    pg.dismiss();
+                }
+            },5000);
 
         }
 
