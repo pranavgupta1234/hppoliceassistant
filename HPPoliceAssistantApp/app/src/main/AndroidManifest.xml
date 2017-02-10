@@ -69,6 +69,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Challan"
+            android:label="MV Act eChallan"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.CHALLAN" />
