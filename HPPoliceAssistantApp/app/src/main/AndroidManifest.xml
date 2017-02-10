@@ -86,6 +86,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Stolen"
+            android:label="Stolen Vehicles"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.STOLEN" />

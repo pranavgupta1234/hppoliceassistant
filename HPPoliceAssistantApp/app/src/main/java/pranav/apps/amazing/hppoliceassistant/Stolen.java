@@ -75,7 +75,6 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
         setLogoutBroadcastReceiver();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Stolen Items");
         setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView)findViewById(R.id.recyle_view);
