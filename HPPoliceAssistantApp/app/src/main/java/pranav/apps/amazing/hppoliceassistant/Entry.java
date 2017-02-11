@@ -85,7 +85,7 @@ public class Entry extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     //flag is 1 when our app has gps permission
-    private int flag=0;
+    private int flag = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,14 +101,13 @@ public class Entry extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS_FINE_LOCATION);
-        }
-        else {
-            flag=1;
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Entry.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
+        } else {
+            flag = 1;
         }
 
-        if(currentBestLocation==null && flag==1){
+        if (currentBestLocation == null && flag == 1) {
             currentBestLocation = getLastBestLocation();
         }
 
@@ -117,20 +116,17 @@ public class Entry extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
-
-
         progressDialog = new ProgressDialog(Entry.this);
         progressDialog1 = new ProgressDialog(Entry.this);
 
-        veh=(EditText)findViewById(R.id.vehicle_num);
-        phone=(EditText)findViewById(R.id.phone_num);
-        description=(EditText)findViewById(R.id.description);
-        place=(EditText)findViewById(R.id.place);
+        veh = (EditText) findViewById(R.id.vehicle_num);
+        phone = (EditText) findViewById(R.id.phone_num);
+        description = (EditText) findViewById(R.id.description);
+        place = (EditText) findViewById(R.id.place);
 
 
-        upload=(ImageButton)findViewById(R.id.upload);
-        submit_det=(Button)findViewById(R.id.make_entry);
+        upload = (ImageButton) findViewById(R.id.upload);
+        submit_det = (Button) findViewById(R.id.make_entry);
 
         mStorage = FirebaseStorage.getInstance().getReference();
         submit_det.setOnClickListener(new View.OnClickListener() {
@@ -154,8 +150,7 @@ public class Entry extends AppCompatActivity {
                                 });
                         AlertDialog alert = builder.create();
                         alert.show();
-                    }
-                    else if(!validateFields()){
+                    } else if (!validateFields()) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Entry.this);
                         builder.setTitle("Vehicle Entry")
                                 .setMessage("Invalid Input Captured")
@@ -167,27 +162,24 @@ public class Entry extends AppCompatActivity {
                                 });
                         AlertDialog alert = builder.create();
                         alert.show();
-                    }
-                    else {
-                        epoch=System.currentTimeMillis();
+                    } else {
+                        epoch = System.currentTimeMillis();
                         EntryID = populateEntryID();
                         date = generateDateFromSystem();
                         time = generateCurrentTime();
                         //currentBestLocation = getLastBestLocation();
-                        fixedLocationAfterButtonClick=currentBestLocation;
+                        fixedLocationAfterButtonClick = currentBestLocation;
 
 
-
-                        newEntrywithoutImage = new VehicleEntry(EntryID,veh.getText().toString(), phone.getText().toString(),
-                                description.getText().toString(), place.getText().toString(),date,time,sessionManager.getIOName(), "null",sessionManager.getDistrict(),sessionManager.getPoliceStation(),
-                                sessionManager.getPolicePost(),0);
+                        newEntrywithoutImage = new VehicleEntry(EntryID, veh.getText().toString(), phone.getText().toString(),
+                                description.getText().toString(), place.getText().toString(), date, time, sessionManager.getIOName(), "null", sessionManager.getDistrict(), sessionManager.getPoliceStation(),
+                                sessionManager.getPolicePost(), 0);
                         newEntrywithoutImage.setEpoch(epoch);
-                        if(fixedLocationAfterButtonClick!=null){
+                        if (fixedLocationAfterButtonClick != null) {
                             newEntrywithoutImage.setLatitude(fixedLocationAfterButtonClick.getLatitude());
                             newEntrywithoutImage.setLongitude(fixedLocationAfterButtonClick.getLongitude());
-                        }
-                        else {
-                            Toast.makeText(Entry.this,"  Current Location is unknown\nPlease turn Data Connection or GPS ON",Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(Entry.this, "  Current Location is unknown\nPlease turn Data Connection or GPS ON", Toast.LENGTH_LONG).show();
                         }
                         vehicleEntryDialog = new VehicleEntryDialog(Entry.this, newEntrywithoutImage);
                         vehicleEntryDialog.setTitle("Entry Details");
@@ -238,45 +230,43 @@ public class Entry extends AppCompatActivity {
     private void startPosting() {
         final DatabaseReference idChild = mRootRef.push();
 
-        if(uri == null){
+        if (uri == null) {
             progressDialog1.setMessage("Uploading data....");
             progressDialog1.show();
-            Toast.makeText(Entry.this,"No Photo Selected, uploading data...",Toast.LENGTH_SHORT).show();
-            download_url_string ="Photo not available";
+            Toast.makeText(Entry.this, "No Photo Selected, uploading data...", Toast.LENGTH_SHORT).show();
+            download_url_string = "Photo not available";
 
-            newEntry = new VehicleEntry(EntryID,veh.getText().toString(),phone.getText().toString(),
-                    description.getText().toString(),place.getText().toString(),date,time,
-                    sessionManager.getIOName(),download_url_string,sessionManager.getDistrict(),sessionManager.getPoliceStation()
-                    ,sessionManager.getPolicePost(),1);
-            DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
+            newEntry = new VehicleEntry(EntryID, veh.getText().toString(), phone.getText().toString(),
+                    description.getText().toString(), place.getText().toString(), date, time,
+                    sessionManager.getIOName(), download_url_string, sessionManager.getDistrict(), sessionManager.getPoliceStation()
+                    , sessionManager.getPolicePost(), 1);
+            DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this, null, null, 1);
             newEntry.setStatus(1);
             newEntry.setEpoch(epoch);
-            if(fixedLocationAfterButtonClick!=null){
+            if (fixedLocationAfterButtonClick != null) {
                 newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
                 newEntry.setLatitude(fixedLocationAfterButtonClick.getLongitude());
-            }
-            else {
-                Toast.makeText(Entry.this,"Current Location is unknown\nPlease turn Data Connection or GPS ON",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(Entry.this, "Current Location is unknown\nPlease turn Data Connection or GPS ON", Toast.LENGTH_LONG).show();
             }
 
             dbManagerEntry.addEntry(newEntry);
             idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                    if(databaseError== null){
+                    if (databaseError == null) {
                         progressDialog1.dismiss();
-                        Toast.makeText(Entry.this,"Upload Done ",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Entry.this, "Upload Done ", Toast.LENGTH_SHORT).show();
                         resetAll();
-                    }
-                    else {
+                    } else {
                         progressDialog1.dismiss();
-                        Toast.makeText(Entry.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                        Toast.makeText(Entry.this, "Network Error! Data Not Saved,Sorry for inconvenience", Toast.LENGTH_LONG).show();
                         resetAll();
                     }
                 }
             });
         }
-        if(uri!=null) {
+        if (uri != null) {
             progressDialog1.setMessage("Uploading Image and data....");
             progressDialog1.show();
             progressDialog1.setCancelable(false);
@@ -285,37 +275,35 @@ public class Entry extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     downloadUrl = taskSnapshot.getDownloadUrl();
-                    if(downloadUrl!=null) {
+                    if (downloadUrl != null) {
                         download_url_string = downloadUrl.toString();
                     }
 
-                    newEntry = new VehicleEntry(EntryID,veh.getText().toString(),phone.getText().toString(),
-                            description.getText().toString(),place.getText().toString(),date,time,
-                            sessionManager.getIOName(),download_url_string,sessionManager.getDistrict(),sessionManager.getPoliceStation(),
-                            sessionManager.getPolicePost(),1);
-                    DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
+                    newEntry = new VehicleEntry(EntryID, veh.getText().toString(), phone.getText().toString(),
+                            description.getText().toString(), place.getText().toString(), date, time,
+                            sessionManager.getIOName(), download_url_string, sessionManager.getDistrict(), sessionManager.getPoliceStation(),
+                            sessionManager.getPolicePost(), 1);
+                    DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this, null, null, 1);
                     newEntry.setStatus(1);
                     newEntry.setEpoch(epoch);
-                    if(fixedLocationAfterButtonClick!=null){
+                    if (fixedLocationAfterButtonClick != null) {
                         newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
                         newEntry.setLongitude(fixedLocationAfterButtonClick.getLongitude());
-                    }
-                    else {
-                        Toast.makeText(Entry.this,"Current Location is unknown\nPlease turn Data Connection or GPS ON",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(Entry.this, "Current Location is unknown\nPlease turn Data Connection or GPS ON", Toast.LENGTH_LONG).show();
                     }
 
                     dbManagerEntry.addEntry(newEntry);
                     idChild.setValue(newEntry, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                            if(databaseError== null){
+                            if (databaseError == null) {
                                 progressDialog1.dismiss();
-                                Toast.makeText(Entry.this,"Upload Done ",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Entry.this, "Upload Done ", Toast.LENGTH_SHORT).show();
                                 resetAll();
-                            }
-                            else {
+                            } else {
                                 progressDialog1.dismiss();
-                                Toast.makeText(Entry.this,"Network Error! Data Not Saved,Sorry for inconvenience",Toast.LENGTH_LONG).show();
+                                Toast.makeText(Entry.this, "Network Error! Data Not Saved,Sorry for inconvenience", Toast.LENGTH_LONG).show();
                                 resetAll();
                             }
                         }
@@ -327,9 +315,9 @@ public class Entry extends AppCompatActivity {
                     Toast.makeText(Entry.this, "Upload Failed !", Toast.LENGTH_LONG).show();
                     progressDialog1.dismiss();
                     newEntry.setStatus(0);
-                    DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this,null,null,1);
-                    if(dbManagerEntry.addEntry(newEntry)){
-                        Toast.makeText(Entry.this,"Entry Added Offline!",Toast.LENGTH_SHORT).show();
+                    DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this, null, null, 1);
+                    if (dbManagerEntry.addEntry(newEntry)) {
+                        Toast.makeText(Entry.this, "Entry Added Offline!", Toast.LENGTH_SHORT).show();
                         resetAll();
                     }
                 }
@@ -357,7 +345,7 @@ public class Entry extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.popup_menu,menu);
+        getMenuInflater().inflate(R.menu.popup_menu, menu);
         return true;
     }
 
@@ -373,15 +361,15 @@ public class Entry extends AppCompatActivity {
                 //mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.offline_challan:
-                Intent i = new Intent(Entry.this,OfflineChallan.class);
+                Intent i = new Intent(Entry.this, OfflineChallan.class);
                 startActivity(i);
                 return true;
             case R.id.offline_entry:
-                Intent intent = new Intent(Entry.this,OfflineEntry.class);
+                Intent intent = new Intent(Entry.this, OfflineEntry.class);
                 startActivity(intent);
                 return true;
             case R.id.developers_activity:
-                startActivity(new Intent(Entry.this,DevelopersActivity.class));
+                startActivity(new Intent(Entry.this, DevelopersActivity.class));
                 return true;
             case R.id.logout:
                 new AlertDialog.Builder(this)
@@ -392,7 +380,8 @@ public class Entry extends AppCompatActivity {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 sessionManager.logoutUser();
-                            }})
+                            }
+                        })
                         .setNegativeButton(android.R.string.no, null).show();
                 return true;
             default:
@@ -433,7 +422,7 @@ public class Entry extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             if (data == null) {
-                Toast.makeText(Entry.this,"Error Loading File ",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Entry.this, "Error Loading File ", Toast.LENGTH_SHORT).show();
                 return;
             }
             try {
@@ -455,7 +444,7 @@ public class Entry extends AppCompatActivity {
                 upload.setImageURI(uri);
                 progressDialog.dismiss();
             } catch (IOException e) {
-                Toast.makeText(Entry.this,"Failed to read picture data",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Entry.this, "Failed to read picture data", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
@@ -474,43 +463,44 @@ public class Entry extends AppCompatActivity {
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
     }
+
     private boolean validateFields() {
         return (DataTypeValidator.validatePhoneNumberFormat(phone.getText().toString())
                 && DataTypeValidator.validateVehicleNumberFormat(veh.getText().toString()));
     }
-    private String populateEntryID(){
-        return "V"+sessionManager.getDistrict().substring(0,3).toUpperCase()+sessionManager.getPoliceStation().substring(3,7).toUpperCase().replace("/","")
-                +String.valueOf(epoch).substring(4);
+
+    private String populateEntryID() {
+        return "V" + sessionManager.getDistrict().substring(0, 3).toUpperCase() + sessionManager.getPoliceStation().substring(3, 7).toUpperCase().replace("/", "")
+                + String.valueOf(epoch).substring(4);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case REQUEST_ACCESS_FINE_LOCATION:{
-                if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(Entry.this,"GPS Access Permission Granted",Toast.LENGTH_SHORT).show();
-                    flag=1;
-                }
-                else {
-                    Toast.makeText(Entry.this,"GPS Access Permission Denied",Toast.LENGTH_SHORT).show();
+        switch (requestCode) {
+            case REQUEST_ACCESS_FINE_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(Entry.this, "GPS Access Permission Granted", Toast.LENGTH_SHORT).show();
+                    flag = 1;
+                } else {
+                    Toast.makeText(Entry.this, "GPS Access Permission Denied", Toast.LENGTH_SHORT).show();
                 }
             }
 
         }
     }
+
     /**
      * @return the last know best location
      */
     private Location getLastBestLocation() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Entry.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_ACCESS_FINE_LOCATION);
+            ActivityCompat.requestPermissions(Entry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_ACCESS_FINE_LOCATION);
+        } else {
+            flag = 1;
         }
-        else {
-            flag=1;
-        }
-        if(flag==1){
+        if (flag == 1) {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationListener = new MyLocationListener(Entry.this);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -518,7 +508,9 @@ public class Entry extends AppCompatActivity {
             Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
             long GPSLocationTime = 0;
-            if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+            if (null != locationGPS) {
+                GPSLocationTime = locationGPS.getTime();
+            }
 
             long NetLocationTime = 0;
 
@@ -526,14 +518,12 @@ public class Entry extends AppCompatActivity {
                 NetLocationTime = locationNet.getTime();
             }
 
-            if ( 0 < GPSLocationTime - NetLocationTime ) {
+            if (0 < GPSLocationTime - NetLocationTime) {
                 return locationGPS;
-            }
-            else {
+            } else {
                 return locationNet;
             }
-        }
-        else {
+        } else {
             return null;
         }
 
@@ -573,7 +563,7 @@ public class Entry extends AppCompatActivity {
         private static final int TWO_MINUTES = 1000 * 60 * 2;
 
 
-        public MyLocationListener(Context context){
+        public MyLocationListener(Context context) {
             this.context = context;
         }
 
@@ -581,7 +571,7 @@ public class Entry extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             makeUseOfNewLocation(location);
 
-            if(currentBestLocation == null){
+            if (currentBestLocation == null) {
                 currentBestLocation = location;
             }
         }
@@ -593,47 +583,49 @@ public class Entry extends AppCompatActivity {
 
         @Override
         public void onProviderEnabled(String s) {
-            Toast.makeText(context,"GPS Enabled", Toast.LENGTH_SHORT ).show();
+            Toast.makeText(context, "GPS Enabled", Toast.LENGTH_SHORT).show();
             Handler handler = new Handler();
-            final ProgressDialog pg = ProgressDialog.show(Entry.this,"GPS Location","Updating location...");
+            final ProgressDialog pg = ProgressDialog.show(Entry.this, "GPS Location", "Updating location...");
             Handler handler1 = new Handler();
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     recreate();
                 }
-            },4000);
+            }, 4000);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     pg.dismiss();
                 }
-            },5000);
+            }, 5000);
 
         }
 
         @Override
         public void onProviderDisabled(String s) {
-            Toast.makeText(context,"GPS Disabled Please Turn It ON", Toast.LENGTH_SHORT ).show();
+            Toast.makeText(context, "GPS Disabled Please Turn It ON", Toast.LENGTH_SHORT).show();
 
         }
+
         /**
          * This method modify the last know good location according to the arguments.
          *
          * @param location The possible new location.
          */
         void makeUseOfNewLocation(Location location) {
-            if ( isBetterLocation(location, currentBestLocation) ) {
+            if (isBetterLocation(location, currentBestLocation)) {
                 currentBestLocation = location;
-            }
-            else {
+            } else {
                 currentBestLocation = getLastBestLocation();
             }
         }
 
-        /** Determines whether one location reading is better than the current location fix
-         * @param location  The new location that you want to evaluate
-         * @param currentBestLocation  The current location fix, to which you want to compare the new one.
+        /**
+         * Determines whether one location reading is better than the current location fix
+         *
+         * @param location            The new location that you want to evaluate
+         * @param currentBestLocation The current location fix, to which you want to compare the new one.
          */
         protected boolean isBetterLocation(Location location, Location currentBestLocation) {
             if (currentBestLocation == null) {
@@ -677,7 +669,9 @@ public class Entry extends AppCompatActivity {
             return false;
         }
 
-        /** Checks whether two providers are the same */
+        /**
+         * Checks whether two providers are the same
+         */
         private boolean isSameProvider(String provider1, String provider2) {
             if (provider1 == null) {
                 return provider2 == null;

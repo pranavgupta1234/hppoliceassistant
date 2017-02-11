@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="maxLengthVehicleNumber">18</integer>
+    <integer name="lengthPhoneNumber">10</integer>
+    <integer name="maxLengthNakaName">30</integer>
+</resources>
