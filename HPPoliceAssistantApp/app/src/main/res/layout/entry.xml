@@ -29,11 +29,13 @@
                 style="@style/fieldLabel"
                 android:text="Vehicle Number * (No Special Characters)" />
 
-            <EditText style="@style/fieldEditText"
+            <!--Turned off auto suggestions for this field-->
+            <EditText
                 android:id="@+id/vehicle_num"
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\"
+                style="@style/fieldEditText"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
                 android:hint="e.g. hp12ab1234"
-                android:inputType="textFilter"
+                android:inputType="textNoSuggestions|textVisiblePassword"
                 android:maxLength="@integer/maxLengthVehicleNumber"
                 android:maxLines="1" />
 
@@ -41,8 +43,9 @@
                 style="@style/fieldLabel"
                 android:text="Phone Number" />
 
-            <EditText style="@style/fieldEditText"
+            <EditText
                 android:id="@+id/phone_num"
+                style="@style/fieldEditText"
                 android:hint="e.g. 9816912345"
                 android:inputType="number"
                 android:maxLength="@integer/lengthPhoneNumber"
@@ -52,15 +55,17 @@
                 style="@style/fieldLabel"
                 android:text="Naka Name *" />
 
-            <EditText style="@style/fieldEditText"
+            <EditText
                 android:id="@+id/place"
+                style="@style/fieldEditText"
                 android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
                 android:hint="Enter Naka Name"
                 android:inputType="textFilter"
                 android:maxLength="@integer/maxLengthNakaName"
                 android:maxLines="1" />
 
-            <TextView style="@style/fieldLabel"
+            <TextView
+                style="@style/fieldLabel"
                 android:text="Description" />
 
             <EditText
