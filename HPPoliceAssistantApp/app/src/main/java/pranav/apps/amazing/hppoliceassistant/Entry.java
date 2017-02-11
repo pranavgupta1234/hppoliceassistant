@@ -23,12 +23,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -54,6 +58,7 @@ import id.zelory.compressor.FileUtil;
  * Created by Pranav Gupta on 12/10/2016.
  */
 public class Entry extends AppCompatActivity {
+    private final String TAG = "Entry.java";
     private static final int REQUEST_ACCESS_FINE_LOCATION = 133;
     private Firebase mrootRef;
     private EditText veh, phone, description, place;
@@ -120,7 +125,7 @@ public class Entry extends AppCompatActivity {
         progressDialog1 = new ProgressDialog(Entry.this);
 
         veh = (EditText) findViewById(R.id.vehicle_num);
-        phone = (EditText) findViewById(R.id.phone_num);
+        phone = (EditText) findViewById(R.id.phone_num_entry);
         description = (EditText) findViewById(R.id.description);
         place = (EditText) findViewById(R.id.place);
 
@@ -218,6 +223,7 @@ public class Entry extends AppCompatActivity {
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);*/
             }
         });
+
     }
 
     private void dispatchTakePictureIntent() {
@@ -679,4 +685,6 @@ public class Entry extends AppCompatActivity {
             return provider1.equals(provider2);
         }
     }
+
+
 }

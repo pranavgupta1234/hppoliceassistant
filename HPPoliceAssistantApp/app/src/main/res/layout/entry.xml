@@ -30,6 +30,8 @@
                 android:text="Vehicle Number * (No Special Characters)" />
 
             <!--Turned off auto suggestions for this field-->
+            <!--SingleLine although deprecated helps in enabling next button on soft-keyboard which takes user focus
+            to next input-->
             <EditText
                 android:id="@+id/vehicle_num"
                 style="@style/fieldEditText"
@@ -37,14 +39,14 @@
                 android:hint="e.g. hp12ab1234"
                 android:inputType="textNoSuggestions|textVisiblePassword"
                 android:maxLength="@integer/maxLengthVehicleNumber"
-                android:maxLines="1" />
+                android:singleLine="true" />
 
             <TextView
                 style="@style/fieldLabel"
-                android:text="Phone Number" />
+                android:text="Phone Number (10 digits only)" />
 
             <EditText
-                android:id="@+id/phone_num"
+                android:id="@id/phone_num_entry"
                 style="@style/fieldEditText"
                 android:hint="e.g. 9816912345"
                 android:inputType="number"
@@ -59,25 +61,21 @@
                 android:id="@+id/place"
                 style="@style/fieldEditText"
                 android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
-                android:hint="Enter Naka Name"
-                android:inputType="textFilter"
+                android:hint="Enter naka name"
+                android:inputType="text"
                 android:maxLength="@integer/maxLengthNakaName"
-                android:maxLines="1" />
+                android:singleLine="true" />
 
             <TextView
                 style="@style/fieldLabel"
                 android:text="Description" />
 
             <EditText
+                style="@style/fieldEditText"
                 android:id="@+id/description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_edittext"
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\  ,"
-                android:hint="flll short description here"
-                android:inputType="textFilter"
-                android:maxLength="100"
-                android:padding="12dp" />
+                android:hint="Enter short description"
+                android:maxLength="@integer/maxLengthDescription"
+                android:singleLine="true"/>
 
             <ImageButton
                 android:id="@+id/upload"
@@ -94,7 +92,7 @@
                 android:id="@+id/make_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_back"
+                android:background="@color/colorAccent"
                 android:text="Submit"
                 android:textStyle="bold" />
         </LinearLayout>

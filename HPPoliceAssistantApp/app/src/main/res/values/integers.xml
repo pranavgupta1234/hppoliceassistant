@@ -3,4 +3,5 @@
     <integer name="maxLengthVehicleNumber">18</integer>
     <integer name="lengthPhoneNumber">10</integer>
     <integer name="maxLengthNakaName">30</integer>
+    <integer name="maxLengthDescription">100</integer>
 </resources>
