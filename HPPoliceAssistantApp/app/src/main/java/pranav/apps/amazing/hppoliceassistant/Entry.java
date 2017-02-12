@@ -35,6 +35,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -62,7 +63,8 @@ import id.zelory.compressor.FileUtil;
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Entry extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class Entry extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private final String TAG = "Entry.java";
     private static final int REQUEST_ACCESS_FINE_LOCATION = 133;
     private Firebase mrootRef;
@@ -91,8 +93,8 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
     private Location currentBestLocation;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 223;
-
-    private GoogleApiClient mGoogleApiClient=null;
+    private LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
 
     //flag is 1 when our app has gps permission
     private int flag = 0;
@@ -103,10 +105,6 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
         setContentView(R.layout.entry);
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-        //create a location request
-        createLocationRequest();
-
-
         //setting up google api client to request for location updates
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
@@ -116,6 +114,8 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
                     .addApi(LocationServices.API)
                     .build();
         }
+        //create a location request
+        createLocationRequest();
 
         sessionManager = new SessionManager(Entry.this);
         setLogoutBroadcastReceiver();
@@ -212,7 +212,6 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
                         EntryID = populateEntryID();
                         date = generateDateFromSystem();
                         time = generateCurrentTime();
-                        mGoogleApiClient.connect();
 
                         newEntrywithoutImage = new VehicleEntry(EntryID, veh.getText().toString(), phone.getText().toString(),
                                 description.getText().toString(), place.getText().toString(), date, time, sessionManager.getIOName(), "null", sessionManager.getDistrict(), sessionManager.getPoliceStation(),
@@ -388,7 +387,7 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
     }
 
     protected void createLocationRequest() {
-        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(6000);
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -406,8 +405,6 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
                     case LocationSettingsStatusCodes.SUCCESS:
                         // All location settings are satisfied. The client can
                         // initialize location requests here.
-                        
-
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied, but this can be fixed
@@ -415,9 +412,7 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
                         try {
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
-                            status.startResolutionForResult(
-                                    Entry.this,
-                                    REQUEST_CHECK_SETTINGS);
+                            status.startResolutionForResult(Entry.this, REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
                         }
@@ -617,7 +612,6 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
     @Override
     protected void onDestroy() {
         unregisterReceiver(logoutBroadcastReceiver);
-
         super.onDestroy();
     }
     @Override
@@ -639,9 +633,13 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
             ActivityCompat.requestPermissions(Entry.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
         } else {
             flag = 1;
+            currentBestLocation = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
+
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest,this);
         }
-        currentBestLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
+        //Toast.makeText(Entry.this,String.valueOf(currentBestLocation.getLatitude()),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(Entry.this,String.valueOf(currentBestLocation.getLongitude()),Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -652,5 +650,10 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(Entry.this,"Unable to Fetch the location",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        currentBestLocation = location;
     }
 }
