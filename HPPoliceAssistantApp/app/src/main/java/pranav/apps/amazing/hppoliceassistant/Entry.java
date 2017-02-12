@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -31,7 +32,15 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
@@ -79,9 +88,10 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
     private String EntryID;
     private String date, time;
     private long epoch;
-    private Location currentBestLocation = null;
-    private Location fixedLocationAfterButtonClick;
+    private Location currentBestLocation;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_CHECK_SETTINGS = 223;
+
     private GoogleApiClient mGoogleApiClient=null;
 
     //flag is 1 when our app has gps permission
@@ -92,6 +102,10 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry);
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        //create a location request
+        createLocationRequest();
+
 
         //setting up google api client to request for location updates
         // Create an instance of GoogleAPIClient.
@@ -198,17 +212,15 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
                         EntryID = populateEntryID();
                         date = generateDateFromSystem();
                         time = generateCurrentTime();
-                        //currentBestLocation = getLastBestLocation();
-                        fixedLocationAfterButtonClick = currentBestLocation;
-
+                        mGoogleApiClient.connect();
 
                         newEntrywithoutImage = new VehicleEntry(EntryID, veh.getText().toString(), phone.getText().toString(),
                                 description.getText().toString(), place.getText().toString(), date, time, sessionManager.getIOName(), "null", sessionManager.getDistrict(), sessionManager.getPoliceStation(),
                                 sessionManager.getPolicePost(), 0);
                         newEntrywithoutImage.setEpoch(epoch);
-                        if (fixedLocationAfterButtonClick != null) {
-                            newEntrywithoutImage.setLatitude(fixedLocationAfterButtonClick.getLatitude());
-                            newEntrywithoutImage.setLongitude(fixedLocationAfterButtonClick.getLongitude());
+                        if (currentBestLocation != null) {
+                            newEntrywithoutImage.setLatitude(currentBestLocation.getLatitude());
+                            newEntrywithoutImage.setLongitude(currentBestLocation.getLongitude());
                         } else {
                             Toast.makeText(Entry.this, "  Current Location is unknown\nPlease turn Data Connection or GPS ON", Toast.LENGTH_LONG).show();
                         }
@@ -275,9 +287,9 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
             DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this, null, null, 1);
             newEntry.setStatus(1);
             newEntry.setEpoch(epoch);
-            if (fixedLocationAfterButtonClick != null) {
-                newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
-                newEntry.setLatitude(fixedLocationAfterButtonClick.getLongitude());
+            if (currentBestLocation != null) {
+                newEntry.setLatitude(currentBestLocation.getLatitude());
+                newEntry.setLatitude(currentBestLocation.getLongitude());
             } else {
                 Toast.makeText(Entry.this, "Current Location is unknown\nPlease turn Data Connection or GPS ON", Toast.LENGTH_LONG).show();
             }
@@ -318,9 +330,9 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
                     DBManagerEntry dbManagerEntry = new DBManagerEntry(Entry.this, null, null, 1);
                     newEntry.setStatus(1);
                     newEntry.setEpoch(epoch);
-                    if (fixedLocationAfterButtonClick != null) {
-                        newEntry.setLatitude(fixedLocationAfterButtonClick.getLatitude());
-                        newEntry.setLongitude(fixedLocationAfterButtonClick.getLongitude());
+                    if (currentBestLocation != null) {
+                        newEntry.setLatitude(currentBestLocation.getLatitude());
+                        newEntry.setLongitude(currentBestLocation.getLongitude());
                     } else {
                         Toast.makeText(Entry.this, "Current Location is unknown\nPlease turn Data Connection or GPS ON", Toast.LENGTH_LONG).show();
                     }
@@ -373,6 +385,53 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String strDate = sdf.format(c.getTime());
         return strDate.substring(0, 2) + ", " + month[Integer.valueOf(strDate.substring(3, 4))] + " " + strDate.substring(6, 10);
+    }
+
+    protected void createLocationRequest() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(6000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+        PendingResult<LocationSettingsResult> result =
+                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,
+                        builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(@NonNull LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                final LocationSettingsStates a = result.getLocationSettingsStates();
+                switch (status.getStatusCode()){
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        // All location settings are satisfied. The client can
+                        // initialize location requests here.
+                        
+
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        // Location settings are not satisfied, but this can be fixed
+                        // by showing the user a dialog.
+                        try {
+                            // Show the dialog by calling startResolutionForResult(),
+                            // and check the result in onActivityResult().
+                            status.startResolutionForResult(
+                                    Entry.this,
+                                    REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // Location settings are not satisfied. However, we have no way
+                        // to fix the settings so we won't show the dialog.
+                        break;
+
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -560,6 +619,15 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
         unregisterReceiver(logoutBroadcastReceiver);
 
         super.onDestroy();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    protected void stopLocationUpdates() {
+        //have to implement
     }
 
     @Override
