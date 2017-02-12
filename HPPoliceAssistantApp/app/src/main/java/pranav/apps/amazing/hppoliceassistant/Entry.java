@@ -10,32 +10,25 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
@@ -83,11 +76,10 @@ public class Entry extends AppCompatActivity {
     private String EntryID;
     private String date, time;
     private long epoch;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
     private Location currentBestLocation = null;
     private Location fixedLocationAfterButtonClick;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private GoogleApiClient mGoogleApiClient;
 
     //flag is 1 when our app has gps permission
     private int flag = 0;
@@ -102,7 +94,27 @@ public class Entry extends AppCompatActivity {
 
         mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
         database = FirebaseDatabase.getInstance();
-        mRootRef = database.getReference("vehicle_entry");
+
+
+        /**The strategies described in this guide apply to the platform location API in android.location. The Google Location
+         * Services API, part of Google Play Services, provides a more powerful, high-level framework that automatically handles
+         * location providers, user movement, and location accuracy. It also handles location update scheduling based on power
+         * consumption parameters you provide. In most cases, you'll get better battery performance, as well as more appropriate
+         * accuracy, by using the Location Services API.
+         * Here below is an example how you can use ****Android Framework location API (android.location)***** which is built in
+         * android but it is strongly recommended to any developer that he/she should switch to google play service API
+         * google android developer guide : https://developer.android.com/guide/topics/location/strategies.html#BestPerformance
+         * google android developer guide for google play api : https://developer.android.com/training/location/index.html
+         * * */
+
+        /** One of the unique features of mobile applications is location awareness. Mobile users take their devices with them
+         *  everywhere, and adding location awareness to your app offers users a more contextual experience. The location APIs
+         *  available in Google Play services facilitate adding location awareness to your app with automated location tracking,
+         *  geofencing, and activity recognition.
+         *****The Google Play services location APIs are preferred over the Android framework location APIs (android.location) ******
+         * as a way of adding location awareness to your app. If you are currently using the Android framework location APIs,
+         * you are strongly encouraged to switch to the Google Play services location APIs as soon as possible.
+         * */
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -113,7 +125,7 @@ public class Entry extends AppCompatActivity {
         }
 
         if (currentBestLocation == null && flag == 1) {
-            currentBestLocation = getLastBestLocation();
+            //currentBestLocation = getLastBestLocation();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -496,45 +508,6 @@ public class Entry extends AppCompatActivity {
         }
     }
 
-    /**
-     * @return the last know best location
-     */
-    private Location getLastBestLocation() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Entry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_ACCESS_FINE_LOCATION);
-        } else {
-            flag = 1;
-        }
-        if (flag == 1) {
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationListener = new MyLocationListener(Entry.this);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-            long GPSLocationTime = 0;
-            if (null != locationGPS) {
-                GPSLocationTime = locationGPS.getTime();
-            }
-
-            long NetLocationTime = 0;
-
-            if (null != locationNet) {
-                NetLocationTime = locationNet.getTime();
-            }
-
-            if (0 < GPSLocationTime - NetLocationTime) {
-                return locationGPS;
-            } else {
-                return locationNet;
-            }
-        } else {
-            return null;
-        }
-
-    }
-
     private void resetAll() {
         veh.setText("");
         phone.setText("");
@@ -562,129 +535,4 @@ public class Entry extends AppCompatActivity {
 
         super.onDestroy();
     }
-
-    private class MyLocationListener implements LocationListener {
-
-        private Context context;
-        private static final int TWO_MINUTES = 1000 * 60 * 2;
-
-
-        public MyLocationListener(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public void onLocationChanged(Location location) {
-            makeUseOfNewLocation(location);
-
-            if (currentBestLocation == null) {
-                currentBestLocation = location;
-            }
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-            Toast.makeText(context, "GPS Enabled", Toast.LENGTH_SHORT).show();
-            Handler handler = new Handler();
-            final ProgressDialog pg = ProgressDialog.show(Entry.this, "GPS Location", "Updating location...");
-            Handler handler1 = new Handler();
-            handler1.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    recreate();
-                }
-            }, 4000);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    pg.dismiss();
-                }
-            }, 5000);
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-            Toast.makeText(context, "GPS Disabled Please Turn It ON", Toast.LENGTH_SHORT).show();
-
-        }
-
-        /**
-         * This method modify the last know good location according to the arguments.
-         *
-         * @param location The possible new location.
-         */
-        void makeUseOfNewLocation(Location location) {
-            if (isBetterLocation(location, currentBestLocation)) {
-                currentBestLocation = location;
-            } else {
-                currentBestLocation = getLastBestLocation();
-            }
-        }
-
-        /**
-         * Determines whether one location reading is better than the current location fix
-         *
-         * @param location            The new location that you want to evaluate
-         * @param currentBestLocation The current location fix, to which you want to compare the new one.
-         */
-        protected boolean isBetterLocation(Location location, Location currentBestLocation) {
-            if (currentBestLocation == null) {
-                // A new location is always better than no location
-                return true;
-            }
-
-            // Check whether the new location fix is newer or older
-            long timeDelta = location.getTime() - currentBestLocation.getTime();
-            boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
-            boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
-            boolean isNewer = timeDelta > 0;
-
-            // If it's been more than two minutes since the current location, use the new location,
-            // because the user has likely moved.
-            if (isSignificantlyNewer) {
-                return true;
-                // If the new location is more than two minutes older, it must be worse.
-            } else if (isSignificantlyOlder) {
-                return false;
-            }
-
-            // Check whether the new location fix is more or less accurate
-            int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-            boolean isLessAccurate = accuracyDelta > 0;
-            boolean isMoreAccurate = accuracyDelta < 0;
-            boolean isSignificantlyLessAccurate = accuracyDelta > 200;
-
-            // Check if the old and new location are from the same provider
-            boolean isFromSameProvider = isSameProvider(location.getProvider(),
-                    currentBestLocation.getProvider());
-
-            // Determine location quality using a combination of timeliness and accuracy
-            if (isMoreAccurate) {
-                return true;
-            } else if (isNewer && !isLessAccurate) {
-                return true;
-            } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-                return true;
-            }
-            return false;
-        }
-
-        /**
-         * Checks whether two providers are the same
-         */
-        private boolean isSameProvider(String provider1, String provider2) {
-            if (provider1 == null) {
-                return provider2 == null;
-            }
-            return provider1.equals(provider2);
-        }
-    }
-
-
 }
