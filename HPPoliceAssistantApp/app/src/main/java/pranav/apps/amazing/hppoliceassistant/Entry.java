@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,9 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
@@ -50,7 +53,7 @@ import id.zelory.compressor.FileUtil;
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
-public class Entry extends AppCompatActivity {
+public class Entry extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private final String TAG = "Entry.java";
     private static final int REQUEST_ACCESS_FINE_LOCATION = 133;
     private Firebase mrootRef;
@@ -79,7 +82,7 @@ public class Entry extends AppCompatActivity {
     private Location currentBestLocation = null;
     private Location fixedLocationAfterButtonClick;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient=null;
 
     //flag is 1 when our app has gps permission
     private int flag = 0;
@@ -89,6 +92,17 @@ public class Entry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry);
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        //setting up google api client to request for location updates
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
         sessionManager = new SessionManager(Entry.this);
         setLogoutBroadcastReceiver();
 
@@ -125,7 +139,7 @@ public class Entry extends AppCompatActivity {
         }
 
         if (currentBestLocation == null && flag == 1) {
-            //currentBestLocation = getLastBestLocation();
+            mGoogleApiClient.connect();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -530,9 +544,45 @@ public class Entry extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         unregisterReceiver(logoutBroadcastReceiver);
 
         super.onDestroy();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Entry.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
+        } else {
+            flag = 1;
+        }
+        currentBestLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(Entry.this,"Connection To Fetch Location Was Suspended",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(Entry.this,"Unable to Fetch the location",Toast.LENGTH_SHORT).show();
     }
 }
