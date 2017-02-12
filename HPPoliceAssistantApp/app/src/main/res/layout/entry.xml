@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -24,14 +23,15 @@
             android:orientation="vertical"
             android:paddingLeft="8dp"
             android:paddingRight="8dp">
-
             <TextView
                 style="@style/fieldLabel"
-                android:text="Vehicle Number * (No Special Characters)" />
-
+                android:text="Vehicle Number * (No Special Characters)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
             <!--Turned off auto suggestions for this field-->
             <!--SingleLine although deprecated helps in enabling next button on soft-keyboard which takes user focus
             to next input-->
+
             <EditText
                 android:id="@+id/vehicle_num"
                 style="@style/fieldEditText"
@@ -39,11 +39,16 @@
                 android:hint="e.g. hp12ab1234"
                 android:inputType="textNoSuggestions|textVisiblePassword"
                 android:maxLength="@integer/maxLengthVehicleNumber"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:background="@drawable/custom_edittext"
+                android:layout_height="wrap_content" />
 
             <TextView
                 style="@style/fieldLabel"
-                android:text="Phone Number (10 digits only)" />
+                android:text="Phone Number (10 digits only)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@id/phone_num_entry"
@@ -51,11 +56,16 @@
                 android:hint="e.g. 9816912345"
                 android:inputType="number"
                 android:maxLength="@integer/lengthPhoneNumber"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:background="@drawable/custom_edittext"
+                android:layout_height="wrap_content" />
 
             <TextView
                 style="@style/fieldLabel"
-                android:text="Naka Name *" />
+                android:text="Naka Name *"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/place"
@@ -64,18 +74,26 @@
                 android:hint="Enter naka name"
                 android:inputType="text"
                 android:maxLength="@integer/maxLengthNakaName"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:background="@drawable/custom_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <TextView
                 style="@style/fieldLabel"
-                android:text="Description" />
+                android:text="Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <EditText
                 style="@style/fieldEditText"
                 android:id="@+id/description"
                 android:hint="Enter short description"
                 android:maxLength="@integer/maxLengthDescription"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:background="@drawable/custom_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <ImageButton
                 android:id="@+id/upload"
