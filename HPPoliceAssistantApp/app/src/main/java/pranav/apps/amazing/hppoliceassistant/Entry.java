@@ -148,7 +148,7 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
          * as a way of adding location awareness to your app. If you are currently using the Android framework location APIs,
          * you are strongly encouraged to switch to the Google Play services location APIs as soon as possible.
          * */
-
+        
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Create a Vehicle Entry");
         setSupportActionBar(toolbar);
@@ -637,6 +637,12 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
             }, REQUEST_ACCESS_FINE_LOCATION);
         } else {
             flag = 1;
+            if (currentBestLocation == null) {
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            }else {
+                currentBestLocation = LocationServices.FusedLocationApi.getLastLocation(
+                        mGoogleApiClient);
+            }
         }
     }
 
