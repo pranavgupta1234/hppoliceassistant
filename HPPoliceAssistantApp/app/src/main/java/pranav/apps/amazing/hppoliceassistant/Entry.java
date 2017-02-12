@@ -94,8 +94,6 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 223;
     private static final int REQUEST_ACCESS_FINE_LOCATION = 133;
-    private static final int REQUEST_ACCESS_CAMERA = 100;
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 90;
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
 
@@ -116,21 +114,6 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
-        }
-        //request permission
-        boolean hasPermissionPhoneState = (ContextCompat.checkSelfPermission(getApplicationContext(),
-                Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
-        if (!hasPermissionPhoneState) {
-            ActivityCompat.requestPermissions(Entry.this,
-                    new String[]{Manifest.permission.CAMERA},
-                    REQUEST_ACCESS_CAMERA);
-        }
-        boolean hasPermissionPhoneStorage = (ContextCompat.checkSelfPermission(getApplicationContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-        if (!hasPermissionPhoneStorage) {
-            ActivityCompat.requestPermissions(Entry.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    REQUEST_WRITE_EXTERNAL_STORAGE);
         }
 
         //create a location request
@@ -165,20 +148,6 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
          * as a way of adding location awareness to your app. If you are currently using the Android framework location APIs,
          * you are strongly encouraged to switch to the Google Play services location APIs as soon as possible.
          * */
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA)!=PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Entry.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.CAMERA}, REQUEST_ACCESS_FINE_LOCATION);
-        } else {
-            flag = 1;
-        }
-
-        if (currentBestLocation == null && flag == 1) {
-            mGoogleApiClient.connect();
-        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Create a Vehicle Entry");
@@ -590,30 +559,12 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
         switch (requestCode) {
             case REQUEST_ACCESS_FINE_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(Entry.this, "GPS Permission Granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Entry.this, "Permissions Granted", Toast.LENGTH_SHORT).show();
                     flag = 1;
                 } else {
-                    Toast.makeText(Entry.this, "Permissions denied ! App will npt function properly!" +
-                            "Please Go to settings and manually provide permissions to this App", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Entry.this, "Permissions Denied", Toast.LENGTH_SHORT).show();
                 }
-                break;
             }
-            case REQUEST_ACCESS_CAMERA:
-                if(grantResults.length>0&&grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(Entry.this, "Camera Permission Granted", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(Entry.this,"Camera Permission Denied", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case REQUEST_WRITE_EXTERNAL_STORAGE:
-                if(grantResults.length>0&&grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(Entry.this, "Permissions Granted", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(Entry.this,"Write Permission Denied", Toast.LENGTH_SHORT).show();
-                }
-                break;
         }
     }
 
@@ -677,16 +628,15 @@ public class Entry extends AppCompatActivity implements GoogleApiClient.Connecti
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED&& ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Entry.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
+            ActivityCompat.requestPermissions(Entry.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE
+            }, REQUEST_ACCESS_FINE_LOCATION);
         } else {
             flag = 1;
-            if (currentBestLocation == null) {
-                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-            }else {
-                currentBestLocation = LocationServices.FusedLocationApi.getLastLocation(
-                        mGoogleApiClient);
-            }
         }
     }
 

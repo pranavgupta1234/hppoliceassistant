@@ -25,7 +25,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.MAINACTIVITY" />
 
@@ -33,7 +34,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Login"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,28 +44,32 @@
         </activity>
 
         <activity android:name=".Home"
-            android:label="@string/menu">
+            android:label="@string/menu"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.HOME" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".OfflineChallan">
+        <activity android:name=".OfflineChallan"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.OFFLINECHALLAN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".OfflineEntry">
+        <activity android:name=".OfflineEntry"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.OFFLINEENTRY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".DevelopersActivity">
+        <activity android:name=".DevelopersActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.DEVELOPERSACTIVITY" />
 
@@ -72,7 +78,8 @@
         </activity>
         <activity android:name=".Challan"
             android:label="Create MV Act eChallan"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.CHALLAN" />
 
@@ -80,7 +87,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Entry"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.ENTRY_VEH" />
 
@@ -89,7 +97,8 @@
         </activity>
         <activity android:name=".Stolen"
             android:label="Stolen Vehicles"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.STOLEN" />
 
@@ -98,7 +107,8 @@
         </activity>
         <activity android:name=".Search"
             android:label="Search Challans"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="pranav.apps.amazing.hppoliceassistant.SEARCH" />
 
