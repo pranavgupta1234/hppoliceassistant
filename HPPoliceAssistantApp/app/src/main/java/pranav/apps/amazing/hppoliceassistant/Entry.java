@@ -58,7 +58,10 @@ import id.zelory.compressor.FileUtil;
  * Created by Pranav Gupta on 12/10/2016.
  */
 public class Entry extends AppCompatActivity {
+
+    /*Used for logging purposes*/
     private final String TAG = "Entry.java";
+
     private static final int REQUEST_ACCESS_FINE_LOCATION = 133;
     private Firebase mrootRef;
     private EditText veh, phone, description, place;
@@ -96,18 +99,23 @@ public class Entry extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry);
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        /*Create a new session (a session may not yet be a logged in session)*/
         sessionManager = new SessionManager(Entry.this);
         setLogoutBroadcastReceiver();
 
         mrootRef = new Firebase("https://hppoliceassistant.firebaseio.com/vehicle_entry");
         database = FirebaseDatabase.getInstance();
         mRootRef = database.getReference("vehicle_entry");
+
+        /*If permission for both ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION is not granted then
+        * request permission for ACCESS_FINE_LOCATION*/
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Entry.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
+            ActivityCompat.requestPermissions(Entry.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_ACCESS_FINE_LOCATION);
         } else {
             flag = 1;
         }

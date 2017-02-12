@@ -71,11 +71,11 @@
                 android:text="Description" />
 
             <EditText
-                style="@style/fieldEditText"
                 android:id="@+id/description"
+                style="@style/fieldEditText"
                 android:hint="Enter short description"
                 android:maxLength="@integer/maxLengthDescription"
-                android:singleLine="true"/>
+                android:singleLine="true" />
 
             <ImageButton
                 android:id="@+id/upload"
