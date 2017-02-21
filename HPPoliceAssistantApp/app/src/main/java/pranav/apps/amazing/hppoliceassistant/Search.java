@@ -96,23 +96,18 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
                 offlineList.add(0,challan);
                 adapter.notifyDataSetChanged();
                 search.setText("");
+                finish();
+                reloadActivity();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                challan =  dataSnapshot.getValue(ChallanDetails.class);
-                offlineList.remove(challan);
-                dbManagerChallanOnline.deleteChallan(challan);
-                adapterOffline.notifyDataSetChanged();
-                search.setText("");
+                reloadActivity();
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                challan =  dataSnapshot.getValue(ChallanDetails.class);
-                offlineList.add(0,challan);
-                adapter.notifyDataSetChanged();
-                search.setText("");
+                reloadActivity();
             }
 
             @Override
@@ -124,6 +119,14 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
             Toast.makeText(Search.this,"New Challans Added , List is Updated",Toast.LENGTH_SHORT).show();
         }
         //challanDetails.clear();
+    }
+
+    private void reloadActivity() {
+
+        overridePendingTransition( 0, 0);
+        startActivity(getIntent());
+        overridePendingTransition( 0, 0);
+
     }
 
     @Override

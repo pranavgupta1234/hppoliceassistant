@@ -104,23 +104,17 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
             }
             @Override
             public void onChildChanged(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-                newEntry  = dataSnapshot.getValue(VehicleEntry.class);
-                vehicleEntries.add(0,newEntry);
-                adapter.notifyDataSetChanged();
-                loading.setText("");
+                reloadActivity();
             }
 
             @Override
             public void onChildRemoved(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                newEntry  = dataSnapshot.getValue(VehicleEntry.class);
-                vehicleEntries.remove(newEntry);
-                adapter.notifyDataSetChanged();
-                loading.setText("");
+                reloadActivity();
             }
 
             @Override
             public void onChildMoved(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-
+                reloadActivity();
             }
 
             @Override
@@ -231,6 +225,16 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
         }
         return filteredModelList;
     }
+
+
+    private void reloadActivity() {
+
+        overridePendingTransition( 0, 0);
+        startActivity(getIntent());
+        overridePendingTransition( 0, 0);
+
+    }
+
     /*Following helps to finish this activity when user logs out (so that they can't navigate back here)*/
     private void setLogoutBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();

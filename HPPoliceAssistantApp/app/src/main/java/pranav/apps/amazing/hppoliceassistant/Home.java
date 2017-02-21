@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class Home extends AppCompatActivity{
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        myToolbar.setBackgroundColor(Color.parseColor("#039be5"));
         myToolbar.inflateMenu(R.menu.menu_menu);
 
         sessionManager = new SessionManager(Home.this);

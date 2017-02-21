@@ -18,12 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -57,23 +52,20 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
 
 import id.zelory.compressor.Compressor;
 import id.zelory.compressor.FileUtil;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-
-import static android.app.Activity.RESULT_OK;
-
 /**
  * Created by Pranav Gupta on 12/10/2016.
  */
 public class Challan extends AppCompatActivity {
+
+    /** in order to get external library working through jar file
+     * 1) add jar file in the libs directory of root
+     * 2) choose project view and then add as library will include
+     * that in your app
+     * */
 
 
     //variables to be used
