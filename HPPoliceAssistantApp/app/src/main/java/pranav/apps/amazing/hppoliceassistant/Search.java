@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -66,9 +65,12 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         search=(TextView)findViewById(R.id.loading);
         LinearLayoutManager layoutManager = new LinearLayoutManager(Search.this);
         recyclerview.setLayoutManager(layoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerview.getContext(),
-                layoutManager.getOrientation());
-        recyclerview.addItemDecoration(dividerItemDecoration);
+
+        /**  to insert divider line between items of recycler view
+        *DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerview.getContext(),
+         layoutManager.getOrientation());
+         recyclerview.addItemDecoration(dividerItemDecoration);*/
+
         dbManagerChallanOnline = new DBManagerChallanOnline(Search.this,null,null,1);
         offlineList = dbManagerChallanOnline.showChallan();
 
@@ -78,7 +80,8 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
         recyclerview.setAdapter(adapterOffline);
         adapterOffline.notifyDataSetChanged();
         search.setText("");
-        myRef.addChildEventListener(childEventListener = new ChildEventListener() {
+        myRef.keepSynced(true);
+        childEventListener = myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 challan =  dataSnapshot.getValue(ChallanDetails.class);
@@ -123,6 +126,7 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
 
     private void reloadActivity() {
 
+        finish();
         overridePendingTransition( 0, 0);
         startActivity(getIntent());
         overridePendingTransition( 0, 0);
@@ -258,9 +262,13 @@ public class Search extends AppCompatActivity implements SearchView.OnQueryTextL
 
     @Override
     protected void onDestroy() {
-        unregisterReceiver(logoutBroadcastReceiver);
-        myRef.removeEventListener(childEventListener);
         super.onDestroy();
+        if(logoutBroadcastReceiver!=null){
+            unregisterReceiver(logoutBroadcastReceiver);
+        }
+        if(childEventListener!=null){
+            myRef.removeEventListener(childEventListener);
+        }
     }
 }
 

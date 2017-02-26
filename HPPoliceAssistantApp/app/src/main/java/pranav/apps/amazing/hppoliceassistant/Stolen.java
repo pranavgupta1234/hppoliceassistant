@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -92,28 +93,27 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
         adapter.notifyDataSetChanged();
         /*adapter = new RecyclerAdapter(Stolen.this,vehicleEntries);
         recyclerView.setAdapter(adapter);*/
-
-
-        myRef.orderByKey().addChildEventListener(childEventListener = new ChildEventListener() {
+        myRef.orderByKey().keepSynced(true);
+        childEventListener = myRef.orderByKey().addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 newEntry  = dataSnapshot.getValue(VehicleEntry.class);
                 vehicleEntries.add(0,newEntry);
                 adapter.notifyDataSetChanged();
                 loading.setText("");
             }
             @Override
-            public void onChildChanged(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 reloadActivity();
             }
 
             @Override
-            public void onChildRemoved(com.google.firebase.database.DataSnapshot dataSnapshot) {
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
                 reloadActivity();
             }
 
             @Override
-            public void onChildMoved(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                 reloadActivity();
             }
 
@@ -251,11 +251,12 @@ public class Stolen extends AppCompatActivity implements SearchView.OnQueryTextL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        myRef.removeEventListener(childEventListener);
+        if(childEventListener!=null){
+            myRef.removeEventListener(childEventListener);
+        }
         if(logoutBroadcastReceiver!=null) {
             unregisterReceiver(logoutBroadcastReceiver);
         }
     }
 
-    // this is added
 }

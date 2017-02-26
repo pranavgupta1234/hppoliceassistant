@@ -5,9 +5,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:cardview="http://schemas.android.com/tools"
     android:clickable="true"
-    app:cardCornerRadius="10dp"
+    cardview:cardElevation="2dp"
+    cardview:cardCornerRadius="2dp"
+    cardview:contentPadding="2dp"
     app:cardElevation="8dp"
-    cardview:cardUseCompatPadding="true">
+    cardview:cardUseCompatPadding="true"
+    android:layout_marginTop="4dp"
+    android:layout_marginStart="6dp"
+    android:layout_marginEnd="6dp"
+    android:layout_marginBottom="6dp">
 <RelativeLayout
     android:orientation="vertical"
     android:padding="6dp"
@@ -93,8 +99,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/phone_number_text"
         android:layout_marginTop="26dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginLeft="160dp"/>
+        android:layout_marginStart="150dp"
+        android:layout_marginLeft="150dp"/>
     <Button
         android:text="Details"
         android:layout_width="70dp"
