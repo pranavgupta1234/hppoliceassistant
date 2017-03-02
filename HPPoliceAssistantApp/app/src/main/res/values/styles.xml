@@ -47,8 +47,23 @@
     <style name="fieldEditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/white</item>
         <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/custom_edittext</item>
+    </style>
+
+    <style name="vehicleNumberEditText" parent="fieldEditText">
+        <item name="android:digits">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890</item>
+        <item name="android:hint">e.g. hp12ab1234</item>
+        <item name="android:inputType">textNoSuggestions|textVisiblePassword</item>
+        <item name="android:maxLength">@integer/maxLengthVehicleNumber</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="phoneNumEditText" parent="fieldEditText">
+        <item name="android:hint">e.g. 9816912345</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">@integer/lengthPhoneNumber</item>
+        <item name="android:maxLines">1</item>
     </style>
 
 </resources>

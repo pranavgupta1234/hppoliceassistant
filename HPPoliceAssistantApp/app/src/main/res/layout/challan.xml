@@ -1,738 +1,738 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
+        android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:menu="@menu/popup_menu"
-        android:elevation="4dp"/>
+        app:menu="@menu/popup_menu" />
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fillViewport="true">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="TICK OFFENCES COMMITED"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textColor="#8B0000"
-            android:layout_marginTop="4dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="4dp"
-            android:textStyle="bold"/>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView1"
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="w/o Helmet"
-                    android:id="@+id/textView1"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/helmet"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
+            android:orientation="vertical">
 
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true"
-            android:layout_alignParentTop="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="w/o R C "
-                    android:id="@+id/textView2"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rc"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true"
-            android:layout_alignParentTop="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="w/o Insurance"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:id="@+id/textView3"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/insurance"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="w/o License"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:id="@+id/textView4"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/license"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true"
-            android:layout_alignParentTop="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rash And Negligent Driving"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:id="@+id/textView5"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rash_drive"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true"
-            android:layout_alignParentTop="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Using Mobile Driving"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:id="@+id/textView6"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/mobile"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true"
-            android:layout_alignParentTop="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="w/o Number Plate"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:id="@+id/textView7"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/number_plate"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true"
-            android:layout_alignParentTop="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Using Pressure Horn"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:id="@+id/textView8"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/pressure_horn"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true"
-            android:layout_alignParentTop="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="w/o Seat Belt"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:id="@+id/textView9"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/seat_belt"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Triple Riding"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:id="@+id/textView10"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/triple_riding"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Idle Parking"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:id="@+id/textView11"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/idle_parking"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            card_view:cardElevation="1dp"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardUseCompatPadding="true">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"
-                android:padding="8dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sealed/Restricted Parking"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:id="@+id/textView12"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/restricted"
-                    android:buttonTint="#2979ff"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentRight="true"/>
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <TextView
-            android:text="Other Remarks"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:textSize="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"/>
-        <EditText
-            android:inputType="textAutoComplete"
-            android:hint="fill other reasons here"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_edittext"
-            android:padding="12dp"
-            android:maxLength="50"
-            android:singleLine="true"
-            android:layout_marginTop="3dp"
-            android:id="@+id/other_offence"/>
-        <TextView
-            android:text="FILL OTHER CHALLAN DETAILS HERE"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="@android:color/holo_green_dark"
-            android:layout_gravity="center"
-            android:textSize="17dp"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="6dp">
             <TextView
-                android:text="Vehicle Number * (No Special Characters)"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:layout_marginTop="3dp"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\"
-                android:hint="fill vehicle number here"
-                android:layout_marginTop="3dp"
-                android:maxLength="18"
-                android:singleLine="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="4dp"
+                android:text="TICK OFFENCES COMMITED"
+                android:textColor="#8B0000"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:id="@+id/vehicle_number"/>
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="w/o Helmet"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <CheckBox
+                        android:id="@+id/helmet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="w/o R C "
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+                    <CheckBox
+                        android:id="@+id/rc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="w/o Insurance"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+                    <CheckBox
+                        android:id="@+id/insurance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="w/o License"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+                    <CheckBox
+                        android:id="@+id/license"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="Rash And Negligent Driving"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+                    <CheckBox
+                        android:id="@+id/rash_drive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="Using Mobile Driving"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+                    <CheckBox
+                        android:id="@+id/mobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="w/o Number Plate"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+                    <CheckBox
+                        android:id="@+id/number_plate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="Using Pressure Horn"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+                    <CheckBox
+                        android:id="@+id/pressure_horn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="w/o Seat Belt"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+                    <CheckBox
+                        android:id="@+id/seat_belt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="Triple Riding"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+                    <CheckBox
+                        android:id="@+id/triple_riding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="Idle Parking"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+                    <CheckBox
+                        android:id="@+id/idle_parking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="1dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="Sealed/Restricted Parking"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <CheckBox
+                        android:id="@+id/restricted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="#2979ff" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
             <TextView
-                android:text="Violator Name"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"/>
+                style="@style/fieldLabel"
+                android:text="Other Remarks"/>
+
             <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
-                android:inputType="textFilter"
-                android:hint="fill name of violator"
-                android:layout_width="match_parent"
-                android:maxLength="30"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:singleLine="true"
-                android:layout_marginTop="3dp"
-                android:id="@+id/violator_name"/>
-            <TextView
-                android:text="Vehicle Owner Name"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"/>
-            <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
-                android:inputType="textFilter"
-                android:hint="fill vehicle owner name here"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:maxLength="30"
-                android:singleLine="true"
-                android:layout_marginTop="3dp"
-                android:id="@+id/vehicle_owner_name"/>
-            <TextView
-                android:text="Violator Address"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"/>
-            <EditText
-                android:inputType="textFilter"
-                android:hint="fill address of violator here"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/other_offence"
+                style="@style/fieldEditText"
+                android:hint="fill other reasons here"
+                android:inputType="textAutoComplete"
                 android:maxLength="50"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:singleLine="true"
-                android:layout_marginTop="3dp"
-                android:id="@+id/violator_address"/>
+                android:singleLine="true" />
+
             <TextView
-                android:text="Violator Number"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"/>
-            <EditText
-                android:inputType="number"
-                android:hint="fill contact number of violator here"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="10"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:singleLine="true"
-                android:layout_marginTop="3dp"
-                android:id="@+id/violator_number"/>
-            <TextView
-                android:text="License Number (No Special Characters)"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"/>
-            <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890/-\"
-                android:hint="fill license number here"
-                android:layout_width="match_parent"
-                android:maxLength="25"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:singleLine="true"
-                android:layout_marginTop="3dp"
-                android:id="@+id/license_number"/>
-            <TextView
-                android:text="Challan Amount (in Rs)"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"/>
-            <EditText
-                android:inputType="number"
-                android:hint="fill challan amount here(in Rs)"
-                android:layout_width="match_parent"
-                android:maxLength="10"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:singleLine="true"
-                android:layout_marginTop="3dp"
-                android:id="@+id/challan_amount"/>
-            <TextView
-                android:text="Offences Section"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_marginTop="3dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 , "
-                android:inputType="textFilter"
-                android:hint="fill offence section here"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:maxLength="30"
-                android:singleLine="true"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:id="@+id/offence_section"/>
-            <TextView
-                android:text="Name of Place *"
-                android:textColor="#000000"
-                android:layout_marginTop="3dp"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
-                android:inputType="textFilter"
-                android:hint="fill name of place here"
-                android:maxLength="30"
-                android:layout_marginTop="3dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_edittext"
-                android:padding="12dp"
-                android:singleLine="true"
-                android:id="@+id/place_name"/>
-            <ImageView
-                android:text="UPLOAD PHOTO"
-                android:textStyle="bold"
+                android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:background="@drawable/upload"
-                android:id="@+id/upload_photo"
-                android:scaleType="fitXY"
-                android:layout_gravity="center"/>
+                android:text="FILL OTHER CHALLAN DETAILS HERE"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="6dp"
-                android:padding="4dp">
-                <Button
-                    android:text="RESET"
-                    android:textStyle="bold"
-                    android:layout_width="0dp"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <TextView
+                    style="@style/fieldLabel"
+                    android:text="Vehicle Number * (No Special Characters)" />
+
+                <!--Turned off auto suggestions for this field-->
+                <!--SingleLine although deprecated helps in enabling next button on soft-keyboard which takes user focus
+                to next input on pressing enter-->
+                <EditText
+                    android:id="@+id/vehicle_number"
+                    style="@style/vehicleNumberEditText" />
+
+                <TextView
+                    style="@style/fieldLabel"
+                    android:text="Violator Name" />
+
+                <EditText
+                    android:id="@+id/violator_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/btn_back"
-                    android:id="@+id/reset"/>
-                <Button
-                    android:text="SUBMIT"
-                    android:textStyle="bold"
-                    android:layout_width="0dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/custom_edittext"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+                    android:hint="fill name of violator"
+                    android:inputType="textFilter"
+                    android:maxLength="30"
+                    android:padding="12dp"
+                    android:singleLine="true" />
+
+                <TextView
+                    style="@style/fieldLabel"
+                    android:text="Vehicle Owner Name" />
+
+                <EditText
+                    android:id="@+id/vehicle_owner_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="4dp"
-                    android:background="@drawable/btn_back"
-                    android:id="@+id/submit"/>
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/custom_edittext"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+                    android:hint="fill vehicle owner name here"
+                    android:inputType="textFilter"
+                    android:maxLength="30"
+                    android:padding="12dp"
+                    android:singleLine="true" />
+
+                <TextView
+                    style="@style/fieldLabel"
+                    android:text="Violator Address" />
+
+                <EditText
+                    android:id="@+id/violator_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/custom_edittext"
+                    android:hint="fill address of violator here"
+                    android:inputType="textFilter"
+                    android:maxLength="50"
+                    android:padding="12dp"
+                    android:singleLine="true" />
+
+                <TextView
+                    style="@style/fieldLabel"
+                    android:text="Violator Number (10 digits only)" />
+
+                <EditText
+                    android:id="@+id/violator_number"
+                    style="@style/phoneNumEditText" />
+
+                <TextView
+                    style="@style/fieldLabel"
+                    android:text="License Number (No Special Characters)" />
+
+                <EditText
+                    android:id="@+id/license_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/custom_edittext"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+                    android:hint="fill license number here"
+                    android:maxLength="25"
+                    android:padding="12dp"
+                    android:singleLine="true" />
+
+                <TextView
+                    style="@style/fieldLabel"
+                    android:text="Challan Amount (in Rs)" />
+
+                <EditText
+                    android:id="@+id/challan_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/custom_edittext"
+                    android:hint="fill challan amount here(in Rs)"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:padding="12dp"
+                    android:singleLine="true" />
+
+                <TextView
+                    style="@style/fieldLabel"
+                    android:text="Offences Section" />
+
+                <EditText
+                    android:id="@+id/offence_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/custom_edittext"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 , "
+                    android:hint="fill offence section here"
+                    android:inputType="textFilter"
+                    android:maxLength="30"
+                    android:padding="12dp"
+                    android:singleLine="true" />
+
+                <TextView
+                    style="@style/fieldLabel"
+                    android:text="Naka Name *" />
+
+                <EditText
+                    android:id="@+id/place_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/custom_edittext"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
+                    android:hint="fill name of place here"
+                    android:inputType="textFilter"
+                    android:maxLength="30"
+                    android:padding="12dp"
+                    android:singleLine="true" />
+
+                <ImageView
+                    android:id="@+id/upload_photo"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/upload"
+                    android:scaleType="fitXY"
+                    android:text="UPLOAD PHOTO"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <Button
+                        android:id="@+id/reset"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_back"
+                        android:text="RESET"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/submit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_back"
+                        android:text="SUBMIT"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
     </ScrollView>
 </LinearLayout>
