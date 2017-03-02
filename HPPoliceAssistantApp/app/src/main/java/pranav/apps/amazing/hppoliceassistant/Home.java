@@ -180,10 +180,10 @@ public class Home extends AppCompatActivity{
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
-
+        if(!doubleBackToExitPressedOnce) {
+            Toast.makeText(this, "Please click back again to exit", Toast.LENGTH_SHORT).show();
+        }
         this.doubleBackToExitPressedOnce = true;
-
-        Toast.makeText(this, "Please click back again to exit", Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(new Runnable() {
 
             @Override
