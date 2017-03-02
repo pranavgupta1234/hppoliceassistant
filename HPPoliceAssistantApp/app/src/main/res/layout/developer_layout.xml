@@ -97,7 +97,7 @@
                 android:paddingTop="20dp"
                 android:textColor="#4e4d4c"
                 android:textStyle="bold"
-                android:text="Gopal Krishnan Aggarwal"
+                android:text="Gopal Krishan Aggarwal"
                 android:textSize="24sp" />
 
             <TextView
